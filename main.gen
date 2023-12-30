@@ -1,0 +1,54 @@
+/*[[[cog
+import cog, os
+# Copyright Eleven Engineering 2015
+# Author: Thia Wyrod <wyrod@eleveneng.com>
+# License: GPLv3
+'''
+This file is generated into a proper main file in the build directory
+at CMake build time.
+
+The following strings are externally provided by CMake at build time
+SRC_DIR, BUILD_DIR, SRC_PATH, ART0_DIR
+'''
+
+SRC_ASM_DIR = os.path.join(SRC_DIR, 'asm')
+
+if not 'CFG_WORD' in globals():
+  CFG_WORD = 'ginger'
+
+
+cfg_word = {
+  'ginger': 0x9945,
+  'xinc2dev': 0x9809,
+  'ginger_lowdrive': 0x9949,
+  'ginger_tristateXto': 0x9947
+}.get(CFG_WORD, '#error -- invalid HW_CFG specified! (See main.gen)')
+
+kCodePaths = [
+  (ART0_DIR, 'XInC2_Entry.asm'),
+  (BUILD_DIR, 'code.asm'),
+]
+
+kDataPaths = [
+  (ART0_DIR, 'XInC2_Thread_Definitions.asm'),
+  (BUILD_DIR, 'data.asm'),
+]
+
+
+def PrintFileInclude(root, leaf=None):
+  if not root:
+    return
+  filepath = root
+  if leaf:
+    filepath = os.path.join(filepath, leaf)
+  cog.outl('#include "{0}"'.format(filepath))
+
+PrintFileInclude(ART0_DIR, 'XInC2.asm')
+cog.outl('@ = 0xC000\nbra ProgramSPIEEPROM\n{0}'.format(cfg_word))
+for path in kCodePaths:
+  PrintFileInclude(*path)
+cog.outl('@ = (@ + 0x0800-1) & -0x0800') #Boundary between data and code
+for path in kDataPaths:
+  PrintFileInclude(*path)
+]]]*/
+//[[[end]]]
