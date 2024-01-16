@@ -1,0 +1,195 @@
+; ModuleID = 'C:\Users\cchin\CapstoneFirmware\Xinc2\ReflowOvenController\src\main.cpp'
+target datalayout = "e-p:16:16:16-i1:16:16-i8:16:16-i16:16:16-i32:16:16-a0:16:16-s0:16:16-n16"
+target triple = "XInC2"
+
+@Ascii_1 = global [97 x [5 x i16]] [[5 x i16] zeroinitializer, [5 x i16] [i16 0, i16 0, i16 79, i16 0, i16 0], [5 x i16] [i16 0, i16 7, i16 0, i16 7, i16 0], [5 x i16] [i16 20, i16 127, i16 20, i16 127, i16 20], [5 x i16] [i16 36, i16 42, i16 127, i16 42, i16 18], [5 x i16] [i16 35, i16 19, i16 8, i16 100, i16 98], [5 x i16] [i16 54, i16 73, i16 85, i16 34, i16 80], [5 x i16] [i16 0, i16 5, i16 3, i16 0, i16 0], [5 x i16] [i16 0, i16 28, i16 34, i16 65, i16 0], [5 x i16] [i16 0, i16 65, i16 34, i16 28, i16 0], [5 x i16] [i16 20, i16 8, i16 62, i16 8, i16 20], [5 x i16] [i16 8, i16 8, i16 62, i16 8, i16 8], [5 x i16] [i16 0, i16 80, i16 48, i16 0, i16 0], [5 x i16] [i16 8, i16 8, i16 8, i16 8, i16 8], [5 x i16] [i16 0, i16 96, i16 96, i16 0, i16 0], [5 x i16] [i16 32, i16 16, i16 8, i16 4, i16 2], [5 x i16] [i16 62, i16 81, i16 73, i16 69, i16 62], [5 x i16] [i16 0, i16 66, i16 127, i16 64, i16 0], [5 x i16] [i16 66, i16 97, i16 81, i16 73, i16 70], [5 x i16] [i16 33, i16 65, i16 69, i16 75, i16 49], [5 x i16] [i16 24, i16 20, i16 18, i16 127, i16 16], [5 x i16] [i16 39, i16 69, i16 69, i16 69, i16 57], [5 x i16] [i16 60, i16 74, i16 73, i16 73, i16 48], [5 x i16] [i16 1, i16 113, i16 9, i16 5, i16 3], [5 x i16] [i16 54, i16 73, i16 73, i16 73, i16 54], [5 x i16] [i16 6, i16 73, i16 73, i16 41, i16 30], [5 x i16] [i16 0, i16 54, i16 54, i16 0, i16 0], [5 x i16] [i16 0, i16 86, i16 54, i16 0, i16 0], [5 x i16] [i16 8, i16 20, i16 34, i16 65, i16 0], [5 x i16] [i16 20, i16 20, i16 20, i16 20, i16 20], [5 x i16] [i16 0, i16 65, i16 34, i16 20, i16 8], [5 x i16] [i16 2, i16 1, i16 81, i16 9, i16 6], [5 x i16] [i16 50, i16 73, i16 121, i16 65, i16 62], [5 x i16] [i16 126, i16 17, i16 17, i16 17, i16 126], [5 x i16] [i16 127, i16 73, i16 73, i16 73, i16 54], [5 x i16] [i16 62, i16 65, i16 65, i16 65, i16 34], [5 x i16] [i16 127, i16 65, i16 65, i16 34, i16 28], [5 x i16] [i16 127, i16 73, i16 73, i16 73, i16 65], [5 x i16] [i16 127, i16 9, i16 9, i16 9, i16 1], [5 x i16] [i16 62, i16 65, i16 73, i16 73, i16 122], [5 x i16] [i16 127, i16 8, i16 8, i16 8, i16 127], [5 x i16] [i16 0, i16 65, i16 127, i16 65, i16 0], [5 x i16] [i16 32, i16 64, i16 65, i16 63, i16 1], [5 x i16] [i16 127, i16 8, i16 20, i16 34, i16 65], [5 x i16] [i16 127, i16 64, i16 64, i16 64, i16 64], [5 x i16] [i16 127, i16 2, i16 12, i16 2, i16 127], [5 x i16] [i16 127, i16 4, i16 8, i16 16, i16 127], [5 x i16] [i16 62, i16 65, i16 65, i16 65, i16 62], [5 x i16] [i16 127, i16 9, i16 9, i16 9, i16 6], [5 x i16] [i16 62, i16 65, i16 81, i16 33, i16 94], [5 x i16] [i16 127, i16 9, i16 25, i16 41, i16 70], [5 x i16] [i16 70, i16 73, i16 73, i16 73, i16 49], [5 x i16] [i16 1, i16 1, i16 127, i16 1, i16 1], [5 x i16] [i16 63, i16 64, i16 64, i16 64, i16 63], [5 x i16] [i16 31, i16 32, i16 64, i16 32, i16 31], [5 x i16] [i16 63, i16 64, i16 56, i16 64, i16 63], [5 x i16] [i16 99, i16 20, i16 8, i16 20, i16 99], [5 x i16] [i16 7, i16 8, i16 112, i16 8, i16 7], [5 x i16] [i16 97, i16 81, i16 73, i16 69, i16 67], [5 x i16] [i16 0, i16 127, i16 65, i16 65, i16 0], [5 x i16] [i16 2, i16 4, i16 8, i16 16, i16 32], [5 x i16] [i16 0, i16 65, i16 65, i16 127, i16 0], [5 x i16] [i16 4, i16 2, i16 1, i16 2, i16 4], [5 x i16] [i16 64, i16 64, i16 64, i16 64, i16 64], [5 x i16] [i16 1, i16 2, i16 4, i16 0, i16 0], [5 x i16] [i16 32, i16 84, i16 84, i16 84, i16 120], [5 x i16] [i16 127, i16 72, i16 68, i16 68, i16 56], [5 x i16] [i16 56, i16 68, i16 68, i16 68, i16 32], [5 x i16] [i16 56, i16 68, i16 68, i16 72, i16 127], [5 x i16] [i16 56, i16 84, i16 84, i16 84, i16 24], [5 x i16] [i16 8, i16 126, i16 9, i16 1, i16 2], [5 x i16] [i16 6, i16 73, i16 73, i16 73, i16 63], [5 x i16] [i16 127, i16 8, i16 4, i16 4, i16 120], [5 x i16] [i16 0, i16 68, i16 125, i16 64, i16 0], [5 x i16] [i16 32, i16 64, i16 68, i16 61, i16 0], [5 x i16] [i16 127, i16 16, i16 40, i16 68, i16 0], [5 x i16] [i16 0, i16 65, i16 127, i16 64, i16 0], [5 x i16] [i16 124, i16 4, i16 24, i16 4, i16 124], [5 x i16] [i16 124, i16 8, i16 4, i16 4, i16 120], [5 x i16] [i16 56, i16 68, i16 68, i16 68, i16 56], [5 x i16] [i16 124, i16 20, i16 20, i16 20, i16 8], [5 x i16] [i16 8, i16 20, i16 20, i16 24, i16 124], [5 x i16] [i16 124, i16 8, i16 4, i16 4, i16 8], [5 x i16] [i16 72, i16 84, i16 84, i16 84, i16 32], [5 x i16] [i16 4, i16 63, i16 68, i16 64, i16 32], [5 x i16] [i16 60, i16 64, i16 64, i16 32, i16 124], [5 x i16] [i16 28, i16 32, i16 64, i16 32, i16 28], [5 x i16] [i16 60, i16 64, i16 48, i16 64, i16 60], [5 x i16] [i16 68, i16 40, i16 16, i16 40, i16 68], [5 x i16] [i16 12, i16 80, i16 80, i16 80, i16 60], [5 x i16] [i16 68, i16 100, i16 84, i16 76, i16 68], [5 x i16] [i16 0, i16 8, i16 54, i16 65, i16 0], [5 x i16] [i16 0, i16 0, i16 127, i16 0, i16 0], [5 x i16] [i16 0, i16 65, i16 54, i16 8, i16 0], [5 x i16] [i16 2, i16 1, i16 2, i16 4, i16 2], [5 x i16] [i16 8, i16 12, i16 14, i16 12, i16 8], [5 x i16] [i16 8, i16 24, i16 56, i16 24, i16 8]], align 1
+@thrds_vector = external global i16
+
+define void @_Z7wait_msj(i16 %ms) nounwind {
+  %1 = icmp eq i16 %ms, 0
+  br i1 %1, label %._crit_edge, label %.preheader
+
+.preheader:                                       ; preds = %0, %12
+  %i.08 = phi i16 [ %13, %12 ], [ 0, %0 ]
+  br label %2
+
+; <label>:2                                       ; preds = %_Z14sys_clock_waitj.exit5, %.preheader
+  %j.07 = phi i16 [ 0, %.preheader ], [ %11, %_Z14sys_clock_waitj.exit5 ]
+  %3 = tail call i16 @llvm.XInC2.inp(i16 3) nounwind
+  %sum.i.neg = sub i16 17232, %3
+  br label %4
+
+; <label>:4                                       ; preds = %4, %2
+  %5 = tail call i16 @llvm.XInC2.inp(i16 3) nounwind
+  %6 = add i16 %sum.i.neg, %5
+  %phitmp.i = icmp slt i16 %6, 0
+  br i1 %phitmp.i, label %4, label %_Z14sys_clock_waitj.exit
+
+_Z14sys_clock_waitj.exit:                         ; preds = %4
+  %7 = tail call i16 @llvm.XInC2.inp(i16 3) nounwind
+  %sum.i3.neg = sub i16 15536, %7
+  br label %8
+
+; <label>:8                                       ; preds = %8, %_Z14sys_clock_waitj.exit
+  %9 = tail call i16 @llvm.XInC2.inp(i16 3) nounwind
+  %10 = add i16 %sum.i3.neg, %9
+  %phitmp.i4 = icmp slt i16 %10, 0
+  br i1 %phitmp.i4, label %8, label %_Z14sys_clock_waitj.exit5
+
+_Z14sys_clock_waitj.exit5:                        ; preds = %8
+  %11 = add i16 %j.07, 1
+  %exitcond = icmp eq i16 %11, 1000
+  br i1 %exitcond, label %12, label %2
+
+; <label>:12                                      ; preds = %_Z14sys_clock_waitj.exit5
+  %13 = add i16 %i.08, 1
+  %exitcond9 = icmp eq i16 %13, %ms
+  br i1 %exitcond9, label %._crit_edge, label %.preheader
+
+._crit_edge:                                      ; preds = %12, %0
+  ret void
+}
+
+define void @_Z12wait_secondsj(i16 %seconds) nounwind {
+  %1 = icmp eq i16 %seconds, 0
+  br i1 %1, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %i.02 = phi i16 [ %2, %.lr.ph ], [ 0, %0 ]
+  tail call void @_Z7wait_msj(i16 1000)
+  %2 = add i16 %i.02, 1
+  %exitcond = icmp eq i16 %2, %seconds
+  br i1 %exitcond, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+
+define void @_Z9long_waitv() nounwind {
+  br label %1
+
+; <label>:1                                       ; preds = %_Z14sys_clock_waitj.exit, %0
+  %i.02 = phi i16 [ 0, %0 ], [ %6, %_Z14sys_clock_waitj.exit ]
+  %2 = tail call i16 @llvm.XInC2.inp(i16 3) nounwind
+  %sum.i.neg = sub i16 -10000, %2
+  br label %3
+
+; <label>:3                                       ; preds = %3, %1
+  %4 = tail call i16 @llvm.XInC2.inp(i16 3) nounwind
+  %5 = add i16 %sum.i.neg, %4
+  %phitmp.i = icmp slt i16 %5, 0
+  br i1 %phitmp.i, label %3, label %_Z14sys_clock_waitj.exit
+
+_Z14sys_clock_waitj.exit:                         ; preds = %3
+  %6 = add nsw i16 %i.02, 1
+  %exitcond = icmp eq i16 %6, 5000
+  br i1 %exitcond, label %7, label %1
+
+; <label>:7                                       ; preds = %_Z14sys_clock_waitj.exit
+  ret void
+}
+
+define void @_Z23oled_pin_initializationv() nounwind {
+  tail call void @llvm.XInC2.outp(i16 2048, i16 39) nounwind
+  tail call void @llvm.XInC2.outp(i16 -8192, i16 33) nounwind
+  tail call void @llvm.XInC2.outp(i16 15, i16 55) nounwind
+  tail call void @llvm.XInC2.outp(i16 128, i16 32) nounwind
+  ret void
+}
+
+define void @_Z22OLED_Command_160128RGBh(i16 zeroext %c) nounwind {
+  %1 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
+  %2 = and i16 %1, -129
+  tail call void @llvm.XInC2.outp(i16 %2, i16 32) nounwind
+  %3 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
+  %4 = and i16 %3, -65
+  tail call void @llvm.XInC2.outp(i16 %4, i16 32) nounwind
+  ret void
+}
+
+define void @_Z8InitGPIOv() nounwind {
+  %1 = tail call i16 @llvm.XInC2.inp(i16 114) nounwind
+  %2 = and i16 %1, -1025
+  tail call void @llvm.XInC2.outp(i16 %2, i16 114) nounwind
+  br label %3
+
+; <label>:3                                       ; preds = %3, %0
+  %4 = tail call i16 @llvm.XInC2.inp(i16 114) nounwind
+  %5 = icmp sgt i16 %4, -1
+  br i1 %5, label %6, label %3
+
+; <label>:6                                       ; preds = %3
+  tail call void @llvm.XInC2.outp(i16 1, i16 117) nounwind
+  tail call void @llvm.XInC2.outp(i16 2053, i16 116) nounwind
+  %7 = tail call i16 @llvm.XInC2.inp(i16 114) nounwind
+  %8 = and i16 %7, -1025
+  tail call void @llvm.XInC2.outp(i16 %8, i16 114) nounwind
+  br label %9
+
+; <label>:9                                       ; preds = %9, %6
+  %10 = tail call i16 @llvm.XInC2.inp(i16 114) nounwind
+  %11 = icmp sgt i16 %10, -1
+  br i1 %11, label %12, label %9
+
+; <label>:12                                      ; preds = %9
+  %13 = tail call i16 @llvm.XInC2.inp(i16 114) nounwind
+  %14 = or i16 %13, 3072
+  tail call void @llvm.XInC2.outp(i16 %14, i16 114) nounwind
+  br label %15
+
+; <label>:15                                      ; preds = %15, %12
+  %16 = tail call i16 @llvm.XInC2.inp(i16 114) nounwind
+  %17 = icmp sgt i16 %16, -1
+  br i1 %17, label %15, label %_Z14sys_clock_init12crystal_freq8sys_freq.exit
+
+_Z14sys_clock_init12crystal_freq8sys_freq.exit:   ; preds = %15
+  tail call void @llvm.XInC2.outp(i16 -32381, i16 115) nounwind
+  tail call void @llvm.XInC2.outp(i16 15, i16 112) nounwind
+  tail call void @llvm.XInC2.outp(i16 14, i16 113) nounwind
+  tail call void @llvm.XInC2.outp(i16 2048, i16 39) nounwind
+  tail call void @llvm.XInC2.outp(i16 -8192, i16 33) nounwind
+  tail call void @llvm.XInC2.outp(i16 15, i16 55) nounwind
+  tail call void @llvm.XInC2.outp(i16 128, i16 32) nounwind
+  ret void
+}
+
+define noalias i16* @_Z15ButtonLEDThreadPv(i16* nocapture) noreturn nounwind {
+  br label %2
+
+; <label>:2                                       ; preds = %1, %2
+  %3 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
+  %4 = or i16 %3, 32
+  tail call void @llvm.XInC2.outp(i16 %4, i16 32) nounwind
+  tail call void @_Z12wait_secondsj(i16 1)
+  %5 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
+  %6 = and i16 %5, -33
+  tail call void @llvm.XInC2.outp(i16 %6, i16 32) nounwind
+  tail call void @_Z12wait_secondsj(i16 1)
+  br label %2
+}
+
+define i16 @main() nounwind {
+  tail call void @llvm.XInC2.outp(i16 22, i16 112) nounwind
+  tail call void @llvm.XInC2.outp(i16 115, i16 113) nounwind
+  tail call void @_Z8InitGPIOv()
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  tail call void @llvm.XInC2.outp(i16 10, i16 3) nounwind
+  tail call void @llvm.XInC2.outp(i16 0, i16 0) nounwind
+  tail call void @llvm.XInC2.outp(i16 ptrtoint (i16* (i16*)* @_Z15ButtonLEDThreadPv to i16), i16 1) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %1 = load i16* @thrds_vector, align 1, !tbaa !0
+  %2 = and i16 %1, -3
+  store i16 %2, i16* @thrds_vector, align 1, !tbaa !0
+  tail call void @llvm.XInC2.outp(i16 %2, i16 4) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  ret i16 0
+}
+
+declare void @llvm.XInC2.outp(i16, i16) nounwind
+
+declare i16 @llvm.XInC2.inp(i16) nounwind
+
+!0 = metadata !{metadata !"int", metadata !1}
+!1 = metadata !{metadata !"omnipotent char", metadata !2}
+!2 = metadata !{metadata !"Simple C/C++ TBAA"}

@@ -1,0 +1,1 @@
+C:\PROGRA~1\SXC\bin\SXDF79~1.EXE -o ReflowOvenController.a  CMakeFiles/ReflowOvenController.dir/src/main.cpp.obj  "C:\Program Files\SXC\lib\sxc-none-eabi\sxc-crt0.a" 

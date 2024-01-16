@@ -1,0 +1,9 @@
+#include "C:/Program Files/SXC/include/sxc-art0\XInC2.asm"
+@ = 0xC000
+bra ProgramSPIEEPROM
+39237
+#include "C:/Program Files/SXC/include/sxc-art0\XInC2_Entry.asm"
+#include "C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build\code.asm"
+@ = (@ + 0x0800-1) & -0x0800
+#include "C:/Program Files/SXC/include/sxc-art0\XInC2_Thread_Definitions.asm"
+#include "C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build\data.asm"

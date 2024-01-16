@@ -4,7 +4,7 @@
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type...")
 set(SXC_CROSS_COMPILE ON)
 
-set(PROJECT_NAME "reflow-oven-controller")
+set(PROJECT_NAME "ReflowOvenController")
 cmake_minimum_required(VERSION 3.3)
 project(${PROJECT_NAME} NONE)
 

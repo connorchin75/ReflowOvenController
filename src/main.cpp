@@ -5,22 +5,30 @@
 #include <Thread.h>
 
 #include "wait.h"
+#include "oled.h"
 
-/// Configures GPIO to be Input/Output as well as io cell configuration
+/// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
 void InitGPIO(){
+   //set the system clock to 98.304 MHz 
+   sys_clock_init(crys_24_576_MHz, _98_304_MHz);
    //set the drive strength of PD3 to 16mA
    uint16_t io_config_flags = IO_DRIVE_16mA;
    io_set_config(io_config_flags, io_PD3);
-   // set the direction of PD3 to output
-   gpio_set_config(0x02 << 8, GPIO_D);
+   // configure oled pins
+   oled_pin_initialization();
+   //oled pin configuration
 }
 
 void * ButtonLEDThread(void * ) {
    //This thread will always remain active
   while (true) {
-      gpio_write(0x02, GPIO_D);
+      //this method of setting a bit allows you to only adjust a single bit in the port register
+      gpio_write(gpio_read(GPIO_A)|0x20, GPIO_A);
       wait_seconds(1);
-      gpio_write(0x0, GPIO_D);
+      // xpd_echo_int(gpio_read(GPIO_A), XPD_Flag_Hex);
+      // xpd_putc('\n');
+      //this method of clearing a bit only clears the specific bit
+      gpio_write(gpio_read(GPIO_A)&~(0x20), GPIO_A);
       wait_seconds(1);
       }
   }

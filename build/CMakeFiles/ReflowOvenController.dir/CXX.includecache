@@ -1,0 +1,334 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../inc/oled.h
+SystemClock.h
+-
+IOConfig.h
+-
+GPIO.h
+-
+SPI.h
+-
+
+../inc/wait.h
+SystemClock.h
+-
+
+C:/Program Files/SXC/include/sxc-lib/GPIO.h
+Semaphore.h
+C:/Program Files/SXC/include/sxc-lib/Semaphore.h
+
+C:/Program Files/SXC/include/sxc-lib/IOConfig.h
+SXC.h
+C:/Program Files/SXC/include/sxc-lib/SXC.h
+register_consts.h
+C:/Program Files/SXC/include/sxc-lib/register_consts.h
+
+C:/Program Files/SXC/include/sxc-lib/SFU.h
+SXC.h
+C:/Program Files/SXC/include/sxc-lib/SXC.h
+register_consts.h
+C:/Program Files/SXC/include/sxc-lib/register_consts.h
+
+C:/Program Files/SXC/include/sxc-lib/SPI.h
+SystemClock.h
+C:/Program Files/SXC/include/sxc-lib/SystemClock.h
+
+C:/Program Files/SXC/include/sxc-lib/SXC.h
+stdint.h
+-
+stddef.h
+-
+__Macros.h
+C:/Program Files/SXC/include/sxc-lib/__Macros.h
+assert.h
+-
+
+C:/Program Files/SXC/include/sxc-lib/Semaphore.h
+SXC.h
+C:/Program Files/SXC/include/sxc-lib/SXC.h
+register_consts.h
+C:/Program Files/SXC/include/sxc-lib/register_consts.h
+
+C:/Program Files/SXC/include/sxc-lib/SystemClock.h
+Timer.h
+C:/Program Files/SXC/include/sxc-lib/Timer.h
+
+C:/Program Files/SXC/include/sxc-lib/Thread.h
+Semaphore.h
+C:/Program Files/SXC/include/sxc-lib/Semaphore.h
+SFU.h
+C:/Program Files/SXC/include/sxc-lib/SFU.h
+
+C:/Program Files/SXC/include/sxc-lib/Timer.h
+SXC.h
+C:/Program Files/SXC/include/sxc-lib/SXC.h
+register_consts.h
+C:/Program Files/SXC/include/sxc-lib/register_consts.h
+
+C:/Program Files/SXC/include/sxc-lib/XPD.h
+SXC.h
+C:/Program Files/SXC/include/sxc-lib/SXC.h
+register_consts.h
+C:/Program Files/SXC/include/sxc-lib/register_consts.h
+stdio.h
+-
+unistd.h
+-
+fcntl.h
+-
+errno.h
+-
+
+C:/Program Files/SXC/include/sxc-lib/__Macros.h
+
+C:/Program Files/SXC/include/sxc-lib/register_consts.h
+stdint.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/_ansi.h
+newlib.h
+-
+sys/config.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/assert.h
+_ansi.h
+C:/Program Files/SXC/include/sxc-newlib/_ansi.h
+
+C:/Program Files/SXC/include/sxc-newlib/errno.h
+sys/errno.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/fcntl.h
+sys/fcntl.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/getopt.h
+_ansi.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/limits.h
+newlib.h
+-
+sys/config.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/machine/_default_types.h
+limits.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/machine/_types.h
+machine/_default_types.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/machine/ieeefp.h
+
+C:/Program Files/SXC/include/sxc-newlib/machine/time.h
+sys/types.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/machine/types.h
+machine/_types.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/newlib.h
+
+C:/Program Files/SXC/include/sxc-newlib/signal.h
+_ansi.h
+C:/Program Files/SXC/include/sxc-newlib/_ansi.h
+sys/signal.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/stdarg.h
+
+C:/Program Files/SXC/include/sxc-newlib/stddef.h
+
+C:/Program Files/SXC/include/sxc-newlib/stdint.h
+_ansi.h
+-
+limits.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/stdio.h
+_ansi.h
+C:/Program Files/SXC/include/sxc-newlib/_ansi.h
+stddef.h
+-
+stdarg.h
+-
+sys/reent.h
+-
+sys/types.h
+-
+sys/stdio.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/_default_fcntl.h
+_ansi.h
+-
+sys/types.h
+-
+sys/stat.h
+-
+sys/time.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/_types.h
+machine/_types.h
+-
+sys/lock.h
+-
+stddef.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/config.h
+machine/ieeefp.h
+-
+sys/features.h
+-
+cygwin/config.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/custom_file.h
+
+C:/Program Files/SXC/include/sxc-newlib/sys/errno.h
+sys/reent.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/fcntl.h
+sys/_default_fcntl.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/features.h
+
+C:/Program Files/SXC/include/sxc-newlib/sys/lock.h
+_ansi.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/reent.h
+_ansi.h
+-
+sys/_types.h
+-
+sys/types.h
+-
+sys/custom_file.h
+-
+assert.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/sched.h
+
+C:/Program Files/SXC/include/sxc-newlib/sys/signal.h
+_ansi.h
+C:/Program Files/SXC/include/sxc-newlib/sys/_ansi.h
+sys/features.h
+-
+sys/types.h
+-
+cygwin/signal.h
+-
+signal.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/stat.h
+_ansi.h
+-
+time.h
+-
+sys/types.h
+-
+cygwin/stat.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/stdio.h
+sys/lock.h
+-
+sys/reent.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/time.h
+_ansi.h
+-
+sys/types.h
+-
+cygwin/sys_time.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/types.h
+_ansi.h
+-
+machine/_types.h
+-
+sys/_types.h
+-
+stddef.h
+-
+machine/types.h
+-
+sys/features.h
+-
+sys/sched.h
+-
+cygwin/types.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/sys/unistd.h
+_ansi.h
+-
+sys/types.h
+-
+sys/_types.h
+-
+stddef.h
+-
+getopt.h
+-
+sys/features.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/time.h
+_ansi.h
+C:/Program Files/SXC/include/sxc-newlib/_ansi.h
+sys/reent.h
+-
+stddef.h
+-
+machine/time.h
+-
+sys/types.h
+-
+sys/features.h
+-
+cygwin/time.h
+-
+signal.h
+-
+
+C:/Program Files/SXC/include/sxc-newlib/unistd.h
+sys/unistd.h
+-
+
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/main.cpp
+SystemClock.h
+-
+IOConfig.h
+-
+XPD.h
+-
+GPIO.h
+-
+Thread.h
+-
+wait.h
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/wait.h
+oled.h
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/oled.h
+

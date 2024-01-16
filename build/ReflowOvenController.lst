@@ -1,0 +1,1248 @@
+ADDR   | VALUES        | LINE  | SOURCE CODE
+=================================================================================================
+       |               | 00001 | //The following defines were inserted from the command line:
+       |      = 0x0001 | 00002 | #define __XINA_CMD__
+       |               | 00003 | //end of command line defines
+       |               | 00004 | #include "C:/Program Files/SXC/include/sxc-art0\XInC2.asm"
+
+                                 //
+                                 // "ReflowOvenController.main"
+//============================== //==============================================================
+                                 // "ReflowOvenController.main" -> "XInC2.asm"
+                                 //
+
+       |               | 00001 | //*************************************************************************************************
+       |               | 00002 | //************************ (C) 2001 - 2006, Eleven Engineering Incorporated ***********************
+       |               | 00003 | //*************************************************************************************************
+       |               | 00004 | //**
+       |               | 00005 | //**		Tabs:	This file looks best with tab stops set every 6 spaces.
+       |               | 00006 | //**
+       |               | 00007 | //*************************************************************************************************
+       |               | 00008 | //*************************************************************************************************
+       |               | 00009 | //**
+       |               | 00010 | //**          File:  XInC2.h
+       |               | 00011 | //**       Project:  XInC2 Library
+       |               | 00012 | //**       Created:  05 Sep 2006 by Dan Beutel
+       |               | 00013 | //**       Revised:  08 Sep 2006 by Dan Beutel
+       |               | 00014 | //**
+       |               | 00015 | //**   Description:  Constants used for XInC2 Assembly programming.
+       |               | 00016 | //**
+       |               | 00017 | //** Compatibility:  Requires XInA v4.4 or higher.
+       |               | 00018 | //**
+       |               | 00019 | //**    Disclaimer:  You may incorporate this sample source code into your program(s) without
+       |               | 00020 | //**                 restriction.  This sample source code has been provided "AS IS" and the
+       |               | 00021 | //**                 responsibility for its operation is yours.  You are not permitted to
+       |               | 00022 | //**                 redistribute this sample source code as "Eleven sample source code" after
+       |               | 00023 | //**                 having made changes.  If you are going to re-distribute the source, we require
+       |               | 00024 | //**                 that you make it clear in the source that the code was descended from Eleven
+       |               | 00025 | //**                 sample source code, but that you have made changes.
+       |               | 00026 | //**
+       |               | 00027 | //*************************************************************************************************
+       |               | 00028 | //************************************************************************************************* 
+       |               | 00029 | //=================================================================================================
+       |               | 00030 | // Register Set
+       |               | 00031 | //=================================================================================================
+       |               | 00032 | 
+       |      = %0     | 00033 | 		#define	r0				%0
+       |      = %1     | 00034 | 		#define	r1				%1
+       |      = %2     | 00035 | 		#define	r2				%2
+       |      = %3     | 00036 | 		#define	r3				%3
+       |      = %4     | 00037 | 		#define	r4				%4
+       |      = %5     | 00038 | 		#define	r5				%5
+       |      = %6     | 00039 | 		#define	r6				%6
+       |      = %7     | 00040 | 		#define	r7				%7
+       |      = %7     | 00041 | 		#define	sp				%7
+       |               | 00042 | 
+       |               | 00043 | //=================================================================================================
+       |               | 00044 | // Conditional Branch Tests
+       |               | 00045 | //=================================================================================================
+       |               | 00046 | 
+       |               | 00047 | // 	Test NZVC Bits (Clear or Set)
+       |               | 00048 | //		#define	NC				0xB
+       |               | 00049 | //		#define	NS				0x3
+       |               | 00050 | //		#define	ZC				0xA
+       |               | 00051 | //		#define	ZS				0x2
+       |               | 00052 | //		#define	VC				0x9
+       |               | 00053 | //		#define	VS				0x1
+       |               | 00054 | //		#define	CC				0x8
+       |               | 00055 | //		#define	CS				0x0
+       |               | 00056 | //
+       |               | 00057 | //	Comparison
+       |               | 00058 | //		#define	EQ				0x2
+       |               | 00059 | //		#define	NE				0xA
+       |               | 00060 | //
+       |               | 00061 | //		#define	LT0				0x3
+       |               | 00062 | //		#define	LE0				0x7
+       |               | 00063 | //		#define	GE0				0xB
+       |               | 00064 | //		#define	GT0				0xF
+       |               | 00065 | //
+       |               | 00066 | //	Signed Comparison
+       |               | 00067 | //		#define	LT				0x5
+       |               | 00068 | //		#define	LE				0x6
+       |               | 00069 | //		#define	GE				0xD
+       |               | 00070 | //		#define	GT				0xE
+       |               | 00071 | //
+       |               | 00072 | //	Unsigned Comparison
+       |               | 00073 | //		#define	ULT				0x0
+       |               | 00074 | //		#define	ULE				0x4
+       |               | 00075 | //		#define	UGE				0x8
+       |               | 00076 | //		#define	UGT				0xC
+       |               | 00077 | 
+       |               | 00078 | //=================================================================================================
+       |               | 00079 | // I/O Peripheral Addresses common to both iopage = 0 and iopage = 1
+       |               | 00080 | //=================================================================================================
+       |               | 00081 | 
+       |               | 00082 | 	// SCU (Supervisory Control Unit)
+       |      = 0x0000 | 00083 | 		#define	SCUreg			0x00
+       |      = 0x0001 | 00084 | 		#define	SCUpc				0x01
+       |      = 0x0002 | 00085 | 		#define	SCUcc				0x02
+       |      = 0x0003 | 00086 | 		#define	SCUtime			0x03
+       |      = 0x0003 | 00087 | 		#define	SCUpntr			0x03
+       |      = 0x0004 | 00088 | 		#define	SCUbkpt			0x04
+       |      = 0x0004 | 00089 | 		#define	SCUstop			0x04
+       |      = 0x0005 | 00090 | 		#define	SCUwait			0x05
+       |      = 0x0005 | 00091 | 		#define	SCUiopageWR			0x05
+       |      = 0x0006 | 00092 | 		#define	SCUrsrc			0x06
+       |      = 0x0006 | 00093 | 		#define	SCUup				0x06
+       |      = 0x0007 | 00094 | 		#define	SCUiopageRD			0x07
+       |      = 0x0007 | 00095 | 		#define	SCUdown			0x07
+       |               | 00096 | 
+       |               | 00097 | 
+       |               | 00098 | 	//LFSR0 (Linear Feedback Shift Register)
+       |      = 0x0008 | 00099 | 		#define	LFSR0cfg			0x08
+       |      = 0x0009 | 00100 | 		#define	LFSR0tapcfg			0x09
+       |      = 0x000A | 00101 | 		#define	LFSR0reg			0x0A
+       |      = 0x000B | 00102 | 		#define	LFSR0data			0x0B
+       |               | 00103 | 
+       |               | 00104 | 	//LFSR1 (Linear Feedback Shift Register)
+       |      = 0x000C | 00105 | 		#define	LFSR1cfg			0x0C
+       |      = 0x000D | 00106 | 		#define	LFSR1tapcfg			0x0D
+       |      = 0x000E | 00107 | 		#define	LFSR1reg			0x0E
+       |      = 0x000F | 00108 | 		#define	LFSR1data			0x0F
+       |               | 00109 | 
+       |               | 00110 | 	//VPU (Vector Processing Unit)
+       |               | 00111 | 
+       |      = 0x0010 | 00112 | 		#define	VPUcfg0			0x10
+       |      = 0x0011 | 00113 | 		#define	VPUcfg1			0x11
+       |      = 0x0012 | 00114 | 		#define	VPUopAba			0x12
+       |      = 0x0013 | 00115 | 		#define	VPUopBba			0x13
+       |      = 0x0014 | 00116 | 		#define	VPUopadrmsk			0x14
+       |      = 0x0015 | 00117 | 		#define	VPUopA			0x15
+       |      = 0x0016 | 00118 | 		#define	VPUopB			0x16
+       |      = 0x0017 | 00119 | 		#define	VPUrsba			0x17
+       |      = 0x0018 | 00120 | 		#define	VPUrsadrsmk			0x18
+       |      = 0x0019 | 00121 | 		#define	VPUrslsw			0x19
+       |      = 0x001A | 00122 | 		#define	VPUrsmsw			0x1A
+       |      = 0x001B | 00123 | 		#define	VPUrsext			0x1B
+       |      = 0x001C | 00124 | 		#define	VPUfilterLength		0x1C
+       |               | 00125 | 
+       |               | 00126 | 	// SPI0 (Serial Peripheral Interface)
+       |      = 0x0034 | 00127 | 		#define	SPI0rx			0x34
+       |      = 0x0034 | 00128 | 		#define	SPI0tx			0x34
+       |      = 0x0035 | 00129 | 		#define	SPI0cfg			0x35
+       |               | 00130 | 
+       |               | 00131 | 	// SPI1 (Serial Peripheral Interface)
+       |      = 0x0036 | 00132 | 		#define	SPI1rx			0x36
+       |      = 0x0036 | 00133 | 		#define	SPI1tx			0x36
+       |      = 0x0037 | 00134 | 		#define	SPI1cfg			0x37
+       |               | 00135 | 
+       |               | 00136 | 	// SFU (Shared Functional Units)
+       |      = 0x0038 | 00137 | 		#define	SFUrev			0x38
+       |      = 0x0039 | 00138 | 		#define	SFUpack			0x39
+       |      = 0x003A | 00139 | 		#define	SFUpop			0x3A
+       |      = 0x003B | 00140 | 		#define	SFUls1			0x3B
+       |               | 00141 | 
+       |               | 00142 | 	// TMRA (TimerA)
+       |      = 0x003E | 00143 | 		#define	TMRAcfg			0x3E
+       |      = 0x003F | 00144 | 		#define	TMRAcount			0x3F
+       |      = 0x0040 | 00145 | 		#define	TMRACCR0			0x40
+       |      = 0x0041 | 00146 | 		#define	TMRACCM0cfg			0x41
+       |      = 0x0042 | 00147 | 		#define	TMRACCR1			0x42
+       |      = 0x0043 | 00148 | 		#define	TMRACCM1cfg			0x43
+       |      = 0x0044 | 00149 | 		#define	TMRACCR2			0x44
+       |      = 0x0045 | 00150 | 		#define	TMRACCM2cfg			0x45
+       |      = 0x0046 | 00151 | 		#define	TMRACCR3			0x46
+       |      = 0x0047 | 00152 | 		#define	TMRACCM3cfg			0x47
+       |               | 00153 | 
+       |               | 00154 | 
+       |               | 00155 | 	// GPIO (General Purpose I/O)
+       |      = 0x0020 | 00156 |    		#define	GPAin				0x20
+       |      = 0x0020 | 00157 | 		#define	GPAout			0x20
+       |      = 0x0021 | 00158 | 		#define	GPAcfg			0x21
+       |               | 00159 | 
+       |      = 0x0022 | 00160 | 		#define	GPBin				0x22
+       |      = 0x0022 | 00161 | 		#define	GPBout			0x22
+       |      = 0x0023 | 00162 | 		#define	GPBcfg			0x23
+       |               | 00163 | 
+       |      = 0x0024 | 00164 | 		#define	GPCin				0x24
+       |      = 0x0024 | 00165 | 		#define	GPCout			0x24
+       |      = 0x0025 | 00166 | 		#define	GPCcfg			0x25
+       |               | 00167 | 
+       |      = 0x0026 | 00168 | 		#define	GPDin				0x26
+       |      = 0x0026 | 00169 | 		#define	GPDout			0x26
+       |      = 0x0027 | 00170 | 		#define	GPDcfg			0x27
+       |               | 00171 | 
+       |      = 0x0028 | 00172 | 		#define	GPEin				0x28
+       |      = 0x0028 | 00173 | 		#define	GPEout			0x28
+       |      = 0x0029 | 00174 | 		#define	GPEcfg			0x29
+       |               | 00175 | 
+       |      = 0x002A | 00176 | 		#define	GPFin				0x2A
+       |      = 0x002A | 00177 | 		#define	GPFout			0x2A
+       |      = 0x002B | 00178 | 		#define	GPFcfg			0x2B
+       |               | 00179 | 
+       |      = 0x002C | 00180 | 		#define	GPGin				0x2C
+       |      = 0x002C | 00181 | 		#define	GPGout			0x2C
+       |      = 0x002D | 00182 | 		#define	GPGcfg			0x2D
+       |               | 00183 | 
+       |      = 0x002E | 00184 | 		#define	GPHin				0x2E
+       |      = 0x002E | 00185 | 		#define	GPHout			0x2E
+       |      = 0x002F | 00186 | 		#define	GPHcfg			0x2F
+       |               | 00187 | 
+       |      = 0x0030 | 00188 | 		#define	GPIin				0x30
+       |      = 0x0030 | 00189 | 		#define	GPIout			0x30
+       |      = 0x0031 | 00190 | 		#define	GPIcfg			0x31
+       |               | 00191 | 
+       |      = 0x0032 | 00192 | 		#define	GPJin				0x32
+       |      = 0x0032 | 00193 | 		#define	GPJout			0x32
+       |      = 0x0033 | 00194 | 		#define	GPJcfg			0x33
+       |               | 00195 | 
+       |               | 00196 | 
+       |               | 00197 | //=================================================================================================
+       |               | 00198 | // I/O Peripheral Addresses for iopage = 0
+       |               | 00199 | //=================================================================================================
+       |               | 00200 | 
+       |               | 00201 | 	// TMRB (TimerB)
+       |      = 0x0048 | 00202 | 		#define	TMRBcfg			0x48
+       |      = 0x0049 | 00203 | 		#define	TMRBcount			0x49
+       |      = 0x004A | 00204 | 		#define	TMRBCCR0			0x4A
+       |      = 0x004B | 00205 | 		#define	TMRBCCM0cfg			0x4B
+       |      = 0x004C | 00206 | 		#define	TMRBCCR1			0x4C
+       |      = 0x004D | 00207 | 		#define	TMRBCCM1cfg			0x4D
+       |               | 00208 | 
+       |               | 00209 | 
+       |               | 00210 | 
+       |               | 00211 | 	// XInC1 BBU names for ease of use with XInC1 code
+       |      = 0x0058 | 00212 | 		#define	BBUcfg			0x58
+       |      = 0x0058 | 00213 | 		#define	BBUstatus			0x58
+       |      = 0x005A | 00214 | 		#define	BBUtx				0x5A
+       |      = 0x005A | 00215 | 		#define	BBUrx				0x5A
+       |      = 0x005B | 00216 | 		#define	BBUbrg			0x5B
+       |      = 0x005C | 00217 | 		#define	BBUtime			0x5C
+       |      = 0x005D | 00218 | 		#define	BBUrx4			0x5D
+       |      = 0x005E | 00219 | 		#define	BBUrx6			0x5E
+       |      = 0x005F | 00220 | 		#define	BBUstart			0x5F
+       |               | 00221 | 
+       |               | 00222 | 
+       |               | 00223 | 	// BBU0
+       |      = 0x0058 | 00224 | 		#define	BBU0cfg0			0x58
+       |      = 0x0059 | 00225 | 		#define	BBU0cfg1 			0x59
+       |      = 0x005A | 00226 | 		#define	BBU0tx			0x5A
+       |      = 0x005A | 00227 | 		#define	BBU0rx			0x5A
+       |      = 0x005B | 00228 | 		#define	BBU0brg			0x5B
+       |      = 0x005C | 00229 | 		#define	BBU0time			0x5C
+       |      = 0x005D | 00230 | 		#define	BBU0rx4			0x5D
+       |      = 0x005E | 00231 | 		#define	BBU0rx6			0x5E
+       |      = 0x005F | 00232 | 		#define	BBU0start			0x5F
+       |               | 00233 | 
+       |               | 00234 | 	// BBU1
+       |      = 0x0060 | 00235 | 		#define	BBU1cfg0			0x60
+       |      = 0x0061 | 00236 | 		#define	BBU1cfg1 			0x61
+       |      = 0x0062 | 00237 | 		#define	BBU1tx			0x62
+       |      = 0x0062 | 00238 | 		#define	BBU1rx			0x62
+       |      = 0x0063 | 00239 | 		#define	BBU1brg			0x63
+       |      = 0x0064 | 00240 | 		#define	BBU1time			0x64
+       |      = 0x0065 | 00241 | 		#define	BBU1flow			0x65
+       |      = 0x0065 | 00242 | 		#define	BBU1rx4			0x65
+       |      = 0x0067 | 00243 | 		#define	BBU1start			0x67
+       |               | 00244 | 
+       |               | 00245 | 	// DASI (Digital Audio Serial Interface)
+       |      = 0x0068 | 00246 | 		#define	DASIconfig0			0x68
+       |      = 0x0069 | 00247 | 		#define	DASIconfig1			0x69
+       |      = 0x006A | 00248 | 		#define	DASIconfig2			0x6A
+       |      = 0x006B | 00249 | 		#define	DASIstatus0			0x6B
+       |      = 0x006C | 00250 | 		#define	DASIstatus1			0x6C
+       |      = 0x006D | 00251 | 		#define	DASIstatus2			0x6D
+       |               | 00252 | 
+       |      = 0x006B | 00253 | 	       #define    DASIrx0         	   	0x6B
+       |      = 0x006C | 00254 | 	       #define    DASIrx1         	   	0x6C
+       |      = 0x006D | 00255 | 	       #define    DASIrx2         	   	0x6D
+       |      = 0x006B | 00256 | 	       #define    DASItx0            	0x6B
+       |      = 0x006C | 00257 | 	       #define    DASItx1            	0x6C
+       |      = 0x006D | 00258 | 	       #define    DASItx2            	0x6D
+       |      = 0x006E | 00259 | 	       #define	DASIcount0			0x6E
+       |      = 0x006F | 00260 | 	       #define	DASIcount1			0x6F
+       |               | 00261 | 
+       |               | 00262 | 
+       |               | 00263 | 
+       |               | 00264 | 	// SCX (Supervisory Control Extensions)
+       |      = 0x0070 | 00265 | 		#define	SCXioCfgP			0x70
+       |      = 0x0071 | 00266 | 		#define	SCXioCfgD			0x71
+       |               | 00267 | 
+       |      = 0x0072 | 00268 | 		#define	SCXclkCfg			0x72
+       |      = 0x0073 | 00269 | 		#define	SCXaltCfg			0x73
+       |      = 0x0074 | 00270 | 		#define	SCXPLLCfg0			0x74
+       |      = 0x0075 | 00271 | 		#define	SCXPLLCfg1			0x75
+       |      = 0x0076 | 00272 | 		#define	SCXmemcol			0x76
+       |      = 0x0077 | 00273 | 		#define	SCXcount			0x77
+       |               | 00274 | 
+       |               | 00275 | 	// SMU (Sleep Mode Unit)
+       |      = 0x0078 | 00276 | 		#define	SMUcfg0			0x78
+       |      = 0x0079 | 00277 | 		#define	SMUcfg1			0x79
+       |               | 00278 | 
+       |               | 00279 | 	//ADC
+       |      = 0x007D | 00280 | 	     #define      ADCcfg0			0x7D
+       |      = 0x007E | 00281 | 	     #define      ADCcfg1			0x7E
+       |      = 0x007F | 00282 | 	     #define      ADCdata			0x7F
+       |               | 00283 | 
+       |               | 00284 | //=================================================================================================
+       |               | 00285 | // I/O Peripheral Addresses for iopage = 1
+       |               | 00286 | //=================================================================================================
+       |               | 00287 | 
+       |               | 00288 | 	// Quant0 (ADPCM Difference Quantizer)
+       |      = 0x0048 | 00289 | 		#define	Quant0cfg			0x48
+       |      = 0x0049 | 00290 | 		#define	Quant0pred			0x49
+       |      = 0x0049 | 00291 | 		#define	Quant0dec			0x49
+       |      = 0x004A | 00292 | 		#define	Quant0step			0x4A
+       |      = 0x004A | 00293 | 		#define	Quant0delta			0x4A
+       |      = 0x004B | 00294 | 		#define	Quant0samp			0x4B
+       |               | 00295 | 
+       |               | 00296 | 	// Quant1 (ADPCM Difference Quantizer)
+       |      = 0x004C | 00297 | 		#define	Quant1cfg			0x4C
+       |      = 0x004D | 00298 | 		#define	Quant1pred			0x4D
+       |      = 0x004D | 00299 | 		#define	Quant1dec			0x4D
+       |      = 0x004E | 00300 | 		#define	Quant1step			0x4E
+       |      = 0x004E | 00301 | 		#define	Quant1delta			0x4E
+       |      = 0x004F | 00302 | 		#define	Quant1samp			0x4F
+       |               | 00303 | 
+       |               | 00304 | 	// Quant2 (ADPCM Difference Quantizer)
+       |      = 0x0050 | 00305 | 		#define	Quant2cfg			0x50
+       |      = 0x0051 | 00306 | 		#define	Quant2pred			0x51
+       |      = 0x0051 | 00307 | 		#define	Quant2dec			0x51
+       |      = 0x0052 | 00308 | 		#define	Quant2step			0x52
+       |      = 0x0052 | 00309 | 		#define	Quant2delta			0x52
+       |      = 0x0053 | 00310 | 		#define	Quant2samp			0x53
+       |               | 00311 | 
+       |               | 00312 | 	// Quant3 (ADPCM Difference Quantizer)
+       |      = 0x0054 | 00313 | 		#define	Quant3cfg			0x54
+       |      = 0x0055 | 00314 | 		#define	Quant3pred			0x55
+       |      = 0x0055 | 00315 | 		#define	Quant3dec			0x55
+       |      = 0x0056 | 00316 | 		#define	Quant3step			0x56
+       |      = 0x0056 | 00317 | 		#define	Quant3delta			0x56
+       |      = 0x0057 | 00318 | 		#define	Quant3samp			0x57
+       |               | 00319 | 
+       |               | 00320 | 	// InvQuant0 (ADPCM Inverse Difference Quantizer)
+       |      = 0x0058 | 00321 | 		#define	InvQuant0cfg		0x58
+       |      = 0x0059 | 00322 | 		#define	InvQuant0delta		0x59
+       |      = 0x0059 | 00323 | 		#define	InvQuant0vpdiff		0x59
+       |      = 0x005A | 00324 | 		#define	InvQuant0step		0x5A
+       |               | 00325 | 
+       |               | 00326 | 	// InvQuant1 (ADPCM Inverse Difference Quantizer)
+       |      = 0x005C | 00327 | 		#define	InvQuant1cfg		0x5C
+       |      = 0x005D | 00328 | 		#define	InvQuant1delta		0x5D
+       |      = 0x005D | 00329 | 		#define	InvQuant1vpdiff		0x5D
+       |      = 0x005E | 00330 | 		#define	InvQuant1step		0x5E
+       |               | 00331 | 
+       |               | 00332 | 	// InvQuant2 (ADPCM Inverse Difference Quantizer)
+       |      = 0x0060 | 00333 | 		#define	InvQuant2cfg		0x60
+       |      = 0x0061 | 00334 | 		#define	InvQuant2delta		0x61
+       |      = 0x0061 | 00335 | 		#define	InvQuant2vpdiff		0x61
+       |      = 0x0062 | 00336 | 		#define	InvQuant2step		0x62
+       |               | 00337 | 
+       |               | 00338 | 	// InvQuant3 (ADPCM Inverse Difference Quantizer)
+       |      = 0x0064 | 00339 | 		#define	InvQuant3cfg		0x64
+       |      = 0x0065 | 00340 | 		#define	InvQuant3delta		0x65
+       |      = 0x0065 | 00341 | 		#define	InvQuant3vpdiff		0x65
+       |      = 0x0066 | 00342 | 		#define	InvQuant3step		0x66
+       |               | 00343 | 
+       |               | 00344 | 	// Accum0 (Accumulator)
+       |      = 0x0068 | 00345 | 		#define	Accum0cfg			0x68
+       |      = 0x0069 | 00346 | 		#define	Accum0high			0x69
+       |      = 0x006A | 00347 | 		#define	Accum0low			0x6A
+       |      = 0x006B | 00348 | 		#define	Accum0addsubhigh		0x6B
+       |      = 0x006C | 00349 | 		#define	Accum0addlow		0x6C
+       |      = 0x006D | 00350 | 		#define	Accum0sublow		0x6D
+       |               | 00351 | 
+       |               | 00352 | 	// Accum1 (Accumulator)
+       |      = 0x006E | 00353 | 		#define	Accum1cfg			0x6E
+       |      = 0x006F | 00354 | 		#define	Accum1high			0x6F
+       |      = 0x0070 | 00355 | 		#define	Accum1low			0x70
+       |      = 0x0071 | 00356 | 		#define	Accum1addsubhigh		0x71
+       |      = 0x0072 | 00357 | 		#define	Accum1addlow		0x72
+       |      = 0x0073 | 00358 | 		#define	Accum1sublow		0x73
+       |               | 00359 | 
+       |               | 00360 | 
+       |               | 00361 | 
+       |               | 00362 | //ADC Configuration
+       |      = 0x000F | 00363 | 		#define 	ADC_ENABLE			15
+       |      = 0x000C | 00364 | 		#define 	ADC_CLK_DIV			12
+       |      = 0x0009 | 00365 | 		#define 	ADC_START			9
+       |      = 0x0000 | 00366 | 		#define	MUX_ENABLE			0
+       |               | 00367 | 
+       |               | 00368 | //configuration0
+       |      = 0x000F | 00369 | 		#define	clrA		15	//clear accumuluator(WRITE ONLY)
+       |      = 0x000E | 00370 | 		#define	clraaOPB	14	//USE FOR VECTOR MAC clear OPBa
+       |      = 0x000D | 00371 | 		#define	addnsubCfg	13	//add/subtract mode
+       |      = 0x000C | 00372 | 		#define	RSh		12	//result shift config
+       |      = 0x000B | 00373 | 		#define	Rinc		11	//increment Result base address
+       |      = 0x000A | 00374 | 		#define	Binc		10	//increment OPB base address
+       |      = 0x0009 | 00375 | 		#define	ADec		9	//decimation mode
+       |      = 0x0008 | 00376 | 		#define	Ainc		8	//increment OPA base address
+       |      = 0x0007 | 00377 | 		#define	ACcfg		7	//accumulaor source config
+       |      = 0x0006 | 00378 | 		#define	aB		6	//adder operandB config
+       |      = 0x0005 | 00379 | 		#define	aA		5	//adder operandA config
+       |      = 0x0003 | 00380 | 		#define	DFW		3	//data field to write
+       |      = 0x0002 | 00381 | 		#define	Rdest		2	//result memory destination
+       |      = 0x0000 | 00382 | 		#define	OPsrc		0	//operand source configuration
+       |               | 00383 | 
+       |               | 00384 | //configuration1
+       |      = 0x0007 | 00385 | 		#define	Pipe		7	//piple line enable
+       |      = 0x0005 | 00386 | 		#define	RS		5	//Result saturation
+       |      = 0x0004 | 00387 | 		#define	RR		4	//result rounding
+       |      = 0x0003 | 00388 | 		#define	AddAlign	3	//configure alignemnt of operands for add operation
+       |      = 0x0002 | 00389 | 		#define	MS		2	//multiplier shift
+       |      = 0x0001 | 00390 | 		#define	Btyp		1	//operand B type
+       |      = 0x0000 | 00391 | 		#define	Atyp		0	//operand A type
+       |               | 00392 | //Timer configuration
+       |               | 00393 | 
+       |      = 0x18BB | 00394 | #define 	XPD_EchoString_ROM         	0x18BB
+       |               | 00395 |  //=================================================================================================
+       |               | 00396 |  // Boolean Logic
+       |               | 00397 |  //=================================================================================================
+       |               | 00398 | 
+       |      = 0x0001 | 00399 | 		#define	true				1
+       |      = 0x0000 | 00400 |  		#define	false				0
+       |               | 00401 | 
+       |               | 00402 |  //=================================================================================================
+       |               | 00403 |  // Hardware Semaphores
+       |               | 00404 |  //=================================================================================================
+       |               | 00405 | 
+       |      = 0x0001 | 00406 |   		#define	kHardwareSemaphore0	1 << 0
+       |      = 0x0002 | 00407 |  		#define	kHardwareSemaphore1	1 << 1
+       |      = 0x0004 | 00408 | 		#define	kHardwareSemaphore2	1 << 2
+       |      = 0x0008 | 00409 |  		#define	kHardwareSemaphore3	1 << 3
+       |      = 0x0010 | 00410 |  		#define	kHardwareSemaphore4	1 << 4
+       |      = 0x0020 | 00411 |  		#define	kHardwareSemaphore5	1 << 5
+       |      = 0x0040 | 00412 | 		#define	kHardwareSemaphore6	1 << 6
+       |      = 0x0080 | 00413 |  		#define	kHardwareSemaphore7	1 << 7
+       |      = 0x0100 | 00414 |  		#define	kHardwareSemaphore8	1 << 8
+       |      = 0x0200 | 00415 |  		#define	kHardwareSemaphore9	1 << 9
+       |      = 0x0400 | 00416 |  		#define	kHardwareSemaphore10	1 << 10
+       |      = 0x0800 | 00417 |  		#define	kHardwareSemaphore11	1 << 11
+       |      = 0x1000 | 00418 |  		#define	kHardwareSemaphore12	1 << 12
+       |      = 0x2000 | 00419 |  		#define	kHardwareSemaphore13	1 << 13
+       |      = 0x4000 | 00420 |  		#define	kHardwareSemaphore14	1 << 14
+       |      = 0x8000 | 00421 | 		#define	kHardwareSemaphore15	1 << 15
+       |               | 00422 | 
+       |               | 00423 | //*****************************************************************************
+       |               | 00424 | //*****************************************************************************
+       |               | 00425 | //**  XInC2 Mask ROM Data
+       |               | 00426 | //*****************************************************************************
+       |               | 00427 | //*****************************************************************************
+       |               | 00428 | 
+       |      = 0x00D6 | 00429 | 		#define	table_bintohex				0x00D6
+       |               | 00430 | 			//"0123456789ABCDEF"
+       |               | 00431 | 		
+       |               | 00432 | 		
+       |      = 0x2000 | 00433 | 		#define	BitShiftLeftByXTableROM			0x2000
+       |               | 00434 | 			//0b1111111111111111
+       |               | 00435 | 			//0b1111111111111110
+       |               | 00436 | 			//0b1111111111111100
+       |               | 00437 | 			//0b1111111111111000
+       |               | 00438 | 			//0b1111111111110000
+       |               | 00439 | 			//0b1111111111100000
+       |               | 00440 | 			//0b1111111111000000
+       |               | 00441 | 			//0b1111111110000000
+       |               | 00442 | 			//0b1111111100000000
+       |               | 00443 | 			//0b1111111000000000
+       |               | 00444 | 			//0b1111110000000000
+       |               | 00445 | 			//0b1111100000000000
+       |               | 00446 | 			//0b1111000000000000
+       |               | 00447 | 			//0b1110000000000000
+       |               | 00448 | 			//0b1100000000000000
+       |               | 00449 | 			//0b1000000000000000
+       |               | 00450 | 		
+       |               | 00451 | 		
+       |      = 0x2010 | 00452 | 		#define	BitShiftLeftBy16MinusXTableROM	0x2010
+       |               | 00453 | 			//0b0000000000000000
+       |               | 00454 | 			//0b1000000000000000
+       |               | 00455 | 			//0b1100000000000000
+       |               | 00456 | 			//0b1110000000000000
+       |               | 00457 | 			//0b1111000000000000
+       |               | 00458 | 			//0b1111100000000000
+       |               | 00459 | 			//0b1111110000000000
+       |               | 00460 | 			//0b1111111000000000
+       |               | 00461 | 			//0b1111111100000000
+       |               | 00462 | 			//0b1111111110000000
+       |               | 00463 | 			//0b1111111111000000
+       |               | 00464 | 			//0b1111111111100000
+       |               | 00465 | 			//0b1111111111110000
+       |               | 00466 | 			//0b1111111111111000
+       |               | 00467 | 			//0b1111111111111100
+       |               | 00468 | 			//0b1111111111111110
+       |               | 00469 | 		
+       |               | 00470 | 		
+       |      = 0x2020 | 00471 | 		#define	BitShiftRightByXTableROM		0x2020
+       |               | 00472 | 			//0b1111111111111111
+       |               | 00473 | 			//0b0111111111111111
+       |               | 00474 | 			//0b0011111111111111
+       |               | 00475 | 			//0b0001111111111111
+       |               | 00476 | 			//0b0000111111111111
+       |               | 00477 | 			//0b0000011111111111
+       |               | 00478 | 			//0b0000001111111111
+       |               | 00479 | 			//0b0000000111111111
+       |               | 00480 | 			//0b0000000011111111
+       |               | 00481 | 			//0b0000000001111111
+       |               | 00482 | 			//0b0000000000111111
+       |               | 00483 | 			//0b0000000000011111
+       |               | 00484 | 			//0b0000000000001111
+       |               | 00485 | 			//0b0000000000000111
+       |               | 00486 | 			//0b0000000000000011
+       |               | 00487 | 			//0b0000000000000001
+       |               | 00488 | 		
+       |               | 00489 | 		
+       |      = 0x2030 | 00490 | 		#define	BitShiftRightBy16MinusXTableROM	0x2030
+       |               | 00491 | 			//0b0000000000000000
+       |               | 00492 | 			//0b0000000000000001
+       |               | 00493 | 			//0b0000000000000011
+       |               | 00494 | 			//0b0000000000000111
+       |               | 00495 | 			//0b0000000000001111
+       |               | 00496 | 			//0b0000000000011111
+       |               | 00497 | 			//0b0000000000111111
+       |               | 00498 | 			//0b0000000001111111
+       |               | 00499 | 			//0b0000000011111111
+       |               | 00500 | 			//0b0000000111111111
+       |               | 00501 | 			//0b0000001111111111
+       |               | 00502 | 			//0b0000011111111111
+       |               | 00503 | 			//0b0000111111111111
+       |               | 00504 | 			//0b0001111111111111
+       |               | 00505 | 			//0b0011111111111111
+       |               | 00506 | 			//0b0111111111111111
+       |               | 00507 | 		
+       |               | 00508 | 		
+       |               | 00509 | 	// Useful Messages for use with XPD_EchoString in Mask ROM
+       |               | 00510 | 	
+       |      = 0x00E6 | 00511 | 		#define	MSG_HEX_PREFIX		0x00E6
+       |               | 00512 | 			//"0x", EOS
+       |               | 00513 | 			
+       |      = 0x00E9 | 00514 | 		#define	MSG_COMMA			0x00E9
+       |               | 00515 | 			//", ", EOS
+       |               | 00516 | 			
+       |      = 0x00EC | 00517 | 		#define	MSG_NEWLINE			0x00EC
+       |               | 00518 | 			//CR, LF, EOS
+       |               | 00519 | 			
+       |      = 0x00EF | 00520 | 		#define	MSG_SPACE			0x00EF
+       |               | 00521 | 			//" ", EOS
+       |               | 00522 | 
+       |               | 00523 | //*****************************************************************************
+       |               | 00524 | //*****************************************************************************
+       |               | 00525 | //**  XInC2 Mask ROM Routines
+       |               | 00526 | //*****************************************************************************
+       |               | 00527 | //*****************************************************************************
+       |               | 00528 | 
+       |               | 00529 | 		//=============================================================================
+       |               | 00530 | 		// Input Params:	None
+       |               | 00531 | 		// Output Params:	None
+       |               | 00532 | 		//-----------------------------------------------------------------------------
+       |               | 00533 | 		// Description:	Switches to SIMD mode and enters HardReset.  Can be called
+       |               | 00534 | 		//			safely from any thread.
+       |               | 00535 | 		//
+       |               | 00536 | 		//			Does not return.
+       |               | 00537 | 		//=============================================================================
+       |      = 0x0002 | 00538 | 		#define	SoftReset			0x0002
+       |               | 00539 | 		
+       |               | 00540 | 		
+       |               | 00541 | 		//=============================================================================
+       |               | 00542 | 		// Input Params:	r0 = 16-bit Termination Code
+       |               | 00543 | 		// Output Params:	None
+       |               | 00544 | 		//-----------------------------------------------------------------------------
+       |               | 00545 | 		// Description:	Stops all threads, echos the termination code to the XPD
+       |               | 00546 | 		//			module once formatted in hexadecimal, and then goes into an
+       |               | 00547 | 		//			infinite loop echoing the termination code to the SPI0 bus.
+       |               | 00548 | 		//
+       |               | 00549 | 		//			This may be called by the boot loader upon a failed boot and
+       |               | 00550 | 		//			can be safely called by user code from any thread to signify
+       |               | 00551 | 		//			a fatal error condition. 
+       |               | 00552 | 		//
+       |               | 00553 | 		//			Does not return.
+       |               | 00554 | 		//=============================================================================
+       |      = 0x0006 | 00555 | 		#define	ShowTerminationCode	0x0006
+       |               | 00556 | 		
+       |               | 00557 | 		//=============================================================================
+       |               | 00558 | 		// Input Params:	Inline configuration word
+       |               | 00559 | 		// Output Params:	None
+       |               | 00560 | 		//-----------------------------------------------------------------------------
+       |               | 00561 | 		// Description:	Writes the current RAM image to the EEPROM.
+       |               | 00562 | 		//
+       |               | 00563 | 		//			Does not return.
+       |               | 00564 | 		//=============================================================================
+       |      = 0x0014 | 00565 | 		#define	ProgramSPIEEPROM		0x0014
+       |               | 00566 | 
+       |               | 00567 | 		//=============================================================================
+       |               | 00568 | 		// Input Params:	r1 = ASCII Character to echo
+       |               | 00569 | 		//			r6 = Return Address
+       |               | 00570 | 		// Output Params:	r0 = Garbage
+       |               | 00571 | 		//			r4 = Garbage
+       |               | 00572 | 		//			r5 = Garbage
+       |               | 00573 | 		//			r6 = Garbage
+       |               | 00574 | 		//-----------------------------------------------------------------------------
+       |               | 00575 | 		// Description:	Echos an ASCII character to the terminal.
+       |               | 00576 | 		//=============================================================================
+       |      = 0x1800 | 00577 | 		#define 	XPD_MiniEcho           	0x1800
+       |      = 0x1808 | 00578 | 		#define 	XPD_MiniEcho_RW        		0x1808
+       |               | 00579 | 
+       |               | 00580 | 		//=============================================================================
+       |               | 00581 | 		// Input Params:	r1 = Numerator (Unsigned 16-bit Integer)
+       |               | 00582 | 		//			r2 = Divisor (Unsigned 16-bit Integer)
+       |               | 00583 | 		//			r6 = Return Address
+       |               | 00584 | 		// Output Params:	r1 = Result
+       |               | 00585 | 		//			r2 = Remainder
+       |               | 00586 | 		//			r6 = GARBAGE
+       |               | 00587 | 		//-----------------------------------------------------------------------------
+       |               | 00588 | 		// Description:	Performs the unsigned integer division of one 16-Bit unsigned
+       |               | 00589 | 		//			integer by another 16-bit unsinged integer.
+       |               | 00590 | 		//
+       |               | 00591 | 		//			Note:  x/0 is treated as x/1 to prevent an infinite loop.
+       |               | 00592 | 		//
+       |               | 00593 | 		// 			There is some optimization in the register usage to be done
+       |               | 00594 | 		//			but this routine is compatible with the old UnsignedDivide
+       |               | 00595 | 		//			routine.  This version has some speed optimizations over the
+       |               | 00596 | 		//			previous version.
+       |               | 00597 | 		//=============================================================================
+       |      = 0x1816 | 00598 | 		#define 	UnsignedDivide         	0x1816
+       |               | 00599 | 
+       |               | 00600 | 
+       |               | 00601 | 		//=============================================================================
+       |               | 00602 | 		// Input Params:  r6 = Return Address
+       |               | 00603 | 		// Output Params: r1 = Configuration Word
+       |               | 00604 | 		//			r6 = GARBAGE
+       |               | 00605 | 		//-----------------------------------------------------------------------------
+       |               | 00606 | 		// Description:	Reads config and status data from the MAX3100 SPI-UART
+       |               | 00607 | 		//			Converter chip on the XPD Module.  Can be used to determine
+       |               | 00608 | 		//			the status of the transmit and receive buffers by checking
+       |               | 00609 | 		//			the transmit and receive bits.
+       |               | 00610 | 		//=============================================================================
+       |      = 0x185E | 00611 | 		#define	XPD_ReadConfigWord	0x185E
+       |               | 00612 | 		
+       |               | 00613 | 		
+       |               | 00614 | 		//=============================================================================
+       |               | 00615 | 		// Input Params:	r1 = The byte to write
+       |               | 00616 | 		//			r6 = Return Address
+       |               | 00617 | 		// Output Params:	r6 = GARBAGE
+       |               | 00618 | 		//-----------------------------------------------------------------------------
+       |               | 00619 | 		// Description:	Used to shift a data byte out to the SPI-UART.  The data byte
+       |               | 00620 | 		//			shifted in is discarded.  The data is always in the LSB of
+       |               | 00621 | 		//			the word.
+       |               | 00622 | 		//=============================================================================
+       |      = 0x1867 | 00623 | 		#define 	XPD_WriteByte          	0x1867
+       |               | 00624 | 		
+       |               | 00625 | 		
+       |               | 00626 | 		//=============================================================================
+       |               | 00627 | 		// Input Params:	r6 = Return Address
+       |               | 00628 | 		// Output Params:	r1 = The byte read from the SPI-UART
+       |               | 00629 | 		//			r6 = GARBAGE
+       |               | 00630 | 		//-----------------------------------------------------------------------------
+       |               | 00631 | 		// Description:	Used to shift a data byte in from the SPI-UART.  A zero byte
+       |               | 00632 | 		//			is shifted out.  This subroutine does not return until a byte
+       |               | 00633 | 		//			has been received.  The data is always in the LSB of the
+       |               | 00634 | 		//			word.
+       |               | 00635 | 		//=============================================================================
+       |      = 0x1878 | 00636 | 		#define 	XPD_ReadByte           	0x1878
+       |               | 00637 | 		
+       |               | 00638 | 		
+       |               | 00639 | 		//=============================================================================
+       |               | 00640 | 		// Input Params:	r1 = The maximum number of read attempts
+       |               | 00641 | 		//			r6 = Return Address
+       |               | 00642 | 		// Output Params:	r1 = The byte read from the SPI-UART
+       |               | 00643 | 		//			r6 = GARBAGE
+       |               | 00644 | 		//-----------------------------------------------------------------------------
+       |               | 00645 | 		// Description:	Used to read a data byte from the SPI-UART.  A zero byte is
+       |               | 00646 | 		//			shifted out.  This subroutine does not return until a byte
+       |               | 00647 | 		//			has been received or the maximum number of attempts has been
+       |               | 00648 | 		//			reached.  The data is always in the LSB of the word.
+       |               | 00649 | 		//=============================================================================
+       |      = 0x1884 | 00650 | 		#define 	XPD_ReadByteWithTimeout	0x1884
+       |               | 00651 | 		
+       |               | 00652 | 		
+       |               | 00653 | 		//=============================================================================
+       |               | 00654 | 		// Input Params:	r1 = The byte to write
+       |               | 00655 | 		//			r6 = Return Address
+       |               | 00656 | 		// Output Params:	r1 = The byte read back
+       |               | 00657 | 		//			r6 = GARBAGE
+       |               | 00658 | 		//-----------------------------------------------------------------------------
+       |               | 00659 | 		// Description:	Used to shift out a data byte to the SPI-UART and to shift
+       |               | 00660 | 		//			back in another byte from the SPI-UART.  The data is always
+       |               | 00661 | 		//			in the LSB of the word.
+       |               | 00662 | 		//=============================================================================
+       |      = 0x1898 | 00663 | 		#define 	XPD_ReadWriteByte      	0x1898
+       |               | 00664 | 		
+       |               | 00665 | 		
+       |               | 00666 | 		//=============================================================================
+       |               | 00667 | 		// Input Params:	r1 = 16-bit word to write to the SPI-UART
+       |               | 00668 | 		//			r6 = Return Address
+       |               | 00669 | 		// Output Params:	r1 = 16-bit word read back from the SPI-UART
+       |               | 00670 | 		//			r6 = GARBAGE
+       |               | 00671 | 		//-----------------------------------------------------------------------------
+       |               | 00672 | 		// Description:	Used to shift out the word in r1 to the SPI-UART and to
+       |               | 00673 | 		//			read back a word into r1.  The MSB of the word is a control
+       |               | 00674 | 		//			byte and the LSB is a data byte.
+       |               | 00675 | 		//=============================================================================
+       |      = 0x18A9 | 00676 | 		#define 	XPD_ShiftInOut         	0x18A9
+       |               | 00677 | 		
+       |               | 00678 | 		
+       |               | 00679 | 		//=============================================================================
+       |               | 00680 | 		// Input Params:	r1 = Pointer to a Null Terminated String
+       |               | 00681 | 		//			r6 = Return Address
+       |               | 00682 | 		// Output Params:	r6 = GARBAGE
+       |               | 00683 | 		//-----------------------------------------------------------------------------
+       |               | 00684 | 		// Description:	Used to echo ASCII Strings to a computer terminal for
+       |               | 00685 | 		//			debugging.  Newlines and other control characters can be
+       |               | 00686 | 		//			embedded in the string.  All strings must be
+       |               | 00687 | 		//			Null-terminated with the End-Of-String character (EOS).
+       |               | 00688 | 		//=============================================================================
+       |      = 0x18BB | 00689 | 		#define 	XPD_EchoString         	0x18BB
+       |               | 00690 | 		
+       |               | 00691 | 		
+       |               | 00692 | 		//=============================================================================
+       |               | 00693 | 		// Input Params:	r1 = 16-bit Unsigned Integer
+       |               | 00694 | 		//			r6 = Return Address
+       |               | 00695 | 		// Output Params:	r6 = GARBAGE
+       |               | 00696 | 		//-----------------------------------------------------------------------------
+       |               | 00697 | 		// Description:	Echos a 16-bit unsigned integer to the terminal.  Leading
+       |               | 00698 | 		//			zeros are output if necessary to pad the output to 5 digits.
+       |               | 00699 | 		//=============================================================================
+       |      = 0x18CB | 00700 | 		#define 	XPD_EchoUnsignedDec    	0x18CB
+       |               | 00701 | 		
+       |               | 00702 | 		
+       |               | 00703 | 		//=============================================================================
+       |               | 00704 | 		// Input Params:	r1 = 16-bit Unsigned Integer
+       |               | 00705 | 		//			r6 = Return Address
+       |               | 00706 | 		// Output Params:	r6 = GARBAGE
+       |               | 00707 | 		//-----------------------------------------------------------------------------
+       |               | 00708 | 		// Description:	Echos a 16-bit unsigned integer to the terminal without leading
+       |               | 00709 | 		//			zeros (No Leading Zeros).
+       |               | 00710 | 		//=============================================================================
+       |      = 0x18F6 | 00711 | 		#define	XPD_EchoUnsignedDecNLZ	0x18F6
+       |               | 00712 | 		
+       |               | 00713 | 		
+       |               | 00714 | 		//=============================================================================
+       |               | 00715 | 		// Input Params:	r1 = 16-bit Signed Integer
+       |               | 00716 | 		//			r6 = Return Address
+       |               | 00717 | 		// Output Params:	r6 = GARBAGE
+       |               | 00718 | 		//-----------------------------------------------------------------------------
+       |               | 00719 | 		// Description:	Echos a 16-bit signed integer to the terminal.  Leading
+       |               | 00720 | 		//			zeros are output if necessary to pad the output to 5 digits.
+       |               | 00721 | 		//			In total, 6 characters are output: 1 sign and 5 digits.
+       |               | 00722 | 		//=============================================================================
+       |      = 0x1929 | 00723 | 		#define 	XPD_EchoSignedDec      	0x1929
+       |               | 00724 | 		
+       |               | 00725 | 		
+       |               | 00726 | 		//=============================================================================
+       |               | 00727 | 		// Input Params:	r1 = 16-bit Signed Integer
+       |               | 00728 | 		//			r6 = Return Address
+       |               | 00729 | 		// Output Params:	r6 = GARBAGE
+       |               | 00730 | 		//-----------------------------------------------------------------------------
+       |               | 00731 | 		// Description:	Echos a 16-bit signed integer to the terminal without leading
+       |               | 00732 | 		//			zeros (No Leading Zeros).
+       |               | 00733 | 		//=============================================================================
+       |      = 0x196A | 00734 | 		#define	XPD_EchoSignedDecNLZ	0x196A
+       |               | 00735 | 		
+       |               | 00736 | 		
+       |               | 00737 | 		//=============================================================================
+       |               | 00738 | 		// Input Params:	r1 = 16-bit Number
+       |               | 00739 | 		//			r6 = Return Address
+       |               | 00740 | 		// Output Params:	r6 = GARBAGE
+       |               | 00741 | 		//-----------------------------------------------------------------------------
+       |               | 00742 | 		// Description:	Echos a 16-bit number to the terminal formatted as a
+       |               | 00743 | 		//			hexadecimal integer with format 0xABCD where ABCD are hex
+       |               | 00744 | 		//			digits.
+       |               | 00745 | 		//=============================================================================
+       |      = 0x19B3 | 00746 | 		#define 	XPD_EchoHex            	0x19B3
+       |               | 00747 | 		
+       |               | 00748 | 		
+       |               | 00749 | 		//=============================================================================
+       |               | 00750 | 		// Input Params:	r1 = 16-bit Number
+       |               | 00751 | 		//			r6 = Return Address
+       |               | 00752 | 		// Output Params:	r6 = GARBAGE
+       |               | 00753 | 		//-----------------------------------------------------------------------------
+       |               | 00754 | 		// Description:	Echos a 16-bit number to the terminal formatted as a
+       |               | 00755 | 		//			hexadecimal integer without the '0x' prefix (No prefix).
+       |               | 00756 | 		//=============================================================================
+       |      = 0x19C1 | 00757 | 		#define 	XPD_EchoHexNP          	0x19C1
+       |               | 00758 | 		
+       |               | 00759 | 		
+       |               | 00760 | 		//=============================================================================
+       |               | 00761 | 		// Input Params:	r1 = 8-bit Number
+       |               | 00762 | 		//			r6 = Return Address
+       |               | 00763 | 		// Output Params:	r6 = GARBAGE
+       |               | 00764 | 		//-----------------------------------------------------------------------------
+       |               | 00765 | 		// Description:	Echos an 8-bit number to the terminal formatted as a
+       |               | 00766 | 		//			hexadecimal integer with the '0x' prefix.
+       |               | 00767 | 		//=============================================================================
+       |      = 0x19E7 | 00768 | 		#define 	XPD_EchoHexByte        	0x19E7
+       |               | 00769 | 		
+       |               | 00770 | 		
+       |               | 00771 | 		//=============================================================================
+       |               | 00772 | 		// Input Params:	r1 = 8-bit Number
+       |               | 00773 | 		//			r6 = Return Address
+       |               | 00774 | 		// Output Params:	r6 = GARBAGE
+       |               | 00775 | 		//-----------------------------------------------------------------------------
+       |               | 00776 | 		// Description:	Echos an 8-bit number to the terminal formatted as a
+       |               | 00777 | 		//			hexadecimal integer without the '0x' prefix (No Prefix).
+       |               | 00778 | 		//=============================================================================
+       |      = 0x19F5 | 00779 | 		#define 	XPD_EchoHexByteNP      	0x19F5
+       |               | 00780 | 		
+       |               | 00781 | 		
+       |               | 00782 | 		//=============================================================================
+       |               | 00783 | 		// Input Params:	r1 = 16-Bit Vector
+       |               | 00784 | 		//			r6 = Return Address
+       |               | 00785 | 		// Output Params:	r6 = GARBAGE
+       |               | 00786 | 		//-----------------------------------------------------------------------------
+       |               | 00787 | 		// Description:	Echos to the terminal a comma delimited list of the bits
+       |               | 00788 | 		//			that are set in a 16-bit vector.
+       |               | 00789 | 		//=============================================================================
+       |      = 0x1A0D | 00790 | 		#define 	XPD_EchoSetBitList     	0x1A0D
+       |               | 00791 | 		
+       |               | 00792 | 		
+       |               | 00793 | 		//=============================================================================
+       |               | 00794 | 		// Input Params:	r4 = Number of words to display
+       |               | 00795 | 		//			r5 = Start address of the block
+       |               | 00796 | 		//			r6 = Return Address
+       |               | 00797 | 		// Output Params:	r6 = GARBAGE
+       |               | 00798 | 		//-----------------------------------------------------------------------------
+       |               | 00799 | 		// Description:	Echos to the terminal a given number of words of data in
+       |               | 00800 | 		//			hex format starting at a given memory address.  The output is
+       |               | 00801 | 		//			formatted with 8 words per line and a space in between each
+       |               | 00802 | 		//			word.
+       |               | 00803 | 		//=============================================================================
+       |      = 0x1A32 | 00804 | 		#define 	XPD_EchoBlock          	0x1A32
+       |               | 00805 | 
+       |      = 0x000F | 00806 | 		#define	SPI_UART_Rbit 		 	15
+       |               | 00807 | 
+       |               | 00808 | //*****************************************************************************
+       |               | 00809 | //*****************************************************************************
+       |               | 00810 | //**  Useful ASCII Characters
+       |               | 00811 | //*****************************************************************************
+       |               | 00812 | //*****************************************************************************
+       |               | 00813 | 
+       |      = 0x0000 | 00814 | 	#define	EOS				0	// End Of String  
+       |      = 0x0008 | 00815 | 	#define	BS				8	// Back Space     
+       |      = 0x000A | 00816 | 	#define	LF				10	// Line Feed      
+       |      = 0x000D | 00817 | 	#define	CR				13	// Carriage Return		
+       |               | 00818 | 
+
+                                 //
+                                 // "ReflowOvenController.main" -> "XInC2.asm"
+//============================== //==============================================================
+                                 // "ReflowOvenController.main"
+                                 //
+
+       |               | 00005 | @ = 0xC000
+0xC000 | 0x0100 0x4012 | 00006 | bra ProgramSPIEEPROM
+0xC002 | 0x9945        | 00007 | 39237
+       |               | 00008 | #include "C:/Program Files/SXC/include/sxc-art0\XInC2_Entry.asm"
+
+                                 //
+                                 // "ReflowOvenController.main"
+//============================== //==============================================================
+                                 // "ReflowOvenController.main" -> "XInC2_Entry.asm"
+                                 //
+
+0xC003 |               | 00001 | sxc___main:
+0xC003 | 0x0B81        | 00002 |     mov  r1, 1
+0xC004 | 0x138F        | 00003 |     mov  r2, (1 << 3) | 7  // start at thread 1, register 7
+       |               | 00004 | 
+0xC005 |               | 00005 |   sxc___main_stack_setup_loop:
+0xC005 | 0x1283        | 00006 |     outp r2, SCUpntr
+0xC006 | 0x1BF1 0xCA00 | 00007 |     ld   r3, r1, THREAD_STACK_LOOKUP
+0xC008 | 0x1A80        | 00008 |     outp r3, SCUreg
+0xC009 | 0x5208        | 00009 |     add  r2, r2, (1 << 3) // adding (1 << 3) points at next stack entry
+0xC00A | 0x4901        | 00010 |     add  r1, r1, 1
+0xC00B | 0x59F8        | 00011 |     sub  r3, r1, 8  // loop over all 8 threads
+0xC00C | 0x28F8        | 00012 |     bc   NE, sxc___main_stack_setup_loop
+       |               | 00013 | 
+0xC00D | 0x3BE8 0xC800 | 00014 |     mov  sp, THREAD0_STACK
+0xC00F | 0x7F01        | 00015 |     add  sp, sp, 1
+0xC010 | 0x03E8 0xCA09 | 00016 |     mov  r0, SXCA_PARSED_CONSTRUCTOR_LIST_START
+0xC012 |               | 00017 |   sxc___main_constructor_loop:
+0xC012 | 0x0BC0 0x35F7 | 00018 |     sub  r1, r0, SXCA_PARSED_CONSTRUCTOR_LIST_END
+0xC014 | 0x0806        | 00019 |     bc   EQ, sxc___main_constructor_loop_exit
+       |               | 00020 | 
+0xC015 | 0xC7FF        | 00021 |     st   r0, sp, -1
+0xC016 | 0x8800        | 00022 |     ld   r1, r0, 0
+0xC017 | 0x33E1        | 00023 |     jsr  r6, r1
+0xC018 | 0x87FF        | 00024 |     ld   r0, sp, -1
+0xC019 | 0x4001        | 00025 |     add  r0, r0, 1
+0xC01A | 0x01F7        | 00026 |     bra sxc___main_constructor_loop
+0xC01B |               | 00027 |   sxc___main_constructor_loop_exit:
+       |               | 00028 |     
+0xC01B | 0x7FFF        | 00029 |     sub  sp, sp, 1
+0xC01C | 0x33EC 0xC045 | 00030 |     jsr  r6, sxc_main
+0xC01E | 0x01FF        | 00031 |     bra  @
+
+                                 //
+                                 // "ReflowOvenController.main" -> "XInC2_Entry.asm"
+//============================== //==============================================================
+                                 // "ReflowOvenController.main"
+                                 //
+
+       |               | 00009 | #include "C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build\code.asm"
+
+                                 //
+                                 // "ReflowOvenController.main"
+//============================== //==============================================================
+                                 // "ReflowOvenController.main" -> "code.asm"
+                                 //
+
+       |               | 00001 | 	// .file	"C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/ReflowOvenController.opt"
+       |               | 00002 | //	.section	//.text,"xr"
+       |               | 00003 | //align
+       |               | 00004 | @ = (@ + 1-1)  & -1
+0xC01F |               | 00005 | sxc__Z12wait_secondsj:                  // @_Z12wait_secondsj
+       |               | 00006 | // BB#0:
+0xC01F | 0x0380        | 00007 | 	mov	r0, 0x0
+0xC020 | 0x13E8 0x4350 | 00008 | 	mov	r2, 0x4350
+0xC022 | 0x1BE8 0x3CB0 | 00009 | 	mov	r3, 0x3cb0
+0xC024 |               | 00010 | BB0_1:                                  // %.preheader.i
+       |               | 00011 |                                         // =>This Loop Header: Depth=1
+       |               | 00012 |                                         //     Child Loop BB0_2 Depth 2
+       |               | 00013 |                                         //       Child Loop BB0_3 Depth 3
+       |               | 00014 |                                         //       Child Loop BB0_5 Depth 3
+0xC024 | 0x2380        | 00015 | 	mov	r4, 0x0
+0xC025 |               | 00016 | BB0_2:                                  //   Parent Loop BB0_1 Depth=1
+       |               | 00017 |                                         // =>  This Loop Header: Depth=2
+       |               | 00018 |                                         //       Child Loop BB0_3 Depth 3
+       |               | 00019 |                                         //       Child Loop BB0_5 Depth 3
+0xC025 | 0x0A03        | 00020 | 	inp	r1, 0x3
+0xC026 | 0x2B4A        | 00021 | 	sub	r5, r2, r1
+0xC027 |               | 00022 | BB0_3:                                  //   Parent Loop BB0_1 Depth=1
+       |               | 00023 |                                         //     Parent Loop BB0_2 Depth=2
+       |               | 00024 |                                         // =>    This Inner Loop Header: Depth=3
+0xC027 | 0x0A03        | 00025 | 	inp	r1, 0x3
+0xC028 | 0x0B0D        | 00026 | 	add	r1, r5, r1
+       |               | 00027 | 	//cmp	r1, 0x0
+0xC029 | 0x0CFD        | 00028 | 	bc	LT0, BB0_3
+       |               | 00029 | // BB#4:                                // %_Z14sys_clock_waitj.exit.i
+       |               | 00030 |                                         //   in Loop: Header=BB0_2 Depth=2
+0xC02A | 0x0A03        | 00031 | 	inp	r1, 0x3
+0xC02B | 0x2B4B        | 00032 | 	sub	r5, r3, r1
+0xC02C |               | 00033 | BB0_5:                                  //   Parent Loop BB0_1 Depth=1
+       |               | 00034 |                                         //     Parent Loop BB0_2 Depth=2
+       |               | 00035 |                                         // =>    This Inner Loop Header: Depth=3
+0xC02C | 0x0A03        | 00036 | 	inp	r1, 0x3
+0xC02D | 0x0B0D        | 00037 | 	add	r1, r5, r1
+       |               | 00038 | 	//cmp	r1, 0x0
+0xC02E | 0x0CFD        | 00039 | 	bc	LT0, BB0_5
+       |               | 00040 | // BB#6:                                // %_Z14sys_clock_waitj.exit5.i
+       |               | 00041 |                                         //   in Loop: Header=BB0_2 Depth=2
+0xC02F | 0x6401        | 00042 | 	add	r4, r4, 0x1
+0xC030 | 0x0BC4 0xFC18 | 00043 | 	sub	r1, r4, 0x3e8
+0xC032 | 0x28F2        | 00044 | 	bc	NE, BB0_2
+       |               | 00045 | // BB#7:                                //   in Loop: Header=BB0_1 Depth=1
+0xC033 | 0x4001        | 00046 | 	add	r0, r0, 0x1
+0xC034 | 0x0BC0 0xFC18 | 00047 | 	sub	r1, r0, 0x3e8
+0xC036 | 0x28ED        | 00048 | 	bc	NE, BB0_1
+       |               | 00049 | // BB#8:                                // %._crit_edge
+0xC037 | 0x33E6        | 00050 | 	jsr	r6, r6
+       |               | 00051 | 
+       |               | 00052 | //align
+       |               | 00053 | @ = (@ + 1-1)  & -1
+0xC038 |               | 00054 | sxc__Z15ButtonLEDThreadPv:              // @_Z15ButtonLEDThreadPv
+       |               | 00055 | // BB#0:
+0xC038 | 0x7F01        | 00056 | 	add	sp, sp, 0x1
+0xC039 | 0xF7FF        | 00057 | 	st	r6, sp, 0xffff          // 1-byte Folded Spill
+0xC03A |               | 00058 | BB1_1:                                  // =>This Inner Loop Header: Depth=1
+0xC03A | 0x0220        | 00059 | 	inp	r0, 0x20
+0xC03B | 0x0728        | 00060 | 	ior	r0, r0, 0x20
+0xC03C | 0x02A0        | 00061 | 	outp	r0, 0x20
+0xC03D | 0x33EC 0xC01F | 00062 | 	jsr	r6, sxc__Z12wait_secondsj
+0xC03F | 0x0220        | 00063 | 	inp	r0, 0x20
+0xC040 | 0x06A8        | 00064 | 	and	r0, r0, 0xffdf
+0xC041 | 0x02A0        | 00065 | 	outp	r0, 0x20
+0xC042 | 0x33EC 0xC01F | 00066 | 	jsr	r6, sxc__Z12wait_secondsj
+0xC044 | 0x01F5        | 00067 | 	bra	BB1_1
+       |               | 00068 | 
+       |               | 00069 | //sxc_main
+       |               | 00070 | //align
+       |               | 00071 | @ = (@ + 1-1)  & -1
+0xC045 |               | 00072 | sxc_main:                               // @main
+       |               | 00073 | // BB#0:
+0xC045 | 0x0396        | 00074 | 	mov	r0, 0x16
+0xC046 | 0x02F0        | 00075 | 	outp	r0, 0x70
+0xC047 | 0x03E8 0x0073 | 00076 | 	mov	r0, 0x73
+0xC049 | 0x02F1        | 00077 | 	outp	r0, 0x71
+0xC04A | 0x0272        | 00078 | 	inp	r0, 0x72
+0xC04B | 0x06D0        | 00079 | 	and	r0, r0, 0xfbff
+0xC04C | 0x02F2        | 00080 | 	outp	r0, 0x72
+0xC04D |               | 00081 | BB2_1:                                  // =>This Inner Loop Header: Depth=1
+0xC04D | 0x0272        | 00082 | 	inp	r0, 0x72
+       |               | 00083 | 	//cmp	r0, 0x0
+0xC04E | 0x0CFE        | 00084 | 	bc	LT0, BB2_1
+       |               | 00085 | // BB#2:
+0xC04F | 0x0381        | 00086 | 	mov	r0, 0x1
+0xC050 | 0x02F5        | 00087 | 	outp	r0, 0x75
+0xC051 | 0x03E8 0x0805 | 00088 | 	mov	r0, 0x805
+0xC053 | 0x02F4        | 00089 | 	outp	r0, 0x74
+0xC054 | 0x0272        | 00090 | 	inp	r0, 0x72
+0xC055 | 0x06D0        | 00091 | 	and	r0, r0, 0xfbff
+0xC056 | 0x02F2        | 00092 | 	outp	r0, 0x72
+0xC057 |               | 00093 | BB2_3:                                  // =>This Inner Loop Header: Depth=1
+0xC057 | 0x0272        | 00094 | 	inp	r0, 0x72
+       |               | 00095 | 	//cmp	r0, 0x0
+0xC058 | 0x0CFE        | 00096 | 	bc	LT0, BB2_3
+       |               | 00097 | // BB#4:
+0xC059 | 0x0272        | 00098 | 	inp	r0, 0x72
+0xC05A | 0x03D0 0x0C00 | 00099 | 	ior	r0, r0, 0xc00
+0xC05C | 0x02F2        | 00100 | 	outp	r0, 0x72
+0xC05D |               | 00101 | BB2_5:                                  // =>This Inner Loop Header: Depth=1
+0xC05D | 0x0272        | 00102 | 	inp	r0, 0x72
+       |               | 00103 | 	//cmp	r0, 0x0
+0xC05E | 0x2CFE        | 00104 | 	bc	NC, BB2_5
+       |               | 00105 | // BB#6:                                // %_Z8InitGPIOv.exit
+0xC05F | 0x03E8 0x8183 | 00106 | 	mov	r0, 0x8183
+0xC061 | 0x02F3        | 00107 | 	outp	r0, 0x73
+0xC062 | 0x038F        | 00108 | 	mov	r0, 0xf
+0xC063 | 0x02F0        | 00109 | 	outp	r0, 0x70
+0xC064 | 0x0B8E        | 00110 | 	mov	r1, 0xe
+0xC065 | 0x0AF1        | 00111 | 	outp	r1, 0x71
+0xC066 | 0x0BE8 0x0800 | 00112 | 	mov	r1, 0x800
+0xC068 | 0x0AA7        | 00113 | 	outp	r1, 0x27
+0xC069 | 0x0BE8 0xE000 | 00114 | 	mov	r1, 0xe000
+0xC06B | 0x0AA1        | 00115 | 	outp	r1, 0x21
+0xC06C | 0x02B7        | 00116 | 	outp	r0, 0x37
+0xC06D | 0x03E8 0x0080 | 00117 | 	mov	r0, 0x80
+0xC06F | 0x02A0        | 00118 | 	outp	r0, 0x20
+0xC070 | 0x03E8 0x8000 | 00119 | 	mov	r0, 0x8000
+0xC072 | 0x0287        | 00120 | 	outp	r0, 0x7
+0xC073 | 0x0B8A        | 00121 | 	mov	r1, 0xa
+0xC074 | 0x0A83        | 00122 | 	outp	r1, 0x3
+0xC075 | 0x0B80        | 00123 | 	mov	r1, 0x0
+0xC076 | 0x0A80        | 00124 | 	outp	r1, 0x0
+0xC077 | 0x0BE8 0xC038 | 00125 | 	mov	r1, sxc__Z15ButtonLEDThreadPv
+0xC079 | 0x0A81        | 00126 | 	outp	r1, 0x1
+0xC07A | 0x0286        | 00127 | 	outp	r0, 0x6
+0xC07B | 0x0287        | 00128 | 	outp	r0, 0x7
+0xC07C | 0x0BEA 0xCA08 | 00129 | 	ld	r1, thrds_vector
+0xC07E | 0x0E89        | 00130 | 	and	r1, r1, 0xfffd
+0xC07F | 0x0BEB 0xCA08 | 00131 | 	st	r1, thrds_vector
+0xC081 | 0x0A84        | 00132 | 	outp	r1, 0x4
+0xC082 | 0x0286        | 00133 | 	outp	r0, 0x6
+0xC083 | 0x0380        | 00134 | 	mov	r0, 0x0
+0xC084 | 0x33E6        | 00135 | 	jsr	r6, r6
+       |               | 00136 | 
+       |               | 00137 | //align
+       |               | 00138 | @ = (@ + 1-1)  & -1
+0xC085 |               | 00139 | sxc___xinc_udiv:                        // @__xinc_udiv
+       |               | 00140 | // BB#0:
+0xC085 | 0x7F01        | 00141 | 	add	sp, sp, 0x1
+0xC086 | 0xF7FF        | 00142 | 	st	r6, sp, 0xffff          // 1-byte Folded Spill
+0xC087 | 0x4A00        | 00143 | 	add	r1, r2, 0x0
+0xC088 | 0x5300        | 00144 | 	add	r2, r3, 0x0
+       |               | 00145 | 	//APP
+0xC089 | 0x33EC 0x1816 | 00146 | 	jsr	r6, UnsignedDivide
+       |               | 00147 | 	//NO_APP
+0xC08B | 0x4100        | 00148 | 	add	r0, r1, 0x0
+0xC08C | 0xB7FF        | 00149 | 	ld	r6, sp, 0xffff          // 1-byte Folded Reload
+0xC08D | 0x7FFF        | 00150 | 	sub	sp, sp, 0x1
+0xC08E | 0x33E6        | 00151 | 	jsr	r6, r6
+       |               | 00152 | 
+       |               | 00153 | //align
+       |               | 00154 | @ = (@ + 1-1)  & -1
+0xC08F |               | 00155 | sxc___xinc_umod:                        // @__xinc_umod
+       |               | 00156 | // BB#0:
+0xC08F | 0x7F01        | 00157 | 	add	sp, sp, 0x1
+0xC090 | 0xF7FF        | 00158 | 	st	r6, sp, 0xffff          // 1-byte Folded Spill
+0xC091 | 0x4A00        | 00159 | 	add	r1, r2, 0x0
+0xC092 | 0x5300        | 00160 | 	add	r2, r3, 0x0
+       |               | 00161 | 	//APP
+0xC093 | 0x33EC 0x1816 | 00162 | 	jsr	r6, UnsignedDivide
+       |               | 00163 | 	//NO_APP
+0xC095 | 0x4200        | 00164 | 	add	r0, r2, 0x0
+0xC096 | 0xB7FF        | 00165 | 	ld	r6, sp, 0xffff          // 1-byte Folded Reload
+0xC097 | 0x7FFF        | 00166 | 	sub	sp, sp, 0x1
+0xC098 | 0x33E6        | 00167 | 	jsr	r6, r6
+       |               | 00168 | 
+       |               | 00169 | //align
+       |               | 00170 | @ = (@ + 1-1)  & -1
+0xC099 |               | 00171 | sxc_memset:                             // @memset
+       |               | 00172 | // BB#0:
+0xC099 | 0x4C00        | 00173 | 	sub	r1, r4, 0x0
+0xC09A | 0x0805        | 00174 | 	bc	EQ, BB5_3
+       |               | 00175 | // BB#1:
+0xC09B | 0x4200        | 00176 | 	add	r0, r2, 0x0
+0xC09C |               | 00177 | BB5_2:                                  // %.lr.ph
+       |               | 00178 |                                         // =>This Inner Loop Header: Depth=1
+0xC09C | 0xD800        | 00179 | 	st	r3, r0, 0x0
+0xC09D | 0x4001        | 00180 | 	add	r0, r0, 0x1
+0xC09E | 0x64FF        | 00181 | 	add	r4, r4, 0xffff
+       |               | 00182 | 	//cmp	r4, 0x0
+0xC09F | 0x28FC        | 00183 | 	bc	ZC, BB5_2
+0xC0A0 |               | 00184 | BB5_3:                                  // %._crit_edge
+0xC0A0 | 0x4200        | 00185 | 	add	r0, r2, 0x0
+0xC0A1 | 0x33E6        | 00186 | 	jsr	r6, r6
+       |               | 00187 | 
+       |               | 00188 | //align
+       |               | 00189 | @ = (@ + 1-1)  & -1
+0xC0A2 |               | 00190 | sxc_memcpy:                             // @memcpy
+       |               | 00191 | // BB#0:
+0xC0A2 | 0x0B5A        | 00192 | 	sub	r1, r2, r3
+0xC0A3 | 0x0809        | 00193 | 	bc	EQ, BB6_4
+       |               | 00194 | // BB#1:
+0xC0A4 | 0x4C00        | 00195 | 	sub	r1, r4, 0x0
+0xC0A5 | 0x0807        | 00196 | 	bc	EQ, BB6_4
+       |               | 00197 | // BB#2:
+0xC0A6 | 0x4200        | 00198 | 	add	r0, r2, 0x0
+0xC0A7 |               | 00199 | BB6_3:                                  // %.lr.ph.i
+       |               | 00200 |                                         // =>This Inner Loop Header: Depth=1
+0xC0A7 | 0x8B00        | 00201 | 	ld	r1, r3, 0x0
+0xC0A8 | 0xC800        | 00202 | 	st	r1, r0, 0x0
+0xC0A9 | 0x5B01        | 00203 | 	add	r3, r3, 0x1
+0xC0AA | 0x4001        | 00204 | 	add	r0, r0, 0x1
+0xC0AB | 0x64FF        | 00205 | 	add	r4, r4, 0xffff
+       |               | 00206 | 	//cmp	r4, 0x0
+0xC0AC | 0x28FA        | 00207 | 	bc	ZC, BB6_3
+0xC0AD |               | 00208 | BB6_4:                                  // %memcpy_base.exit
+0xC0AD | 0x4200        | 00209 | 	add	r0, r2, 0x0
+0xC0AE | 0x33E6        | 00210 | 	jsr	r6, r6
+       |               | 00211 | 
+       |               | 00212 | //align
+       |               | 00213 | @ = (@ + 1-1)  & -1
+0xC0AF |               | 00214 | sxc_memmove:                            // @memmove
+       |               | 00215 | // BB#0:
+0xC0AF | 0x0381        | 00216 | 	mov	r0, 0x1
+0xC0B0 | 0x2B81        | 00217 | 	mov	r5, 0x1
+0xC0B1 | 0x4C00        | 00218 | 	sub	r1, r4, 0x0
+0xC0B2 | 0x0801        | 00219 | 	bc	EQ, @ + 1 + 0x1
+0xC0B3 | 0x2B80        | 00220 | 	mov	r5, 0x0 //Select--False
+0xC0B4 | 0x0B5A        | 00221 | 	sub	r1, r2, r3
+0xC0B5 | 0x0801        | 00222 | 	bc	EQ, @ + 1 + 0x1
+0xC0B6 | 0x0380        | 00223 | 	mov	r0, 0x0 //Select--False
+0xC0B7 | 0x05A8        | 00224 | 	ior	r0, r0, r5
+0xC0B8 | 0x0B53        | 00225 | 	sub	r1, r3, r2
+0xC0B9 | 0x200D        | 00226 | 	bc	UGE, BB7_1
+       |               | 00227 | // BB#4:
+0xC0BA | 0x03C8 0x0001 | 00228 | 	and	r0, r0, 0x1
+       |               | 00229 | 	//cmp	r0, 0x0
+0xC0BC | 0x2814        | 00230 | 	bc	ZC, BB7_7
+       |               | 00231 | // BB#5:                                // %.lr.ph23.i.preheader
+0xC0BD | 0x0381        | 00232 | 	mov	r0, 0x1
+0xC0BE | 0x0360        | 00233 | 	sub	r0, r0, r4
+0xC0BF |               | 00234 | BB7_6:                                  // %.lr.ph23.i
+       |               | 00235 |                                         // =>This Inner Loop Header: Depth=1
+0xC0BF | 0x0B42        | 00236 | 	sub	r1, r2, r0
+0xC0C0 | 0x2343        | 00237 | 	sub	r4, r3, r0
+0xC0C1 | 0xA400        | 00238 | 	ld	r4, r4, 0x0
+0xC0C2 | 0xE100        | 00239 | 	st	r4, r1, 0x0
+0xC0C3 | 0x4001        | 00240 | 	add	r0, r0, 0x1
+0xC0C4 | 0x48FF        | 00241 | 	sub	r1, r0, 0x1
+0xC0C5 | 0x28F9        | 00242 | 	bc	NE, BB7_6
+0xC0C6 | 0x010A        | 00243 | 	bra	BB7_7
+0xC0C7 |               | 00244 | BB7_1:
+0xC0C7 | 0x03C8 0x0001 | 00245 | 	and	r0, r0, 0x1
+       |               | 00246 | 	//cmp	r0, 0x0
+0xC0C9 | 0x2807        | 00247 | 	bc	ZC, BB7_7
+       |               | 00248 | // BB#2:
+0xC0CA | 0x4200        | 00249 | 	add	r0, r2, 0x0
+0xC0CB |               | 00250 | BB7_3:                                  // %.lr.ph.i
+       |               | 00251 |                                         // =>This Inner Loop Header: Depth=1
+0xC0CB | 0x8B00        | 00252 | 	ld	r1, r3, 0x0
+0xC0CC | 0xC800        | 00253 | 	st	r1, r0, 0x0
+0xC0CD | 0x5B01        | 00254 | 	add	r3, r3, 0x1
+0xC0CE | 0x4001        | 00255 | 	add	r0, r0, 0x1
+0xC0CF | 0x64FF        | 00256 | 	add	r4, r4, 0xffff
+       |               | 00257 | 	//cmp	r4, 0x0
+0xC0D0 | 0x28FA        | 00258 | 	bc	ZC, BB7_3
+0xC0D1 |               | 00259 | BB7_7:                                  // %memcpy_base.exit
+0xC0D1 | 0x4200        | 00260 | 	add	r0, r2, 0x0
+0xC0D2 | 0x33E6        | 00261 | 	jsr	r6, r6
+       |               | 00262 | 
+       |               | 00263 | 
+
+                                 //
+                                 // "ReflowOvenController.main" -> "code.asm"
+//============================== //==============================================================
+                                 // "ReflowOvenController.main"
+                                 //
+
+       |               | 00010 | @ = (@ + 0x0800-1) & -0x0800
+       |               | 00011 | #include "C:/Program Files/SXC/include/sxc-art0\XInC2_Thread_Definitions.asm"
+
+                                 //
+                                 // "ReflowOvenController.main"
+//============================== //==============================================================
+                                 // "ReflowOvenController.main" -> "XInC2_Thread_Definitions.asm"
+                                 //
+
+       |               | 00001 | #ifndef DEFAULT_STACK_SIZE
+       |      = 0x0040 | 00002 | #define DEFAULT_STACK_SIZE 64
+       |               | 00003 | #endif
+       |               | 00004 | 
+       |               | 00005 | #ifndef THREAD0_STACK_SIZE
+       |      = 0x0040 | 00006 | #define THREAD0_STACK_SIZE DEFAULT_STACK_SIZE
+       |               | 00007 | #endif
+       |               | 00008 | 
+       |               | 00009 | #ifndef THREAD1_STACK_SIZE
+       |      = 0x0040 | 00010 | #define THREAD1_STACK_SIZE DEFAULT_STACK_SIZE
+       |               | 00011 | #endif
+       |               | 00012 | 
+       |               | 00013 | #ifndef THREAD2_STACK_SIZE
+       |      = 0x0040 | 00014 | #define THREAD2_STACK_SIZE DEFAULT_STACK_SIZE
+       |               | 00015 | #endif
+       |               | 00016 | 
+       |               | 00017 | #ifndef THREAD3_STACK_SIZE
+       |      = 0x0040 | 00018 | #define THREAD3_STACK_SIZE DEFAULT_STACK_SIZE
+       |               | 00019 | #endif
+       |               | 00020 | 
+       |               | 00021 | #ifndef THREAD4_STACK_SIZE
+       |      = 0x0040 | 00022 | #define THREAD4_STACK_SIZE DEFAULT_STACK_SIZE
+       |               | 00023 | #endif
+       |               | 00024 | 
+       |               | 00025 | #ifndef THREAD5_STACK_SIZE
+       |      = 0x0040 | 00026 | #define THREAD5_STACK_SIZE DEFAULT_STACK_SIZE
+       |               | 00027 | #endif
+       |               | 00028 | 
+       |               | 00029 | #ifndef THREAD6_STACK_SIZE
+       |      = 0x0040 | 00030 | #define THREAD6_STACK_SIZE DEFAULT_STACK_SIZE
+       |               | 00031 | #endif
+       |               | 00032 | 
+       |               | 00033 | #ifndef THREAD7_STACK_SIZE
+       |      = 0x0040 | 00034 | #define THREAD7_STACK_SIZE DEFAULT_STACK_SIZE
+       |               | 00035 | #endif
+       |               | 00036 | 
+0xC800 |               | 00037 | THREAD0_STACK: @ = @ + THREAD0_STACK_SIZE
+0xC840 |               | 00038 | THREAD1_STACK: @ = @ + THREAD1_STACK_SIZE
+0xC880 |               | 00039 | THREAD2_STACK: @ = @ + THREAD2_STACK_SIZE
+0xC8C0 |               | 00040 | THREAD3_STACK: @ = @ + THREAD3_STACK_SIZE
+0xC900 |               | 00041 | THREAD4_STACK: @ = @ + THREAD4_STACK_SIZE
+0xC940 |               | 00042 | THREAD5_STACK: @ = @ + THREAD5_STACK_SIZE
+0xC980 |               | 00043 | THREAD6_STACK: @ = @ + THREAD6_STACK_SIZE
+0xC9C0 |               | 00044 | THREAD7_STACK: @ = @ + THREAD7_STACK_SIZE
+       |               | 00045 | 
+0xCA00 |               | 00046 | THREAD_STACK_LOOKUP:
+0xCA00 | 0xC800        | 00047 |   THREAD0_STACK
+0xCA01 | 0xC840        | 00048 |   THREAD1_STACK
+0xCA02 | 0xC880        | 00049 |   THREAD2_STACK
+0xCA03 | 0xC8C0        | 00050 |   THREAD3_STACK
+0xCA04 | 0xC900        | 00051 |   THREAD4_STACK
+0xCA05 | 0xC940        | 00052 |   THREAD5_STACK
+0xCA06 | 0xC980        | 00053 |   THREAD6_STACK
+0xCA07 | 0xC9C0        | 00054 |   THREAD7_STACK
+       |               | 00055 | 
+0xCA08 | 0x00FE        | 00056 | thrds_vector: 0xFE //on program init, only thread0 is running
+
+                                 //
+                                 // "ReflowOvenController.main" -> "XInC2_Thread_Definitions.asm"
+//============================== //==============================================================
+                                 // "ReflowOvenController.main"
+                                 //
+
+       |               | 00012 | #include "C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build\data.asm"
+
+                                 //
+                                 // "ReflowOvenController.main"
+//============================== //==============================================================
+                                 // "ReflowOvenController.main" -> "data.asm"
+                                 //
+
+0xCA09 |               | 00001 | SXCA_PARSED_CONSTRUCTOR_LIST_START:
+0xCA09 |               | 00002 | SXCA_PARSED_CONSTRUCTOR_LIST_END:
+         >>>--------->0 Error(s), 0 Warning(s).

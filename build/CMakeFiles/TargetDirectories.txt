@@ -1,0 +1,9 @@
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/CMakeFiles/ReflowOvenController-s.dir
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/CMakeFiles/ReflowOvenController-hex.dir
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/CMakeFiles/ReflowOvenController-opt.dir
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/CMakeFiles/ReflowOvenController.dir
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/CMakeFiles/ReflowOvenController-main.dir
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/CMakeFiles/ReflowOvenController-asm.dir
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/CMakeFiles/ReflowOvenController-hex-final.dir
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/CMakeFiles/edit_cache.dir
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/build/CMakeFiles/rebuild_cache.dir
