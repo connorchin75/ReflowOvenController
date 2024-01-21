@@ -11,25 +11,23 @@
 void InitGPIO(){
    //set the system clock to 98.304 MHz 
    sys_clock_init(crys_24_576_MHz, _98_304_MHz);
-   //set the drive strength of PD3 to 16mA
-   uint16_t io_config_flags = IO_DRIVE_16mA;
-   io_set_config(io_config_flags, io_PD3);
    // configure oled pins
    oled_pin_initialization();
-   //oled pin configuration
 }
 
-void * ButtonLEDThread(void * ) {
+void * OLEDThread(void * ) {
    //This thread will always remain active
-  while (true) {
-      //this method of setting a bit allows you to only adjust a single bit in the port register
-      gpio_write(gpio_read(GPIO_A)|0x20, GPIO_A);
-      wait_seconds(1);
-      // xpd_echo_int(gpio_read(GPIO_A), XPD_Flag_Hex);
-      // xpd_putc('\n');
-      //this method of clearing a bit only clears the specific bit
-      gpio_write(gpio_read(GPIO_A)&~(0x20), GPIO_A);
-      wait_seconds(1);
+   unsigned int progress;
+   while (true) {
+      //start up oled
+      OLED_Init_160128RGB();
+      OLED_Start_Page();
+      for(progress=0;progress<101;progress++){
+            Clear_Data_Chars(83, 50, BLACK); //clear previous progress reading
+            OLED_Print_Sensor_Val(83, 50, progress, 1); //print new progress reading
+            Draw_Bar(23, 73, BLUE, BLACK, 26, 122, progress); //fill the progress bar to the correct amount
+            wait_ms(500);
+         }
       }
   }
 
@@ -42,6 +40,6 @@ int main(void){
 
   InitGPIO();
 
-  thread_setup(ButtonLEDThread, nullptr, 1);
+  thread_setup(OLEDThread, nullptr, 1);
   thread_run(1);
 }

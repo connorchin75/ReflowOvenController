@@ -2,17 +2,21 @@
 #include <IOConfig.h>
 #include <GPIO.h>
 #include <SPI.h>
+#include <IOConfig.h>
+#include <XPD.h>
+
 #include "wait.h"
 
 //Define pin names as their bit shifted positions to improve code readability
-#define CS_PIN 0x80
+#define CS_PIN 0x80 
+#define RS_PIN 0x08
 #define RES_PIN 0x40
+#define SHDN_PIN 0x10
 
 //Define colours as using 16 bit values
-#define     RED  0xF800
-#define   GREEN  0x07e0
-#define    BLUE  0x001F
-#define   BLUE2  0x0000
+#define     RED  0x001F
+#define   GREEN  0x1F00
+#define    BLUE  0xF800
 #define   WHITE  0xFFFF
 #define   BLACK  0x0000
 
@@ -21,7 +25,7 @@
 /************* START *************/
 /*********************************/
 
-unsigned char Ascii_1[97][5] = {     // Refer to "Times New Roman" Font Database...
+unsigned char Ascii_1[98][5] = {     // Refer to "Times New Roman" Font Database...
                         //   Basic Characters
     {0x00,0x00,0x00,0x00,0x00},     //   (  0)    - 0x0000 Empty set
     {0x00,0x00,0x4F,0x00,0x00},     //   (  1)  ! - 0x0021 Exclamation Mark
@@ -111,7 +115,7 @@ unsigned char Ascii_1[97][5] = {     // Refer to "Times New Roman" Font Database
     {0x3C,0x40,0x40,0x20,0x7C},     //   ( 85)  u - 0x0075 Latin Small Letter U
     {0x1C,0x20,0x40,0x20,0x1C},     //   ( 86)  v - 0x0076 Latin Small Letter V
     {0x3C,0x40,0x30,0x40,0x3C},     //   ( 87)  w - 0x0077 Latin Small Letter W
-    {0x44,0x28,0x10,0x28,0x44},     //   ( 88)  x - 0x0078 Latin Small Letter X
+    {0x44,0x28,0x10,0x28,0x44},     //   ( 88)  x - 0x0078 Latin Small Letter XFF
     {0x0C,0x50,0x50,0x50,0x3C},     //   ( 89)  y - 0x0079 Latin Small Letter Y
     {0x44,0x64,0x54,0x4C,0x44},     //   ( 90)  z - 0x007A Latin Small Letter Z
     {0x00,0x08,0x36,0x41,0x00},     //   ( 91)  { - 0x007B Left Curly Bracket
@@ -120,12 +124,53 @@ unsigned char Ascii_1[97][5] = {     // Refer to "Times New Roman" Font Database
     {0x02,0x01,0x02,0x04,0x02},     //   ( 94)  ~ - 0x007E Tilde
     {0x08,0x0C,0x0E,0x0C,0x08},     //   ( 95)  upward facing triangle/arrow
     {0x08,0x18,0x38,0x18,0x08},     //   ( 96)  downward facing triangle/arrow
+    {0x00,0x0F,0x09,0x09,0x0F}      //   ( 97)  degree symbol
 };
 
 /*===============================*/
 /*======= FONT TABLE 5x8 ========*/
 /*============= END =============*/
 /*===============================*/
+
+//This function takes in a single digit and outputs the coresponding ascii index
+int Num_To_ASCII(unsigned int num)
+{
+    unsigned int ascii_index = 99; //starts as an invalid entry
+    //0 to 9 maps from 16 to 25
+    switch (num){
+        case 0:
+            ascii_index = 16;
+            break;
+        case 1:
+            ascii_index = 17;
+            break;
+        case 2:
+            ascii_index = 18;
+            break;
+        case 3:
+            ascii_index = 19;
+            break;
+        case 4:
+            ascii_index = 20;
+            break;
+        case 5:
+            ascii_index = 21;
+            break;
+        case 6:
+            ascii_index = 22;
+            break;
+        case 7:
+            ascii_index = 23;
+            break;
+        case 8:
+            ascii_index = 24;
+            break;
+        case 9:
+            ascii_index = 25;
+            break;     
+    }
+    return ascii_index;
+}
 
 /*********************************/
 /****** LOW LEVEL FUNCTIONS ******/
@@ -138,7 +183,7 @@ void OLED_Command_160128RGB(unsigned char c)        // send command to OLED
    //write the CS_PIN low to set the oled as the active device
    gpio_write(gpio_read(GPIO_A)&~(CS_PIN), GPIO_A);
    //set the RS_PIN low to signal a command being sent
-   gpio_write(gpio_read(GPIO_A)&~(RS_PIN), GPIO_A);
+   gpio_write(gpio_read(GPIO_D)&~(RS_PIN), GPIO_D);
    //Send end out the 8 bits of data required to execute the command via SPI
    SPI_write(c, SPI1);
    //write the CS_PIN high to disable the device after the transaction
@@ -151,7 +196,7 @@ void OLED_Data_160128RGB(unsigned char d)        // send data to OLED
    //write the CS_PIN low to set the oled as the active device
    gpio_write(gpio_read(GPIO_A)&~(CS_PIN), GPIO_A);
    //set the RS_PIN high to signal data being sent
-   gpio_write(gpio_read(GPIO_A)|(RS_PIN), GPIO_A);
+   gpio_write(gpio_read(GPIO_D)|(RS_PIN), GPIO_D);
    //Send end out the 8 bits of data required to execute the command via SPI
    SPI_write(d, SPI1);
    //write the CS_PIN high to disable the device after the transaction
@@ -199,14 +244,14 @@ void OLED_SetPosition_160128RGB(unsigned char x_pos, unsigned char y_pos)    // 
 }
 
 //Function to fill the screen with a given colour
-void OLED_FillScreen_160128RGB(unsigned long color)    // fill screen with a given color
+void OLED_FillScreen_160128RGB(unsigned long colour)    // fill screen with a given color
 {
    unsigned int i;
    OLED_SetPosition_160128RGB(0,0);
    OLED_WriteMemoryStart_160128RGB();
    for(i=0;i<20480;i++)
    {
-      OLED_Pixel_160128RGB(color);
+      OLED_Pixel_160128RGB(colour);
    }
 }
 
@@ -221,7 +266,7 @@ void OLED_FillScreen_160128RGB(unsigned long color)    // fill screen with a giv
 /*********************************/
 
 //Function to print out a single character to a given position
-void OLED_Text_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColor, unsigned long backgroundColor)  // function to show text
+void OLED_Text_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColour, unsigned long backgroundColour)  // function to show text
 {
     int i;
     int count;
@@ -234,9 +279,9 @@ void OLED_Text_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char
         for (count=0;count<5;count++)    // each character is 5 pixels wide
         {
             if((Ascii_1[letter][count] & mask) == mask)
-                OLED_Pixel_160128RGB(textColor);
+                OLED_Pixel_160128RGB(textColour);
             else
-                OLED_Pixel_160128RGB(backgroundColor);
+                OLED_Pixel_160128RGB(backgroundColour);
         }
         y_pos++;
         mask = mask >> 1;
@@ -247,26 +292,157 @@ void OLED_Text_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char
 void OLED_Text2x_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColor, unsigned long backgroundColor)  // function to show text (2x size)
 {
     int i;
-    int count;
+    unsigned int count;
     unsigned char mask = 0x80;
-    
+
     for(i=1;i<=16;i++)     // each character is 16 pixels tall
     {
         OLED_SetPosition_160128RGB(x_pos,y_pos);
         OLED_WriteMemoryStart_160128RGB();
         for (count=0;count<10;count++)    // each character is 10 pixels wide
         {
-            if((Ascii_1[letter][(count/2)] & mask) == mask)
+            if((Ascii_1[letter][(count>>1)] & mask) == mask)
                 OLED_Pixel_160128RGB(textColor);
             else
                 OLED_Pixel_160128RGB(backgroundColor);
         }
         y_pos++;
+
         if((i%2)==0)
         {
           mask = mask >> 1;
         }
    }
+}
+
+//Prints a data value to the OLED (selection == 0 for temperature selection == 1 for humidity or progress)
+void OLED_Print_Sensor_Val(unsigned char x_pos, unsigned char y_pos, unsigned int data, unsigned int selection)
+{
+    unsigned int ascii_index;
+
+    //first determine the number of digits required for the temperature
+    //all temperatures will be assumed to be greater than 0 degrees and less than 1000 degrees
+    unsigned int digits = 0;
+    if(data<9)
+    {
+        digits = 1;
+    }else if(data<100)
+    {
+        digits = 2;
+    }else
+    {
+        digits = 3;
+    }
+    switch (digits)
+    {
+        case 1:
+            //get ascii index for digit
+            ascii_index = Num_To_ASCII(data);
+            //print the digit
+            OLED_Text_160128RGB(x_pos, y_pos, ascii_index, WHITE, BLACK);
+            break;
+        case 2:
+            //determine the digit in the ten's column
+            ascii_index = Num_To_ASCII((data/10)%10);
+            //print the digit
+            OLED_Text_160128RGB(x_pos, y_pos, ascii_index, WHITE, BLACK);
+            //determine the digit in the ones's column
+            ascii_index = Num_To_ASCII(data%10);
+            //print the digit
+            OLED_Text_160128RGB(x_pos + 7, y_pos, ascii_index, WHITE, BLACK);
+            break;
+        case 3:
+            //determine the digit in the 100's column
+            ascii_index = Num_To_ASCII((data/100)%10);
+            //print the digit
+            OLED_Text_160128RGB(x_pos, y_pos, ascii_index, WHITE, BLACK);
+            //determine the digit in the ten's column
+            ascii_index = Num_To_ASCII((data/10)%10);
+            //print the digit
+            OLED_Text_160128RGB(x_pos + 7, y_pos, ascii_index, WHITE, BLACK);
+            //determine the digit in the ones's column
+            ascii_index = Num_To_ASCII(data%10);
+            //print the digit
+            OLED_Text_160128RGB(x_pos + 14, y_pos, ascii_index, WHITE, BLACK);
+            break;
+    }
+    if(selection ==0)
+    {
+        //print the degrees celcius sign for temperature
+        OLED_Text_160128RGB(x_pos + 7*digits, y_pos, 97, WHITE, BLACK);
+        OLED_Text_160128RGB(x_pos + 7*(digits+1), y_pos, 35, WHITE, BLACK);
+    }else
+    {
+        //print the percent sign for humidity
+        OLED_Text_160128RGB(x_pos + 7*digits, y_pos, 5, WHITE, BLACK);
+    }
+}
+
+//Clears 7 characters of pixels using the default font size
+void Clear_Data_Chars(unsigned char x_pos, unsigned char y_pos, unsigned long backgroundColour)
+{
+    //The x_pos should be 7 pixels from the last printed character to be kept
+    unsigned char y_temp;
+    unsigned int i;
+    unsigned int j;
+    unsigned int k;
+    OLED_SetPosition_160128RGB(x_pos,y_pos);
+    OLED_WriteMemoryStart_160128RGB();
+    for(i=0;i<7;i++)     
+    {   
+        y_temp = y_pos;
+        for(j=0;j<8;j++) // each character is 8 pixels tall
+        {
+            OLED_SetPosition_160128RGB(x_pos,y_temp);
+            OLED_WriteMemoryStart_160128RGB();
+            for (k=0;k<5;k++)    // each character is 5 pixels wide
+            {
+                    OLED_Pixel_160128RGB(backgroundColour);
+            }
+            y_temp++;
+        }
+        x_pos +=7;
+   }
+}
+
+//This function draws a hollow box outline with a width of 1 pixel
+void Draw_Box(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColour, unsigned long backgroundColour, unsigned int height, unsigned int width)
+{
+    unsigned int i;
+    unsigned int j;
+    for(i=0;i<height;i++) //iterating over the height of the box
+    {
+        OLED_SetPosition_160128RGB(x_pos,y_pos);
+        OLED_WriteMemoryStart_160128RGB();
+        for(j=0;j<width;j++) //iterating over the width of the box
+        {
+            if((j==0)||(j==(width-1))||(i==0)||(i==(height-1)))
+            {
+                OLED_Pixel_160128RGB(shapeColour);
+            }else
+            {
+                OLED_Pixel_160128RGB(backgroundColour);
+            }
+        }
+        y_pos+=1;
+    }
+}
+
+void Draw_Bar(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColour, unsigned long backgroundColour, unsigned int height, unsigned int maxWidth, unsigned int percent)
+{
+    unsigned int i;
+    unsigned int j;
+    unsigned int fillWidth = (maxWidth * percent)/100;
+    for(i=0;i<height;i++) //iterating over the height of the box
+    {
+        OLED_SetPosition_160128RGB(x_pos,y_pos);
+        OLED_WriteMemoryStart_160128RGB();
+        for(j=0;j<fillWidth;j++) //iterating over the width of the box
+        {
+            OLED_Pixel_160128RGB(shapeColour);
+        }
+        y_pos+=1;
+    }
 }
 
 /*===============================*/
@@ -281,15 +457,21 @@ void OLED_Text2x_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned ch
 /*********************************/
 
 //Pin initialization
-void oled_pin_initialization(void){
-   //initialize PD3 (RS_Pin) as an output
-   gpio_set_config(0x08 << 8, GPIO_D);
+void oled_pin_initialization(void){  
+   //Each logic pin must be initialized as either an input or output
+   //initialize PD3 (RS_Pin) and PD4 (SHDN_PIN) as outputs
+   gpio_set_config(0x18 << 8, GPIO_D);
    //initialize PA7 (CS_PIN) and PA6 (RES_PIN)
    gpio_set_config(0xC0 << 8, GPIO_A);
+
    //initialize SPI1 as a master device, at 98.304 MHz, with clock rate divided by 16 and enable the SPI1 device
    SPI_set_config_optimal(_98_304_MHz,SPI1);
+
+   //set default values for CS_PIN and SHDN_PIN
    //set the CS_PIN high at the start (Chip select is an active low signal)
    gpio_write(CS_PIN, GPIO_A);
+   //set the SHDN_PIN high at the start (Shutdown is an active low signal)
+   gpio_write(SHDN_PIN, GPIO_D);
 }
 
 //Function to initialize the OLED properly
@@ -385,20 +567,47 @@ void OLED_Init_160128RGB(void)      //OLED initialization
 /*===============================*/
 
 void OLED_Start_Page(void){
+    OLED_Init_160128RGB();                           // initialize display
+    OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
 
-   OLED_Init_160128RGB();                           // initialize display
-   OLED_FillScreen_160128RGB(BLUE);                 // fill screen with blue
-   OLED_Text_160128RGB(20, 58, 40, WHITE, BLACK);   // H
-   OLED_Text_160128RGB(27, 58, 69, WHITE, BLACK);   // e
-   OLED_Text_160128RGB(34, 58, 76, WHITE, BLACK);   // l
-   OLED_Text_160128RGB(41, 58, 76, WHITE, BLACK);   // l
-   OLED_Text_160128RGB(48, 58, 79, WHITE, BLACK);   // o
-   OLED_Text_160128RGB(55, 58, 0, WHITE, BLACK);    //
-      
-   OLED_Text_160128RGB(62, 58, 55, WHITE, BLACK);   // W
-   OLED_Text_160128RGB(69, 58, 79, WHITE, BLACK);   // o
-   OLED_Text_160128RGB(76, 58, 82, WHITE, BLACK);   // r
-   OLED_Text_160128RGB(83, 58, 76, WHITE, BLACK);   // l
-   OLED_Text_160128RGB(90, 58, 68, WHITE, BLACK);   // d
-   OLED_Text_160128RGB(97, 58, 1, WHITE, BLACK);    // !
+    OLED_Text_160128RGB(20, 50, 48, WHITE, BLACK);   // P
+    OLED_Text_160128RGB(27, 50, 82, WHITE, BLACK);   // r
+    OLED_Text_160128RGB(34, 50, 79, WHITE, BLACK);   // o
+    OLED_Text_160128RGB(41, 50, 71, WHITE, BLACK);   // g
+    OLED_Text_160128RGB(48, 50, 82, WHITE, BLACK);   // r
+    OLED_Text_160128RGB(55, 50, 69, WHITE, BLACK);   // e
+    OLED_Text_160128RGB(62, 50, 83, WHITE, BLACK);   // s
+    OLED_Text_160128RGB(69, 50, 83, WHITE, BLACK);   // s
+    OLED_Text_160128RGB(76, 50, 26, WHITE, BLACK);   // :
+
+    OLED_Text_160128RGB(20, 30, 52, WHITE, BLACK);   // T
+    OLED_Text_160128RGB(27, 30, 69, WHITE, BLACK);   // e
+    OLED_Text_160128RGB(34, 30, 77, WHITE, BLACK);   // m
+    OLED_Text_160128RGB(41, 30, 80, WHITE, BLACK);   // p
+    OLED_Text_160128RGB(48, 30, 69, WHITE, BLACK);   // e
+    OLED_Text_160128RGB(55, 30, 82, WHITE, BLACK);   // r
+    OLED_Text_160128RGB(62, 30, 65, WHITE, BLACK);   // a
+    OLED_Text_160128RGB(69, 30, 84, WHITE, BLACK);   // t
+    OLED_Text_160128RGB(76, 30, 85, WHITE, BLACK);   // u
+    OLED_Text_160128RGB(83, 30, 82, WHITE, BLACK);   // r
+    OLED_Text_160128RGB(90, 30, 69, WHITE, BLACK);   // e
+    OLED_Text_160128RGB(97, 30, 26, WHITE, BLACK);   // :
+
+    OLED_Text_160128RGB(20, 10, 40, WHITE, BLACK);   // H
+    OLED_Text_160128RGB(27, 10, 85, WHITE, BLACK);   // u
+    OLED_Text_160128RGB(34, 10, 77, WHITE, BLACK);   // m
+    OLED_Text_160128RGB(41, 10, 73, WHITE, BLACK);   // i
+    OLED_Text_160128RGB(48, 10, 68, WHITE, BLACK);   // d
+    OLED_Text_160128RGB(55, 10, 73, WHITE, BLACK);   // i
+    OLED_Text_160128RGB(62, 10, 84, WHITE, BLACK);   // t
+    OLED_Text_160128RGB(69, 10, 89, WHITE, BLACK);   // y
+    OLED_Text_160128RGB(76, 10, 26, WHITE, BLACK);   // :
+
+    Draw_Box(20, 70, BLUE, BLACK, 32, 128);
+    Draw_Bar(23, 73, BLUE, BLACK, 26, 122, 0);
+
+    OLED_Print_Sensor_Val(83, 50, 0, 1); //progress
+    OLED_Print_Sensor_Val(104, 30, 223, 0); //temp
+    OLED_Print_Sensor_Val(83, 10, 48, 1); //humidity
+    // Clear_Data_Chars(104, 30, BLACK);
 }

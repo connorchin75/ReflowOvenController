@@ -15,6 +15,12 @@ GPIO.h
 -
 SPI.h
 -
+IOConfig.h
+-
+XPD.h
+-
+wait.h
+../inc/wait.h
 
 ../inc/wait.h
 SystemClock.h
