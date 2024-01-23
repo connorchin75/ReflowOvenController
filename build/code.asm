@@ -104,15 +104,15 @@ BB1_12:
 sxc__Z22OLED_Command_160128RGBh:        // @_Z22OLED_Command_160128RGBh
 // BB#0:
 	inp	r0, 0x20
-	and	r0, r0, 0xff7f
+	and	r0, r0, 0xfffb
 	outp	r0, 0x20
-	inp	r0, 0x26
-	and	r0, r0, 0xfff7
-	outp	r0, 0x26
+	inp	r0, 0x20
+	and	r0, r0, 0xfffd
+	outp	r0, 0x20
 	outp	r2, 0x36
 	inp	r0, 0x36
 	inp	r0, 0x20
-	ior	r0, r0, 0x80
+	ior	r0, r0, 0x4
 	outp	r0, 0x20
 	jsr	r6, r6
 
@@ -121,15 +121,15 @@ sxc__Z22OLED_Command_160128RGBh:        // @_Z22OLED_Command_160128RGBh
 sxc__Z19OLED_Data_160128RGBh:           // @_Z19OLED_Data_160128RGBh
 // BB#0:
 	inp	r0, 0x20
-	and	r0, r0, 0xff7f
+	and	r0, r0, 0xfffb
 	outp	r0, 0x20
-	inp	r0, 0x26
-	ior	r0, r0, 0x8
-	outp	r0, 0x26
+	inp	r0, 0x20
+	ior	r0, r0, 0x2
+	outp	r0, 0x20
 	outp	r2, 0x36
 	inp	r0, 0x36
 	inp	r0, 0x20
-	ior	r0, r0, 0x80
+	ior	r0, r0, 0x4
 	outp	r0, 0x20
 	jsr	r6, r6
 
@@ -443,12 +443,12 @@ sxc__Z19OLED_Init_160128RGBv:           // @_Z19OLED_Init_160128RGBv
 	add	sp, sp, 0x1
 	st	r6, sp, 0xffff          // 1-byte Folded Spill
 	inp	r0, 0x20
-	and	r0, r0, 0xffbf
+	and	r0, r0, 0xfffe
 	outp	r0, 0x20
 	mov	r2, 0x2
 	jsr	r6, sxc__Z7wait_msj
 	inp	r0, 0x20
-	ior	r0, r0, 0x40
+	ior	r0, r0, 0x1
 	outp	r0, 0x20
 	mov	r2, 0x2
 	jsr	r6, sxc__Z7wait_msj
@@ -938,13 +938,13 @@ BB12_5:                                 // =>This Inner Loop Header: Depth=1
 // BB#6:                                // %_Z8InitGPIOv.exit
 	mov	r0, 0x8183
 	outp	r0, 0x73
-	mov	r0, 0x1800
+	mov	r0, 0x1000
 	outp	r0, 0x27
-	mov	r0, 0xc000
+	mov	r0, 0x700
 	outp	r0, 0x21
 	mov	r0, 0xf
 	outp	r0, 0x37
-	mov	r0, 0x80
+	mov	r0, 0x4
 	outp	r0, 0x20
 	mov	r0, 0x10
 	outp	r0, 0x26

@@ -140,30 +140,30 @@ define i16 @_Z12Num_To_ASCIIj(i16 %num) nounwind readnone {
 
 define void @_Z22OLED_Command_160128RGBh(i16 zeroext %c) nounwind {
   %1 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
-  %2 = and i16 %1, -129
+  %2 = and i16 %1, -5
   tail call void @llvm.XInC2.outp(i16 %2, i16 32) nounwind
-  %3 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
-  %4 = and i16 %3, -9
-  tail call void @llvm.XInC2.outp(i16 %4, i16 38) nounwind
+  %3 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
+  %4 = and i16 %3, -3
+  tail call void @llvm.XInC2.outp(i16 %4, i16 32) nounwind
   tail call void @llvm.XInC2.outp(i16 %c, i16 54) nounwind
   %5 = tail call i16 @llvm.XInC2.inp(i16 54) nounwind
   %6 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
-  %7 = or i16 %6, 128
+  %7 = or i16 %6, 4
   tail call void @llvm.XInC2.outp(i16 %7, i16 32) nounwind
   ret void
 }
 
 define void @_Z19OLED_Data_160128RGBh(i16 zeroext %d) nounwind {
   %1 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
-  %2 = and i16 %1, -129
+  %2 = and i16 %1, -5
   tail call void @llvm.XInC2.outp(i16 %2, i16 32) nounwind
-  %3 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
-  %4 = or i16 %3, 8
-  tail call void @llvm.XInC2.outp(i16 %4, i16 38) nounwind
+  %3 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
+  %4 = or i16 %3, 2
+  tail call void @llvm.XInC2.outp(i16 %4, i16 32) nounwind
   tail call void @llvm.XInC2.outp(i16 %d, i16 54) nounwind
   %5 = tail call i16 @llvm.XInC2.inp(i16 54) nounwind
   %6 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
-  %7 = or i16 %6, 128
+  %7 = or i16 %6, 4
   tail call void @llvm.XInC2.outp(i16 %7, i16 32) nounwind
   ret void
 }
@@ -536,21 +536,21 @@ define void @_Z8Draw_Barhhmmjjj(i16 zeroext %x_pos, i16 zeroext %y_pos, i32 %sha
 }
 
 define void @_Z23oled_pin_initializationv() nounwind {
-  tail call void @llvm.XInC2.outp(i16 6144, i16 39) nounwind
-  tail call void @llvm.XInC2.outp(i16 -16384, i16 33) nounwind
+  tail call void @llvm.XInC2.outp(i16 4096, i16 39) nounwind
+  tail call void @llvm.XInC2.outp(i16 1792, i16 33) nounwind
   tail call void @llvm.XInC2.outp(i16 15, i16 55) nounwind
-  tail call void @llvm.XInC2.outp(i16 128, i16 32) nounwind
+  tail call void @llvm.XInC2.outp(i16 4, i16 32) nounwind
   tail call void @llvm.XInC2.outp(i16 16, i16 38) nounwind
   ret void
 }
 
 define void @_Z19OLED_Init_160128RGBv() nounwind {
   %1 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
-  %2 = and i16 %1, -65
+  %2 = and i16 %1, -2
   tail call void @llvm.XInC2.outp(i16 %2, i16 32) nounwind
   tail call void @_Z7wait_msj(i16 2)
   %3 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
-  %4 = or i16 %3, 64
+  %4 = or i16 %3, 1
   tail call void @llvm.XInC2.outp(i16 %4, i16 32) nounwind
   tail call void @_Z7wait_msj(i16 2)
   tail call void @_Z22OLED_Command_160128RGBh(i16 zeroext 4)

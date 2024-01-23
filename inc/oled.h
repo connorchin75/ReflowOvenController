@@ -8,9 +8,9 @@
 #include "wait.h"
 
 //Define pin names as their bit shifted positions to improve code readability
-#define CS_PIN 0x80 
-#define RS_PIN 0x08
-#define RES_PIN 0x40
+#define CS_PIN 0x04 
+#define RS_PIN 0x02
+#define RES_PIN 0x01
 #define SHDN_PIN 0x10
 
 //Define colours as using 16 bit values
@@ -183,7 +183,7 @@ void OLED_Command_160128RGB(unsigned char c)        // send command to OLED
    //write the CS_PIN low to set the oled as the active device
    gpio_write(gpio_read(GPIO_A)&~(CS_PIN), GPIO_A);
    //set the RS_PIN low to signal a command being sent
-   gpio_write(gpio_read(GPIO_D)&~(RS_PIN), GPIO_D);
+   gpio_write(gpio_read(GPIO_A)&~(RS_PIN), GPIO_A);
    //Send end out the 8 bits of data required to execute the command via SPI
    SPI_write(c, SPI1);
    //write the CS_PIN high to disable the device after the transaction
@@ -196,7 +196,7 @@ void OLED_Data_160128RGB(unsigned char d)        // send data to OLED
    //write the CS_PIN low to set the oled as the active device
    gpio_write(gpio_read(GPIO_A)&~(CS_PIN), GPIO_A);
    //set the RS_PIN high to signal data being sent
-   gpio_write(gpio_read(GPIO_D)|(RS_PIN), GPIO_D);
+   gpio_write(gpio_read(GPIO_A)|(RS_PIN), GPIO_A);
    //Send end out the 8 bits of data required to execute the command via SPI
    SPI_write(d, SPI1);
    //write the CS_PIN high to disable the device after the transaction
@@ -459,10 +459,10 @@ void Draw_Bar(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColou
 //Pin initialization
 void oled_pin_initialization(void){  
    //Each logic pin must be initialized as either an input or output
-   //initialize PD3 (RS_Pin) and PD4 (SHDN_PIN) as outputs
-   gpio_set_config(0x18 << 8, GPIO_D);
-   //initialize PA7 (CS_PIN) and PA6 (RES_PIN)
-   gpio_set_config(0xC0 << 8, GPIO_A);
+   //PD4 (SHDN_PIN) as outputs
+   gpio_set_config(0x10 << 8, GPIO_D);
+   //initialize PA0 (RES_PIN), PA1 (RS_PIN) and PA2 (CS_PIN)
+   gpio_set_config(0x07 << 8, GPIO_A);
 
    //initialize SPI1 as a master device, at 98.304 MHz, with clock rate divided by 16 and enable the SPI1 device
    SPI_set_config_optimal(_98_304_MHz,SPI1);
