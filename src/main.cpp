@@ -13,6 +13,19 @@ void InitGPIO(){
    sys_clock_init(crys_24_576_MHz, _98_304_MHz);
    // configure oled pins
    oled_pin_initialization();
+
+   // set the direction of PD3 to output
+    gpio_set_config(0x02 << 8, GPIO_D);
+        // 0x02 << 8 = 0000 0010 0000 0000b
+        // pins : 7654 3210 0000 0000
+        // upper byte is high = output
+        // cleared bits = input
+
+    //initialize Pin PA0 to be an output
+    gpio_set_config(0x01 << 8, GPIO_A);
+
+    //Configures SPI 0 with the appropriate "best" standard
+    SPI_set_config_optimal(sys_freq, SPI0);
 }
 
 void * OLEDThread(void * ) {
@@ -30,6 +43,14 @@ void * OLEDThread(void * ) {
          }
       }
   }
+
+void * TempThread(void *){
+    // read temp
+    double current_temp;
+    while(true){
+        current_temp = getTemp();
+    }
+}
 
 // main() runs in thread 0
 int main(void){
