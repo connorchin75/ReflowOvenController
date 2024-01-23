@@ -11,6 +11,8 @@
 void InitGPIO(){
    //set the system clock to 98.304 MHz 
    sys_clock_init(crys_24_576_MHz, _98_304_MHz);
+   //initialize SPI1 as a master device, at 98.304 MHz, with clock rate divided by 16 and enable the SPI1 device
+   SPI_set_config_optimal(_98_304_MHz,SPI1);
    // configure oled pins
    oled_pin_initialization();
 
@@ -23,9 +25,6 @@ void InitGPIO(){
 
     //initialize Pin PA0 to be an output
     gpio_set_config(0x01 << 8, GPIO_A);
-
-    //Configures SPI 0 with the appropriate "best" standard
-    SPI_set_config_optimal(sys_freq, SPI0);
 }
 
 void * OLEDThread(void * ) {

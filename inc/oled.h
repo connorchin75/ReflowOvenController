@@ -464,9 +464,6 @@ void oled_pin_initialization(void){
    //initialize PA0 (RES_PIN), PA1 (RS_PIN) and PA2 (CS_PIN)
    gpio_set_config(0x07 << 8, GPIO_A);
 
-   //initialize SPI1 as a master device, at 98.304 MHz, with clock rate divided by 16 and enable the SPI1 device
-   SPI_set_config_optimal(_98_304_MHz,SPI1);
-
    //set default values for CS_PIN and SHDN_PIN
    //set the CS_PIN high at the start (Chip select is an active low signal)
    gpio_write(CS_PIN, GPIO_A);
