@@ -2,7 +2,6 @@
 #include <IOConfig.h>
 #include <GPIO.h>
 #include <SPI.h>
-#include <IOConfig.h>
 #include <XPD.h>
 
 #include "wait.h"
