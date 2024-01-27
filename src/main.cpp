@@ -15,16 +15,8 @@ void InitGPIO(){
    SPI_set_config_optimal(_98_304_MHz,SPI1);
    // configure oled pins
    oled_pin_initialization();
-
-   // set the direction of PD3 to output
-    gpio_set_config(0x02 << 8, GPIO_D);
-        // 0x02 << 8 = 0000 0010 0000 0000b
-        // pins : 7654 3210 0000 0000
-        // upper byte is high = output
-        // cleared bits = input
-
-    //initialize Pin PA0 to be an output
-    gpio_set_config(0x01 << 8, GPIO_A);
+   //config thermocouple pins
+   thermocouple_pin_init();
 }
 
 void * OLEDThread(void * ) {
@@ -44,10 +36,10 @@ void * OLEDThread(void * ) {
   }
 
 void * TempThread(void *){
-    // read temp
-    double current_temp;
+    int current_temp = 0;
     while(true){
         current_temp = getTemp();
+        xpd_puts("Detected Temp: %d \n", current_temp); // not sure how xpd_puts will like this
     }
 }
 
@@ -62,4 +54,6 @@ int main(void){
 
   thread_setup(OLEDThread, nullptr, 1);
   thread_run(1);
+  thread_setup(TempThread, nullptr, 2);
+  thread_run(2);
 }
