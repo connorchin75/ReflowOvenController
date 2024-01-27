@@ -6,6 +6,7 @@
 
 #include "wait.h"
 #include "oled.h"
+#include "thermocouple.h"
 
 /// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
 void InitGPIO(){
@@ -39,7 +40,9 @@ void * TempThread(void *){
     int current_temp = 0;
     while(true){
         current_temp = getTemp();
-        xpd_puts("Detected Temp: %d \n", current_temp); // not sure how xpd_puts will like this
+        xpd_puts("Detected Temp: ");
+        xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
+        xpd_puts(" \n");
     }
 }
 
