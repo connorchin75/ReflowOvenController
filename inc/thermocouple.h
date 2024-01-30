@@ -11,21 +11,20 @@
 /***************************************/
 
 // define pinouts
-#define CS_TEMP 0x01 ////SDIO1/PF0 / pin 7
-//#define MOSI 	0x15 //MOSI1/PD1 / pin 21
+#define CS_TEMP 0x01 ////SDIO0/PJ0 / pin 8
 #define MISO 	0x14 //MISO1/PD0 / pin 20
 #define SCLK 	0x16 //SCLK1/PD2 / pin 22
 
 
 void thermocouple_pin_init(void){
-	// set the direction of PF0 to output
-    gpio_set_config(CS_TEMP << 8, GPIO_F);
+	// set the direction of PJ0 to output
+    gpio_set_config(CS_TEMP << 8, GPIO_J);
         // 0x01 << 8 = 0000 0001 0000 0000b
         // pins : 7654 3210 0000 0000
         // upper byte is high = output
         // cleared bits = input
 	//set the CS_TEMP high at the start (Chip select is an active low signal)
-	gpio_write(CS_TEMP, GPIO_F);
+	gpio_write((gpio_read(GPIO_J) | CS_TEMP), GPIO_J);
 }
 
 /*********************************/
@@ -38,8 +37,8 @@ uint16_t readUpperData(void){
 	uint16_t result = 0;
 
 	//select SPI device to read from
-	gpio_write((gpio_read(GPIO_F) | CS_TEMP), GPIO_F); //only changes the CS_TEMP pin to low
-
+	gpio_write((gpio_read(GPIO_J) &~ (CS_TEMP)), GPIO_J); //only changes the CS_TEMP pin to low
+		// gpio j = 0000 0000
 	//result from thermocouple should be 14 bits
 	//note that the thermocouple has 32 bits of information. The first 14 (D31 - D18) are the temperature data. 
 			//The following bits are reserved for either error detection or for the internal temperature data.
@@ -54,7 +53,7 @@ uint16_t readUpperData(void){
 	//result now has 14 bits of data as MSB, then a reserved bit, and a fault bit as the LSB. 
 
 	//turn off CS_temp
-	gpio_write((gpio_read(GPIO_F) | CS_TEMP), GPIO_F); //only changes the CS_TEMP pin to high
+	gpio_write((gpio_read(GPIO_J) | CS_TEMP), GPIO_J); //only changes the CS_TEMP pin to high
 
 	return result;
 }
@@ -67,7 +66,7 @@ uint16_t readLowerData(void){
 
 
 	//select SPI device to read from
-	gpio_write((gpio_read(GPIO_F) | CS_TEMP), GPIO_F); //only changes the CS_TEMP pin to low
+	gpio_write((gpio_read(GPIO_J)  &~ (CS_TEMP)), GPIO_J); //only changes the CS_TEMP pin to low
 
 	//note that the thermocouple has 32 bits of information. 
 			//D31 - D18 : 14 bit temperature data
@@ -96,7 +95,7 @@ uint16_t readLowerData(void){
 	//result now has 12 bits of internal temperature data, 1 reserved bit, and 3 error bits
 
 	//turn off CS_temp
-	gpio_write((gpio_read(GPIO_F) | CS_TEMP), GPIO_F); //only changes the CS_TEMP pin to high
+	gpio_write((gpio_read(GPIO_J) | CS_TEMP), GPIO_J); //only changes the CS_TEMP pin to high
 
 	return result;
 }
@@ -182,7 +181,6 @@ int getTemp(void){
 		//since the Xinc2 can't handle floats, we will ignore the 2 LSB.
 		temperature = temperature >> 2;
 	}
-
 	return temperature;
 }
 
