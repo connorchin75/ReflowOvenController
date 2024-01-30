@@ -43,6 +43,7 @@ void * TempThread(void *){
         xpd_puts("Detected Temp: ");
         xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
         xpd_puts(" \n");
+       wait_ms(1000);
     }
 }
 
