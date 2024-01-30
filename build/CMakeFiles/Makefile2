@@ -94,8 +94,8 @@ clean: CMakeFiles/ReflowOvenController-hex-final.dir/clean
 # Target rules for target CMakeFiles/ReflowOvenController-s.dir
 
 # All Build rule for target.
-CMakeFiles/ReflowOvenController-s.dir/all: CMakeFiles/ReflowOvenController.dir/all
 CMakeFiles/ReflowOvenController-s.dir/all: CMakeFiles/ReflowOvenController-opt.dir/all
+CMakeFiles/ReflowOvenController-s.dir/all: CMakeFiles/ReflowOvenController.dir/all
 	$(MAKE) -f CMakeFiles\ReflowOvenController-s.dir\build.make CMakeFiles/ReflowOvenController-s.dir/depend
 	$(MAKE) -f CMakeFiles\ReflowOvenController-s.dir\build.make CMakeFiles/ReflowOvenController-s.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\cchin\CapstoneFirmware\Xinc2\ReflowOvenController\build\CMakeFiles --progress-num=13,14 "Built target ReflowOvenController-s"
@@ -123,10 +123,10 @@ CMakeFiles/ReflowOvenController-s.dir/clean:
 
 # All Build rule for target.
 CMakeFiles/ReflowOvenController-hex.dir/all: CMakeFiles/ReflowOvenController-s.dir/all
+CMakeFiles/ReflowOvenController-hex.dir/all: CMakeFiles/ReflowOvenController-opt.dir/all
+CMakeFiles/ReflowOvenController-hex.dir/all: CMakeFiles/ReflowOvenController.dir/all
 CMakeFiles/ReflowOvenController-hex.dir/all: CMakeFiles/ReflowOvenController-main.dir/all
 CMakeFiles/ReflowOvenController-hex.dir/all: CMakeFiles/ReflowOvenController-asm.dir/all
-CMakeFiles/ReflowOvenController-hex.dir/all: CMakeFiles/ReflowOvenController.dir/all
-CMakeFiles/ReflowOvenController-hex.dir/all: CMakeFiles/ReflowOvenController-opt.dir/all
 	$(MAKE) -f CMakeFiles\ReflowOvenController-hex.dir\build.make CMakeFiles/ReflowOvenController-hex.dir/depend
 	$(MAKE) -f CMakeFiles\ReflowOvenController-hex.dir\build.make CMakeFiles/ReflowOvenController-hex.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\cchin\CapstoneFirmware\Xinc2\ReflowOvenController\build\CMakeFiles --progress-num=6,7,8,9,10 "Built target ReflowOvenController-hex"
@@ -235,8 +235,8 @@ CMakeFiles/ReflowOvenController-main.dir/clean:
 
 # All Build rule for target.
 CMakeFiles/ReflowOvenController-asm.dir/all: CMakeFiles/ReflowOvenController-s.dir/all
-CMakeFiles/ReflowOvenController-asm.dir/all: CMakeFiles/ReflowOvenController.dir/all
 CMakeFiles/ReflowOvenController-asm.dir/all: CMakeFiles/ReflowOvenController-opt.dir/all
+CMakeFiles/ReflowOvenController-asm.dir/all: CMakeFiles/ReflowOvenController.dir/all
 	$(MAKE) -f CMakeFiles\ReflowOvenController-asm.dir\build.make CMakeFiles/ReflowOvenController-asm.dir/depend
 	$(MAKE) -f CMakeFiles\ReflowOvenController-asm.dir\build.make CMakeFiles/ReflowOvenController-asm.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\cchin\CapstoneFirmware\Xinc2\ReflowOvenController\build\CMakeFiles --progress-num=3,4,5 "Built target ReflowOvenController-asm"

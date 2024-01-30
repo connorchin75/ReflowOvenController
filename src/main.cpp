@@ -33,23 +33,23 @@ void * OLEDThread(void * ) {
       OLED_Init_160128RGB();
       OLED_Start_Page();
       for(progress=0;progress<101;progress++){
-            Clear_Data_Chars(83, 50, BLACK); //clear previous progress reading
-            OLED_Print_Sensor_Val(83, 50, progress, 1); //print new progress reading
-            Draw_Bar(23, 73, BLUE, BLACK, 26, 122, progress); //fill the progress bar to the correct amount
-            wait_ms(500);
-         }
+         Clear_Data_Chars(83, 50, BLACK); //clear previous progress reading
+         OLED_Print_Sensor_Val(83, 50, progress, 1); //print new progress reading
+         Draw_Bar(23, 73, BLUE, BLACK, 26, 122, progress); //fill the progress bar to the correct amount
+         wait_ms(500);
       }
-  }
+   }
+}
 
 void * TempThread(void *){
-    int current_temp = 0;
-        xpd_puts("Detected Temp: ");
-        xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
-        xpd_puts(" \n");
-       wait_ms(1000);
-    }
+   int current_temp = 0;
+   xpd_puts("Detected Temp: ");
+   xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
+   xpd_puts(" \n");
+   wait_ms(1000);
+}
 
-  void * PIDThread(void * ) {
+void * PIDThread(void * ) {
       //This thread will always remain active
       unsigned int led_state1 = 0;
       unsigned int led_state2 = 0;

@@ -918,14 +918,11 @@ sxc__Z10TempThreadPv:                   // @_Z10TempThreadPv
 // BB#0:
 	add	sp, sp, 0x1
 	st	r6, sp, 0xffff          // 1-byte Folded Spill
-	bra	BB12_1
-BB12_5:                                 // %_Z7getTempv.exit
-                                        //   in Loop: Header=BB12_1 Depth=1
 	mov	r1, sxc_.str5
 	//APP
 		jsr	r6, XPD_EchoString
 	//NO_APP
-	add	r1, r0, 0x0
+	mov	r1, 0x0
 	//APP
 		jsr	r6, XPD_EchoSignedDec
 	//NO_APP
@@ -935,62 +932,6 @@ BB12_5:                                 // %_Z7getTempv.exit
 	//NO_APP
 	mov	r2, 0x3e8
 	jsr	r6, sxc__Z7wait_msj
-BB12_1:                                 // =>This Inner Loop Header: Depth=1
-	inp	r0, 0x32
-	and	r0, r0, 0xfffe
-	outp	r0, 0x32
-	mov	r1, 0x0
-	outp	r1, 0x36
-	inp	r0, 0x36
-	outp	r1, 0x36
-	inp	r2, 0x36
-	inp	r1, 0x32
-	ior	r1, r1, 0x1
-	outp	r1, 0x32
-	and	r1, r2, 0x1
-	//cmp	r1, 0x0
-	bc	ZC, BB12_2
-// BB#4:                                //   in Loop: Header=BB12_1 Depth=1
-	and	r0, r0, 0xff
-	rol	r0, r0, 0x8
-	ior	r0, r2, r0
-	and	r0, r0, 0xfff0
-	rol	r0, r0, 0xc
-	bra	BB12_5
-BB12_2:                                 //   in Loop: Header=BB12_1 Depth=1
-	mov	r1, sxc_.str4
-	//APP
-		jsr	r6, XPD_EchoString
-	//NO_APP
-	mov	r1, sxc_.str
-	//APP
-		jsr	r6, XPD_EchoString
-	//NO_APP
-	inp	r0, 0x32
-	and	r0, r0, 0xfffe
-	outp	r0, 0x32
-	mov	r0, 0x0
-	outp	r0, 0x36
-	inp	r1, 0x36
-	outp	r0, 0x36
-	inp	r1, 0x36
-	outp	r0, 0x36
-	inp	r1, 0x36
-	outp	r0, 0x36
-	inp	r1, 0x36
-	inp	r2, 0x32
-	ior	r2, r2, 0x1
-	outp	r2, 0x32
-	bic	r1, r1, 0x0
-	//cmp	r1, 0x0
-	bc	VC, BB12_5
-// BB#3:                                //   in Loop: Header=BB12_1 Depth=1
-	mov	r1, sxc_.str1
-	//APP
-		jsr	r6, XPD_EchoString
-	//NO_APP
-	mov	r0, 0x0
-	bra	BB12_5
 
 //align
 @ = (@ + 1-1)  & -1
@@ -1099,11 +1040,15 @@ BB14_5:                                 // =>This Inner Loop Header: Depth=1
 	inp	r0, 0x26
 	ior	r0, r0, 0x10
 	outp	r0, 0x26
+	mov	r1, 0x100
+	outp	r1, 0x33
+	inp	r0, 0x32
+	ior	r0, r0, 0x1
+	outp	r0, 0x32
 	mov	r0, 0x8000
 	outp	r0, 0x27
-	mov	r1, 0x200
-	outp	r1, 0x33
-	mov	r1, 0x100
+	mov	r2, 0x200
+	outp	r2, 0x33
 	outp	r1, 0x33
 	inp	r1, 0x32
 	ior	r1, r1, 0x1
@@ -1765,117 +1710,6 @@ sxc_Ascii_1:                            // @Ascii_1
 		9                       // 0x9
 		9                       // 0x9
 		15                      // 0xf
-
-sxc_.str:                               // @.str
-		84                      // 0x54
-		104                     // 0x68
-		101                     // 0x65
-		114                     // 0x72
-		109                     // 0x6d
-		111                     // 0x6f
-		99                      // 0x63
-		111                     // 0x6f
-		117                     // 0x75
-		112                     // 0x70
-		108                     // 0x6c
-		101                     // 0x65
-		58                      // 0x3a
-		32                      // 0x20
-		69                      // 0x45
-		110                     // 0x6e
-		116                     // 0x74
-		101                     // 0x65
-		114                     // 0x72
-		101                     // 0x65
-		100                     // 0x64
-		32                      // 0x20
-		70                      // 0x46
-		97                      // 0x61
-		117                     // 0x75
-		108                     // 0x6c
-		116                     // 0x74
-		32                      // 0x20
-		70                      // 0x46
-		117                     // 0x75
-		110                     // 0x6e
-		99                      // 0x63
-		116                     // 0x74
-		105                     // 0x69
-		111                     // 0x6f
-		110                     // 0x6e
-		10                      // 0xa
-		0                       // 0x0
-
-sxc_.str1:                              // @.str1
-		84                      // 0x54
-		104                     // 0x68
-		101                     // 0x65
-		114                     // 0x72
-		109                     // 0x6d
-		111                     // 0x6f
-		99                      // 0x63
-		111                     // 0x6f
-		117                     // 0x75
-		112                     // 0x70
-		108                     // 0x6c
-		101                     // 0x65
-		58                      // 0x3a
-		32                      // 0x20
-		79                      // 0x4f
-		112                     // 0x70
-		101                     // 0x65
-		110                     // 0x6e
-		32                      // 0x20
-		67                      // 0x43
-		105                     // 0x69
-		114                     // 0x72
-		99                      // 0x63
-		117                     // 0x75
-		105                     // 0x69
-		116                     // 0x74
-		32                      // 0x20
-		100                     // 0x64
-		101                     // 0x65
-		116                     // 0x74
-		101                     // 0x65
-		99                      // 0x63
-		116                     // 0x74
-		101                     // 0x65
-		100                     // 0x64
-		10                      // 0xa
-		0                       // 0x0
-
-sxc_.str4:                              // @.str4
-		84                      // 0x54
-		104                     // 0x68
-		101                     // 0x65
-		114                     // 0x72
-		109                     // 0x6d
-		111                     // 0x6f
-		99                      // 0x63
-		111                     // 0x6f
-		117                     // 0x75
-		112                     // 0x70
-		108                     // 0x6c
-		101                     // 0x65
-		32                      // 0x20
-		69                      // 0x45
-		114                     // 0x72
-		114                     // 0x72
-		111                     // 0x6f
-		114                     // 0x72
-		32                      // 0x20
-		100                     // 0x64
-		101                     // 0x65
-		116                     // 0x74
-		101                     // 0x65
-		99                      // 0x63
-		116                     // 0x74
-		101                     // 0x65
-		100                     // 0x64
-		46                      // 0x2e
-		10                      // 0xa
-		0                       // 0x0
 
 sxc_.str5:                              // @.str5
 		68                      // 0x44
