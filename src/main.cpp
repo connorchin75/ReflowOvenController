@@ -8,7 +8,6 @@
 #include "oled.h"
 #include "thermocouple.h"
 #include "pid.h"
-#include "thermocouple.h"
 
 /// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
 void InitGPIO(){
@@ -44,22 +43,11 @@ void * OLEDThread(void * ) {
 
 void * TempThread(void *){
     int current_temp = 0;
-  void * TempThread(void *){
-    int current_temp = 0;
-    while(true){
-        current_temp = getTemp();
         xpd_puts("Detected Temp: ");
         xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
         xpd_puts(" \n");
        wait_ms(1000);
     }
-}
-        xpd_puts("Detected Temp: ");
-        xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
-        xpd_puts(" \n");
-       wait_ms(1000);
-    }
-}
 
   void * PIDThread(void * ) {
       //This thread will always remain active
@@ -81,10 +69,6 @@ int main(void){
 
    InitGPIO();
 
-  thread_setup(OLEDThread, nullptr, 1);
-  thread_run(1);
-  thread_setup(TempThread, nullptr, 2);
-  thread_run(2);
    thread_setup(OLEDThread, nullptr, 1);
    thread_run(1);
    thread_setup(TempThread, nullptr, 2);

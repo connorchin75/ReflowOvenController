@@ -1,100 +1,63 @@
-#include <Timer.h>
+#include <SystemClock.h>
+#include <IOConfig.h>
 #include <XPD.h>
+#include <GPIO.h>
+#include <Thread.h>
 
-#define LED_PIN1 0x80
-#define LED_PIN2 0x2
+#include "wait.h"
+#include "oled.h"
+#include "thermocouple.h"
 
-struct Pid {
-   unsigned int kp;
-   unsigned int ki;
-   unsigned int kd;
-   unsigned int prev_error;
-   unsigned int acc_error;
-   unsigned int max_output;
-};
-
-void timer_initialization(void){
-   //initialize timer A and begin counting
-   timer_set_config(TIMER_MODE_UP|TIMER_CLOCK_RATE_4096|TIMER_ENABLE, TIMER_A);
-   //initialize the compare register for the 1 second counter
-   timer_set_config_ccm(TIMER_CCM_COMP_NOT_CAP, 1, TIMER_A);
-   //initialize the compare register for the 2 second counter
-   timer_set_config_ccm(TIMER_CCM_COMP_NOT_CAP, 2, TIMER_A);
-   //set the CR0 value to have the timer trigger after every 2 seconds or 48000 cycles
-   timer_write_CCR(0xBB80, 0, TIMER_A);
-   //set the CR1 value to trigger every 1 seconds or 24000 cycles
-   timer_write_CCR(0x5DC0, 1, TIMER_A);
-   //set the CR2 value to trigger every 2 seconds or 48000 cycles
-   timer_write_CCR(0xBB80, 2, TIMER_A);
+/// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
+void InitGPIO(){
+   //set the system clock to 98.304 MHz 
+   sys_clock_init(crys_24_576_MHz, _98_304_MHz);
+   //initialize SPI1 as a master device, at 98.304 MHz, with clock rate divided by 16 and enable the SPI1 device
+   SPI_set_config_optimal(_98_304_MHz,SPI1);
+   // configure oled pins
+   oled_pin_initialization();
+   //config thermocouple pins
+   thermocouple_pin_init();
 }
 
-//this function toggles the LED every 2 seconds
-unsigned int led_control2(unsigned int led_state){
-   if((timer_get_config_ccm(2,TIMER_A)>>15) == 1){
-      if (led_state == 0){
-         gpio_write(gpio_read(GPIO_D)&~(LED_PIN1), GPIO_D);
-         led_state = 1;
-      }else{
-         gpio_write(gpio_read(GPIO_D)|LED_PIN1, GPIO_D);
-         led_state = 0;
+void * OLEDThread(void * ) {
+   //This thread will always remain active
+   unsigned int progress;
+   while (true) {
+      //start up oled
+      OLED_Init_160128RGB();
+      OLED_Start_Page();
+      for(progress=0;progress<101;progress++){
+            Clear_Data_Chars(83, 50, BLACK); //clear previous progress reading
+            OLED_Print_Sensor_Val(83, 50, progress, 1); //print new progress reading
+            Draw_Bar(23, 73, BLUE, BLACK, 26, 122, progress); //fill the progress bar to the correct amount
+            wait_ms(500);
+         }
       }
-   }
-   return led_state;
+  }
+
+void * TempThread(void *){
+    int current_temp = 0;
+    while(true){
+        current_temp = getTemp();
+        xpd_puts("Detected Temp: ");
+        xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
+        xpd_puts(" \n");
+       wait_ms(1000);
+    }
 }
 
-//this function toggles the LED every 1 second
-unsigned int led_control1(unsigned int led_state){
-   if(((timer_get_config(TIMER_A)>>15)|(timer_get_config_ccm(1, TIMER_A)>>15)) == 1){
-      if (led_state == 0){
-         gpio_write(gpio_read(GPIO_J)&~(LED_PIN2), GPIO_J);
-         led_state = 1;
-      }else{
-         gpio_write(gpio_read(GPIO_J)|LED_PIN2, GPIO_J);
-         led_state = 0;
-      }
-   }
-   return led_state;
-}
+// main() runs in thread 0
+int main(void){
+   // Configure a pull-up on pin PG0
+  // This pull-up prevents an XPD write from stalling execution if
+  // there is no XPD attached.
+  io_set_config(0b1110011, io_PG0);
 
-void pid_pin_initialization(void){  
-   //intitializing PD7 as an output
-   gpio_set_config(0x80 << 8, GPIO_D);
-   //initialize PJ1 as an output
-   gpio_set_config(0x2 << 8, GPIO_J);
-}
+  InitGPIO();
 
-//use this function to set the PID parameters for PID computation
-void set_pid_parameters(struct Pid *pid, unsigned int kp_val,  unsigned int ki_val,  unsigned int kd_val){
-    pid->kp = kp_val;
-    pid->ki = ki_val;
-    pid->kd = kd_val;
-    pid->prev_error = 0; //zero out the prev_error value once new PID parameters are set
-    pid->acc_error = 0; //zero out the acc_error value once new PID parameters are set
-    pid->max_output = 2000;
+  thread_setup(OLEDThread, nullptr, 1);
+  thread_run(1);
+  thread_setup(TempThread, nullptr, 2);
+  thread_run(2);
 }
-
-//This function computes the PID action for the controller to take on the next iteration
-unsigned int pid_compute(struct Pid *pid, unsigned int target_temp, unsigned int measured_temp){
-   unsigned int cur_error;
-   unsigned int error_diff; //this term stores the error difference for derivative action
-   unsigned int output;
-   //calculate the current error between the measured and target temp
-   cur_error = target_temp - measured_temp;
-   //add the error to the error accumulator for the integral term
-   pid->acc_error += cur_error;
-   //find the error difference between current and previous PID computations
-   error_diff = cur_error - (pid->prev_error);
-   //set the previous error term to the current error
-   pid->prev_error = cur_error;
-   //calculate the controller output value
-   output = (pid->kp * cur_error) + (pid->ki * pid->acc_error) + (pid->kd * error_diff);
-   //constrain the output to be within the limits
-   if (output > pid->max_output){
-      output = pid->max_output;
-   }
-   if (output < 0){
-      output = 0;
-   }
-   return output;
-}
-
