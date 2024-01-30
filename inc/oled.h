@@ -465,9 +465,9 @@ void oled_pin_initialization(void){
 
    //set default values for CS_PIN and SHDN_PIN
    //set the CS_PIN high at the start (Chip select is an active low signal)
-   gpio_write(CS_PIN, GPIO_A);
+   gpio_write(gpio_read(GPIO_A)|CS_PIN, GPIO_A);
    //set the SHDN_PIN high at the start (Shutdown is an active low signal)
-   gpio_write(SHDN_PIN, GPIO_D);
+   gpio_write(gpio_read(GPIO_D)|SHDN_PIN, GPIO_D);
 }
 
 //Function to initialize the OLED properly

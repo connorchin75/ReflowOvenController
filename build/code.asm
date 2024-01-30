@@ -899,6 +899,142 @@ BB11_19:                                //   Parent Loop BB11_1 Depth=1
 	bc	EQ, BB11_1
 	bra	BB11_16
 
+//align
+@ = (@ + 1-1)  & -1
+sxc__Z10TempThreadPv:                   // @_Z10TempThreadPv
+// BB#0:
+	add	sp, sp, 0x1
+	st	r6, sp, 0xffff          // 1-byte Folded Spill
+	bra	BB12_1
+BB12_5:                                 // %_Z7getTempv.exit
+                                        //   in Loop: Header=BB12_1 Depth=1
+	mov	r1, sxc_.str5
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	add	r1, r0, 0x0
+	//APP
+		jsr	r6, XPD_EchoSignedDec
+	//NO_APP
+	mov	r1, sxc_.str6
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	mov	r2, 0x3e8
+	jsr	r6, sxc__Z7wait_msj
+BB12_1:                                 // =>This Inner Loop Header: Depth=1
+	inp	r0, 0x32
+	and	r0, r0, 0xfffe
+	outp	r0, 0x32
+	mov	r1, 0x0
+	outp	r1, 0x36
+	inp	r0, 0x36
+	outp	r1, 0x36
+	inp	r2, 0x36
+	inp	r1, 0x32
+	ior	r1, r1, 0x1
+	outp	r1, 0x32
+	and	r1, r2, 0x1
+	//cmp	r1, 0x0
+	bc	ZC, BB12_2
+// BB#4:                                //   in Loop: Header=BB12_1 Depth=1
+	and	r0, r0, 0xff
+	rol	r0, r0, 0x8
+	ior	r0, r2, r0
+	and	r0, r0, 0xfff0
+	rol	r0, r0, 0xc
+	bra	BB12_5
+BB12_2:                                 //   in Loop: Header=BB12_1 Depth=1
+	mov	r1, sxc_.str4
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	mov	r1, sxc_.str
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	inp	r0, 0x32
+	and	r0, r0, 0xfffe
+	outp	r0, 0x32
+	mov	r0, 0x0
+	outp	r0, 0x36
+	inp	r1, 0x36
+	outp	r0, 0x36
+	inp	r1, 0x36
+	outp	r0, 0x36
+	inp	r1, 0x36
+	outp	r0, 0x36
+	inp	r1, 0x36
+	inp	r2, 0x32
+	ior	r2, r2, 0x1
+	outp	r2, 0x32
+	bic	r1, r1, 0x0
+	//cmp	r1, 0x0
+	bc	VC, BB12_5
+// BB#3:                                //   in Loop: Header=BB12_1 Depth=1
+	mov	r1, sxc_.str1
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	mov	r0, 0x0
+	bra	BB12_5
+
+//align
+@ = (@ + 1-1)  & -1
+sxc__Z9PIDThreadPv:                     // @_Z9PIDThreadPv
+// BB#0:
+	mov	r0, 0x5b
+	outp	r0, 0x3e
+	mov	r0, 0x2
+	outp	r0, 0x43
+	outp	r0, 0x45
+	mov	r0, 0xbb80
+	outp	r0, 0x40
+	mov	r1, 0x5dc0
+	outp	r1, 0x42
+	outp	r0, 0x44
+	mov	r0, 0x0
+	add	r2, r0, 0x0
+	bra	BB13_1
+BB13_7:                                 //   in Loop: Header=BB13_1 Depth=1
+	and	r1, r3, 0xff7f
+	outp	r1, 0x26
+	mov	r2, 0x1
+BB13_1:                                 // %_Z12led_control2j.exit
+                                        // =>This Inner Loop Header: Depth=1
+	inp	r1, 0x3e
+	inp	r3, 0x43
+	ior	r1, r3, r1
+	sub	r1, r1, 0x0
+	bc	GT, BB13_5
+// BB#2:                                //   in Loop: Header=BB13_1 Depth=1
+	inp	r3, 0x32
+	sub	r1, r0, 0x0
+	bc	NE, BB13_4
+// BB#3:                                //   in Loop: Header=BB13_1 Depth=1
+	and	r0, r3, 0xfffd
+	outp	r0, 0x32
+	mov	r0, 0x1
+	bra	BB13_5
+BB13_4:                                 //   in Loop: Header=BB13_1 Depth=1
+	ior	r0, r3, 0x2
+	outp	r0, 0x32
+	mov	r0, 0x0
+BB13_5:                                 // %_Z12led_control1j.exit
+                                        //   in Loop: Header=BB13_1 Depth=1
+	inp	r1, 0x45
+	//cmp	r1, 0x0
+	bc	NC, BB13_1
+// BB#6:                                //   in Loop: Header=BB13_1 Depth=1
+	inp	r3, 0x26
+	sub	r1, r2, 0x0
+	bc	EQ, BB13_7
+// BB#8:                                //   in Loop: Header=BB13_1 Depth=1
+	ior	r1, r3, 0x80
+	outp	r1, 0x26
+	mov	r2, 0x0
+	bra	BB13_1
+
 //sxc_main
 //align
 @ = (@ + 1-1)  & -1
@@ -911,10 +1047,10 @@ sxc_main:                               // @main
 	inp	r0, 0x72
 	and	r0, r0, 0xfbff
 	outp	r0, 0x72
-BB12_1:                                 // =>This Inner Loop Header: Depth=1
+BB14_1:                                 // =>This Inner Loop Header: Depth=1
 	inp	r0, 0x72
 	//cmp	r0, 0x0
-	bc	LT0, BB12_1
+	bc	LT0, BB14_1
 // BB#2:
 	mov	r0, 0x1
 	outp	r0, 0x75
@@ -923,43 +1059,79 @@ BB12_1:                                 // =>This Inner Loop Header: Depth=1
 	inp	r0, 0x72
 	and	r0, r0, 0xfbff
 	outp	r0, 0x72
-BB12_3:                                 // =>This Inner Loop Header: Depth=1
+BB14_3:                                 // =>This Inner Loop Header: Depth=1
 	inp	r0, 0x72
 	//cmp	r0, 0x0
-	bc	LT0, BB12_3
+	bc	LT0, BB14_3
 // BB#4:
 	inp	r0, 0x72
 	ior	r0, r0, 0xc00
 	outp	r0, 0x72
-BB12_5:                                 // =>This Inner Loop Header: Depth=1
+BB14_5:                                 // =>This Inner Loop Header: Depth=1
 	inp	r0, 0x72
 	//cmp	r0, 0x0
-	bc	NC, BB12_5
+	bc	NC, BB14_5
 // BB#6:                                // %_Z8InitGPIOv.exit
 	mov	r0, 0x8183
 	outp	r0, 0x73
+	mov	r0, 0xf
+	outp	r0, 0x37
 	mov	r0, 0x1000
 	outp	r0, 0x27
 	mov	r0, 0x700
 	outp	r0, 0x21
-	mov	r0, 0xf
-	outp	r0, 0x37
-	mov	r0, 0x4
+	inp	r0, 0x20
+	ior	r0, r0, 0x4
 	outp	r0, 0x20
-	mov	r0, 0x10
+	inp	r0, 0x26
+	ior	r0, r0, 0x10
 	outp	r0, 0x26
 	mov	r0, 0x8000
+	outp	r0, 0x27
+	mov	r1, 0x200
+	outp	r1, 0x33
+	mov	r1, 0x100
+	outp	r1, 0x33
+	inp	r1, 0x32
+	ior	r1, r1, 0x1
+	outp	r1, 0x32
 	outp	r0, 0x7
 	mov	r1, 0xa
 	outp	r1, 0x3
 	mov	r1, 0x0
 	outp	r1, 0x0
-	mov	r1, sxc__Z10OLEDThreadPv
+	mov	r2, sxc__Z10OLEDThreadPv
+	outp	r2, 0x1
+	outp	r0, 0x6
+	outp	r0, 0x7
+	ld	r2, thrds_vector
+	and	r2, r2, 0xfffd
+	st	r2, thrds_vector
+	outp	r2, 0x4
+	outp	r0, 0x6
+	outp	r0, 0x7
+	mov	r2, 0x12
+	outp	r2, 0x3
+	outp	r1, 0x0
+	mov	r2, sxc__Z10TempThreadPv
+	outp	r2, 0x1
+	outp	r0, 0x6
+	outp	r0, 0x7
+	ld	r2, thrds_vector
+	and	r2, r2, 0xfffb
+	st	r2, thrds_vector
+	outp	r2, 0x4
+	outp	r0, 0x6
+	outp	r0, 0x7
+	mov	r2, 0x1a
+	outp	r2, 0x3
+	outp	r1, 0x0
+	mov	r1, sxc__Z9PIDThreadPv
 	outp	r1, 0x1
 	outp	r0, 0x6
 	outp	r0, 0x7
 	ld	r1, thrds_vector
-	and	r1, r1, 0xfffd
+	and	r1, r1, 0xfff7
 	st	r1, thrds_vector
 	outp	r1, 0x4
 	outp	r0, 0x6
@@ -1003,17 +1175,17 @@ sxc___xinc_umod:                        // @__xinc_umod
 sxc_memset:                             // @memset
 // BB#0:
 	sub	r1, r4, 0x0
-	bc	EQ, BB15_3
+	bc	EQ, BB17_3
 // BB#1:
 	add	r0, r2, 0x0
-BB15_2:                                 // %.lr.ph
+BB17_2:                                 // %.lr.ph
                                         // =>This Inner Loop Header: Depth=1
 	st	r3, r0, 0x0
 	add	r0, r0, 0x1
 	add	r4, r4, 0xffff
 	//cmp	r4, 0x0
-	bc	ZC, BB15_2
-BB15_3:                                 // %._crit_edge
+	bc	ZC, BB17_2
+BB17_3:                                 // %._crit_edge
 	add	r0, r2, 0x0
 	jsr	r6, r6
 
@@ -1022,13 +1194,13 @@ BB15_3:                                 // %._crit_edge
 sxc_memcpy:                             // @memcpy
 // BB#0:
 	sub	r1, r2, r3
-	bc	EQ, BB16_4
+	bc	EQ, BB18_4
 // BB#1:
 	sub	r1, r4, 0x0
-	bc	EQ, BB16_4
+	bc	EQ, BB18_4
 // BB#2:
 	add	r0, r2, 0x0
-BB16_3:                                 // %.lr.ph.i
+BB18_3:                                 // %.lr.ph.i
                                         // =>This Inner Loop Header: Depth=1
 	ld	r1, r3, 0x0
 	st	r1, r0, 0x0
@@ -1036,8 +1208,8 @@ BB16_3:                                 // %.lr.ph.i
 	add	r0, r0, 0x1
 	add	r4, r4, 0xffff
 	//cmp	r4, 0x0
-	bc	ZC, BB16_3
-BB16_4:                                 // %memcpy_base.exit
+	bc	ZC, BB18_3
+BB18_4:                                 // %memcpy_base.exit
 	add	r0, r2, 0x0
 	jsr	r6, r6
 
@@ -1055,15 +1227,15 @@ sxc_memmove:                            // @memmove
 	mov	r0, 0x0 //Select--False
 	ior	r0, r0, r5
 	sub	r1, r3, r2
-	bc	UGE, BB17_1
+	bc	UGE, BB19_1
 // BB#4:
 	and	r0, r0, 0x1
 	//cmp	r0, 0x0
-	bc	ZC, BB17_7
+	bc	ZC, BB19_7
 // BB#5:                                // %.lr.ph23.i.preheader
 	mov	r0, 0x1
 	sub	r0, r0, r4
-BB17_6:                                 // %.lr.ph23.i
+BB19_6:                                 // %.lr.ph23.i
                                         // =>This Inner Loop Header: Depth=1
 	sub	r1, r2, r0
 	sub	r4, r3, r0
@@ -1071,15 +1243,15 @@ BB17_6:                                 // %.lr.ph23.i
 	st	r4, r1, 0x0
 	add	r0, r0, 0x1
 	sub	r1, r0, 0x1
-	bc	NE, BB17_6
-	bra	BB17_7
-BB17_1:
+	bc	NE, BB19_6
+	bra	BB19_7
+BB19_1:
 	and	r0, r0, 0x1
 	//cmp	r0, 0x0
-	bc	ZC, BB17_7
+	bc	ZC, BB19_7
 // BB#2:
 	add	r0, r2, 0x0
-BB17_3:                                 // %.lr.ph.i
+BB19_3:                                 // %.lr.ph.i
                                         // =>This Inner Loop Header: Depth=1
 	ld	r1, r3, 0x0
 	st	r1, r0, 0x0
@@ -1087,8 +1259,8 @@ BB17_3:                                 // %.lr.ph.i
 	add	r0, r0, 0x1
 	add	r4, r4, 0xffff
 	//cmp	r4, 0x0
-	bc	ZC, BB17_3
-BB17_7:                                 // %memcpy_base.exit
+	bc	ZC, BB19_3
+BB19_7:                                 // %memcpy_base.exit
 	add	r0, r2, 0x0
 	jsr	r6, r6
 

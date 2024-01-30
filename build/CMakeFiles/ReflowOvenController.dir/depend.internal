@@ -3,6 +3,8 @@
 
 CMakeFiles/ReflowOvenController.dir/src/main.cpp.obj
  ../inc/oled.h
+ ../inc/pid.h
+ ../inc/thermocouple.h
  ../inc/wait.h
  C:/Program Files/SXC/include/sxc-lib/GPIO.h
  C:/Program Files/SXC/include/sxc-lib/IOConfig.h

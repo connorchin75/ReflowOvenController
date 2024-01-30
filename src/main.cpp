@@ -6,6 +6,8 @@
 
 #include "wait.h"
 #include "oled.h"
+#include "pid.h"
+#include "thermocouple.h"
 
 /// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
 void InitGPIO(){
@@ -15,16 +17,10 @@ void InitGPIO(){
    SPI_set_config_optimal(_98_304_MHz,SPI1);
    // configure oled pins
    oled_pin_initialization();
-
-   // set the direction of PD3 to output
-    gpio_set_config(0x02 << 8, GPIO_D);
-        // 0x02 << 8 = 0000 0010 0000 0000b
-        // pins : 7654 3210 0000 0000
-        // upper byte is high = output
-        // cleared bits = input
-
-    //initialize Pin PA0 to be an output
-    gpio_set_config(0x01 << 8, GPIO_A);
+   // configuration for pid
+   pid_pin_initialization();
+   //config thermocouple pins
+   thermocouple_pin_init();
 }
 
 void * OLEDThread(void * ) {
@@ -43,23 +39,41 @@ void * OLEDThread(void * ) {
       }
   }
 
-void * TempThread(void *){
-    // read temp
-    double current_temp;
+  void * TempThread(void *){
+    int current_temp = 0;
     while(true){
         current_temp = getTemp();
+        xpd_puts("Detected Temp: ");
+        xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
+        xpd_puts(" \n");
+       wait_ms(1000);
     }
 }
+
+  void * PIDThread(void * ) {
+      //This thread will always remain active
+      unsigned int led_state1 = 0;
+      unsigned int led_state2 = 0;
+      timer_initialization();
+      while (true) {
+         led_state1 = led_control1(led_state1);
+         led_state2 = led_control2(led_state2);
+      }
+  }
 
 // main() runs in thread 0
 int main(void){
    // Configure a pull-up on pin PG0
-  // This pull-up prevents an XPD write from stalling execution if
-  // there is no XPD attached.
-  io_set_config(0b1110011, io_PG0);
+   // This pull-up prevents an XPD write from stalling execution if
+   // there is no XPD attached.
+   io_set_config(0b1110011, io_PG0);
 
-  InitGPIO();
+   InitGPIO();
 
-  thread_setup(OLEDThread, nullptr, 1);
-  thread_run(1);
+   thread_setup(OLEDThread, nullptr, 1);
+   thread_run(1);
+   thread_setup(TempThread, nullptr, 2);
+   thread_run(2);
+   thread_setup(PIDThread, nullptr, 3);
+   thread_run(3);
 }

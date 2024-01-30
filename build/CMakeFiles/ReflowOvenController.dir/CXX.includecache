@@ -15,7 +15,25 @@ GPIO.h
 -
 SPI.h
 -
+XPD.h
+-
+wait.h
+../inc/wait.h
+
+../inc/pid.h
+Timer.h
+-
+XPD.h
+-
+
+../inc/thermocouple.h
+SystemClock.h
+-
 IOConfig.h
+-
+GPIO.h
+-
+SPI.h
 -
 XPD.h
 -
@@ -337,4 +355,8 @@ wait.h
 C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/wait.h
 oled.h
 C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/oled.h
+pid.h
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/pid.h
+thermocouple.h
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/thermocouple.h
 

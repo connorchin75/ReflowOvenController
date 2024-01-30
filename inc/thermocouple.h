@@ -1,178 +1,200 @@
-#include <stdint.h>
+#include <SystemClock.h>
+#include <IOConfig.h>
+#include <GPIO.h>
+#include <SPI.h>
+#include <XPD.h>
 
-/* ------------------------------------------------------------ */
-/*					Object Class Declarations					*/
-/* ------------------------------------------------------------ */
-int thermocouple::chipSelect  = -1;
+#include "wait.h"
 
-class thermocouple
-{
-	public:
-	
-		thermocouple();
-		void begin(int CS);
-		
-		
-		double getTemp();
-		double getAMBTemp();
-		void readData();		
-		uint16_t getFault();
-		double celToFar(double celsius);	
-		
+/***************************************/
+/***** INITIALIZATION AND PINOUTS ******/
+/***************************************/
 
-	private:
-		
-		
-		uint32_t data;
-		
-		static int chipSelect; 
-		int fault;
-		int SCV;
-		int SCG;
-		int OC;		
-		
-};
+// define pinouts
+#define CS_TEMP 0x01 ////SDIO0/PJ0 / pin 8
+#define MISO 	0x14 //MISO1/PD0 / pin 20
+#define SCLK 	0x16 //SCLK1/PD2 / pin 22
 
 
-extern "C" {
-  #include <stdint.h>
+void thermocouple_pin_init(void){
+	// set the direction of PJ0 to output
+    gpio_set_config(CS_TEMP << 8, GPIO_J);
+        // 0x01 << 8 = 0000 0001 0000 0000b
+        // pins : 7654 3210 0000 0000
+        // upper byte is high = output
+        // cleared bits = input
+	//set the CS_TEMP high at the start (Chip select is an active low signal)
+	gpio_write((gpio_read(GPIO_J) | CS_TEMP), GPIO_J);
 }
 
-/* Begin()
-    Input:
-        CS is the desired chip select pin for the SPI interface. Need 
-        this value to access into our read and write register functions
-    Description:
-        initializes the class parameters and calls for the IC to be initialized
-*/
-void thermocouple::begin(int CS){	
-	//Configure SPI 0 with the appropriate "best" standard
-    SPI_set_config_optimal(sys_freq, SPI0)
-	chipSelect = CS;	
-}
+/*********************************/
+/***** LOWER LEVEL FUNCTIONS ******/
+/*********************************/
 
-/* getTemp()
-    Description:
-        call readData and return that value
-*/
-double thermocouple::getTemp(){
-	
-	int modded = 0;
-	int buffer = 0;
-	double temp = 0;
-	
-	readData();
-	
-	buffer = data & 0xFFFC0000;	
-	
-	//shift over to LSB 
-	buffer = buffer >> 18;
-	
-	
-	modded = buffer % 4;
-	temp = (double) (buffer / 4);	
-	
-	
-	temp = temp + (modded * .25);
+uint16_t readUpperData(void){
+		
+	uint16_t buffer = 0;
+	uint16_t result = 0;
 
-	return temp;
-	
-}
+	//select SPI device to read from
+	gpio_write((gpio_read(GPIO_J) &~ (CS_TEMP)), GPIO_J); //only changes the CS_TEMP pin to low
+		// gpio j = 0000 0000
+	//result from thermocouple should be 14 bits
+	//note that the thermocouple has 32 bits of information. The first 14 (D31 - D18) are the temperature data. 
+			//The following bits are reserved for either error detection or for the internal temperature data.
+			// Chose to only read the first 14 bits.
 
-/*  getAMBTemp()
-    Output:
-        double temperature of chip
-    Description:
-        will extract the chip temperature data from the data stream
-*/
-double thermocouple::getAMBTemp(){
-	
-	int buffer = 0;
-	double ambTemp = 0;
-	int modded = 0;
-	
-	readData();
-	
-	buffer = data & 0x0000FFF0;		
-	
-	buffer = buffer >> 4;	
-	
-	modded = buffer % 16;
-	ambTemp = (double) (buffer / 16);	
-	
-	ambTemp = ambTemp + (modded * .0625);
-	
-	return ambTemp;
-
-}
-
-
-
-/*  readData()
-    Description:
-        will read the bitstream from the thermocouple and store it into data member "data"
-*/
-void thermocouple::readData(){
-	
-	//Serial.println("Entered update data");
-	
-	uint32_t buffer = 0;
-	//clear current data int
-	data = 0;
-	
-	double result = 0.0;
-	
-	//read in 32 bits of data 
-	
-    gpio_write(gpio_read(GPIO_A)|0x01, GPIO_A);
-	digitalWrite(chipSelect, LOW); //start reading
-	
-	for(int i = 0; i<4; i++){
-		buffer = SPI_read(SPI0);
-		data = data << 8;
-		data = data | buffer;
+	//read 8 bits at a time
+	for (int i = 0; i<2; i++){
+		buffer = SPI_read(SPI1); //reads from MISO pin. note that SPI needs to be in master mode
+		result = result <<8;
+		result = result | buffer;
 	}
-	
-	digitalWrite(chipSelect, HIGH);
+	//result now has 14 bits of data as MSB, then a reserved bit, and a fault bit as the LSB. 
 
+	//turn off CS_temp
+	gpio_write((gpio_read(GPIO_J) | CS_TEMP), GPIO_J); //only changes the CS_TEMP pin to high
+
+	return result;
 }
 
+uint16_t readLowerData(void){
+		
+	uint16_t buffer = 0;
+	uint16_t result = 0;
+	uint16_t upper = 0; //this will be the top 16 bits (D31 - D16)
 
-/*  getFault()
-    Output:
-        uint16_t fault code which tells you what is failing
-    Description:
-        will read the bitstream from the thermocouple and store it into data member "data"
-*/
-uint16_t thermocouple::getFault(){
-	
-	readData();	
 
-	if((data & 65536) == 65536){	
-		Serial.println("Entered fault");
-		if((data & 1) == 1 && (data & 3) != 3)
-			return 1;   //open connection	
-		if((data & 3) == 3)
-			return 2;	//SCG shorted to gnd				
-		if((data & 4) == 4)
-			return 3;	//SCV shorted to VCC		
+	//select SPI device to read from
+	gpio_write((gpio_read(GPIO_J)  &~ (CS_TEMP)), GPIO_J); //only changes the CS_TEMP pin to low
+
+	//note that the thermocouple has 32 bits of information. 
+			//D31 - D18 : 14 bit temperature data
+			//D17 is reserved
+			//D16 is the Fault Bit (if = 1)
+			//D15 - D4 : 12-bit internal temperature (cold junction)
+			//D3 is reserved
+			//D2 : SCV Bit (1 = short to Vcc)
+			//D1 : SCG Bit (1 = short to gnd)
+			//D0 : OC Bit (1 = open circuit)
+
+	//read upper 16 bits into first variable. this is essentially ignored information
+	for (int i = 0; i<2; i++){
+		buffer = SPI_read(SPI1); //reads from MISO pin. note that SPI needs to be in master mode
+		upper = upper <<8;
+		upper = upper | buffer;
 	}
-	
-	//else zero Pmod is working correctly
-	return 0;
+	//upper now has 14 bits of data as MSB, then a reserved bit, and a fault bit as the LSB.
 
+	//read next 16 bits into results variable
+	for (int i = 0; i<2; i++){
+		buffer = SPI_read(SPI1); //reads from MISO pin. note that SPI needs to be in master mode
+		result = result <<8;
+		result = result | buffer;
+	}
+	//result now has 12 bits of internal temperature data, 1 reserved bit, and 3 error bits
+
+	//turn off CS_temp
+	gpio_write((gpio_read(GPIO_J) | CS_TEMP), GPIO_J); //only changes the CS_TEMP pin to high
+
+	return result;
 }
 
 
+/*********************************/
+/***** HIGH LEVEL FUNCTIONS ******/
+/*********************************/
 
-/*  double celToFar(double celsius)
-    Input:
-        double celcius -> value to convert to farenheit
-    Output:
-        double farenheit -> converted farenheit value
-    Description:
-        converts a temperature in celcius to farenheit
-*/
-double thermocouple::celToFar(double celsius){	
-	return (celsius * 1.8) + 32;
+int isFault(void){
+
+	int isFault = 0;
+	uint16_t rawdata = 0;
+
+	rawdata = readUpperData();
+	if ((rawdata & 0x0001) == 0x0001){ //if the fault bit (LSB) is 1
+		isFault = 1;
+	}
+	return isFault;
+}
+
+int getFault(void){
+	xpd_puts("Thermocouple: Entered Fault Function\n");
+	uint16_t rawdata = 0;
+
+	rawdata = readLowerData();
+	
+	rawdata = rawdata & 0x0001; //grabs the bottom 4 LSBs
+
+	//the bottom 4 bits:
+	// D3 is reserved
+	// D2 is Short to Vcc flag
+	// D1 is Short to Gnd flag
+	// D0 is Open Circuit flag
+	if(((rawdata & 1) == 1) && ((rawdata & 3) != 3)){
+		xpd_puts("Thermocouple: Open Circuit detected\n");
+		return 1; //open circuit
+	}else if(((rawdata & 2) == 1) || ((rawdata & 3) == 3)){
+		xpd_puts("Thermocouple: Short to Gnd detected\n");
+		return 2; //shorted to Gnd
+	}else if(((rawdata & 4) == 1) || ((rawdata & 3) == 3)){
+		xpd_puts("Thermocouple: Short to Vcc detected\n");
+		return 3; //shorted to Vcc
+	}else{
+		return 0; //Pmod working properly
+	}
+}
+
+
+int getTemp(void){
+
+	int temperature = 0;
+	uint16_t rawdata = 0;
+
+	rawdata = readUpperData();
+
+	if ((rawdata & 0x0001) == 0x0001){//if the fault bit (LSB) is 1
+		//error detected
+		xpd_puts("Thermocouple Error detected.\n");
+		getFault();
+		temperature = 0;
+	}
+	else{
+		temperature = rawdata >> 2; //ignore rightmost two bits (reserved and fault bit)
+
+		//temperature is now organized like this:
+		// D13 : Sign
+		// D12 : 2^10
+		// D11 : 2^9
+		// D10 : 2^8
+		// D9  : 2^7
+		// D8  : 2^6
+		// D7  : 2^5
+		// D6  : 2^4
+		// D5  : 2^3
+		// D4  : 2^2
+		// D3  : 2^1
+		// D2  : 2^0
+		// D1  : 2^-1
+		// D0  : 2^-2
+		//note: the 2 LSB are decimal values
+
+		//since the Xinc2 can't handle floats, we will ignore the 2 LSB.
+		temperature = temperature >> 2;
+	}
+	return temperature;
+}
+
+int getAMBTemp(void){
+
+	int ambTemp = 0;
+	uint16_t rawdata = 0;
+
+	rawdata = readLowerData();
+
+	ambTemp = rawdata >> 4; //this will grab the internal / ambient temperature bits. the 4 LSB are flags
+
+	//again, the Xinc2 can't handle floats, so we ignore the bottom 4 bits
+	ambTemp = ambTemp >> 4;
+
+	return ambTemp; //note that ambTemp has a signed bit
 }
