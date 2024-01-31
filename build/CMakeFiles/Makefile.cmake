@@ -7,26 +7,15 @@ set(CMAKE_DEPENDS_GENERATOR "MinGW Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeCCompiler.cmake.in"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeCInformation.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeCXXCompiler.cmake.in"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeCXXInformation.cmake"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeCommonLanguageInclude.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeDetermineCCompiler.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeDetermineCXXCompiler.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeDetermineCompiler.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeDetermineSystem.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeFindBinUtils.cmake"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeForceCompiler.cmake"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeGenericSystem.cmake"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeInitializeConfigs.cmake"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeLanguageInformation.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeMinGWFindMake.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeSystem.cmake.in"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeSystemSpecificInformation.cmake"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeSystemSpecificInitialize.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeTestCCompiler.cmake"
-  "C:/Program Files/CMake/share/cmake-3.17/Modules/CMakeTestCXXCompiler.cmake"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/FindGit.cmake"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/FindPackageHandleStandardArgs.cmake"
   "C:/Program Files/CMake/share/cmake-3.17/Modules/FindPackageMessage.cmake"
@@ -52,9 +41,6 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/3.17.0-rc1/CMakeSystem.cmake"
-  "CMakeFiles/3.17.0-rc1/CMakeCCompiler.cmake"
-  "CMakeFiles/3.17.0-rc1/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

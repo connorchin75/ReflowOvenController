@@ -21,8 +21,6 @@ void InitGPIO(){
    thermocouple_pin_init();
    // configuration for pid
    pid_pin_initialization();
-   //config thermocouple pins
-   thermocouple_pin_init();
 }
 
 void * OLEDThread(void * ) {
@@ -41,12 +39,16 @@ void * OLEDThread(void * ) {
    }
 }
 
-void * TempThread(void *){
+void * TempThread(void *) {
    int current_temp = 0;
-   xpd_puts("Detected Temp: ");
-   xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
-   xpd_puts(" \n");
-   wait_ms(1000);
+   while (true){
+      xpd_puts("Detected Temp: ");
+      xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
+      xpd_puts(" \n");
+      wait_ms(1000);
+      current_temp = getTemp();
+   }
+
 }
 
 void * PIDThread(void * ) {
@@ -58,7 +60,7 @@ void * PIDThread(void * ) {
          led_state1 = led_control1(led_state1);
          led_state2 = led_control2(led_state2);
       }
-  }
+}
 
 // main() runs in thread 0
 int main(void){
@@ -75,4 +77,5 @@ int main(void){
    thread_run(2);
    thread_setup(PIDThread, nullptr, 3);
    thread_run(3);
+   return 0;
 }

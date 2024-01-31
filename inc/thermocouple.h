@@ -25,6 +25,7 @@ void thermocouple_pin_init(void){
         // cleared bits = input
 	//set the CS_TEMP high at the start (Chip select is an active low signal)
 	gpio_write((gpio_read(GPIO_J) | CS_TEMP), GPIO_J);
+	
 }
 
 /*********************************/
@@ -54,7 +55,6 @@ uint16_t readUpperData(void){
 
 	//turn off CS_temp
 	gpio_write((gpio_read(GPIO_J) | CS_TEMP), GPIO_J); //only changes the CS_TEMP pin to high
-
 	return result;
 }
 
@@ -143,7 +143,6 @@ int getFault(void){
 		return 0; //Pmod working properly
 	}
 }
-
 
 int getTemp(void){
 

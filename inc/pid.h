@@ -2,7 +2,7 @@
 #include <XPD.h>
 
 #define LED_PIN1 0x80
-#define LED_PIN2 0x2
+#define LED_PIN2 0x4
 
 struct Pid {
    unsigned int kp;
@@ -46,10 +46,10 @@ unsigned int led_control2(unsigned int led_state){
 unsigned int led_control1(unsigned int led_state){
    if(((timer_get_config(TIMER_A)>>15)|(timer_get_config_ccm(1, TIMER_A)>>15)) == 1){
       if (led_state == 0){
-         gpio_write(gpio_read(GPIO_J)&~(LED_PIN2), GPIO_J);
+         gpio_write(gpio_read(GPIO_H)&~(LED_PIN2), GPIO_H);
          led_state = 1;
       }else{
-         gpio_write(gpio_read(GPIO_J)|LED_PIN2, GPIO_J);
+         gpio_write(gpio_read(GPIO_H)|LED_PIN2, GPIO_H);
          led_state = 0;
       }
    }
@@ -59,8 +59,8 @@ unsigned int led_control1(unsigned int led_state){
 void pid_pin_initialization(void){  
    //intitializing PD7 as an output
    gpio_set_config(0x80 << 8, GPIO_D);
-   //initialize PJ1 as an output
-   gpio_set_config(0x2 << 8, GPIO_J);
+   //initialize PH2 as an output
+   gpio_set_config(0x4 << 8, GPIO_H);
 }
 
 //use this function to set the PID parameters for PID computation
@@ -88,12 +88,9 @@ unsigned int pid_compute(struct Pid *pid, unsigned int target_temp, unsigned int
    pid->prev_error = cur_error;
    //calculate the controller output value
    output = (pid->kp * cur_error) + (pid->ki * pid->acc_error) + (pid->kd * error_diff);
-   //constrain the output to be within the limits
+   //constrain the output to be within the limits 
    if (output > pid->max_output){
       output = pid->max_output;
-   }
-   if (output < 0){
-      output = 0;
    }
    return output;
 }

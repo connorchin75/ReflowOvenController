@@ -791,17 +791,17 @@ define i16 @_Z12led_control1j(i16 %led_state) nounwind {
 
 ; <label>:5                                       ; preds = %0
   %6 = icmp eq i16 %led_state, 0
-  %7 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
+  %7 = tail call i16 @llvm.XInC2.inp(i16 46) nounwind
   br i1 %6, label %8, label %10
 
 ; <label>:8                                       ; preds = %5
-  %9 = and i16 %7, -3
-  tail call void @llvm.XInC2.outp(i16 %9, i16 50) nounwind
+  %9 = and i16 %7, -5
+  tail call void @llvm.XInC2.outp(i16 %9, i16 46) nounwind
   br label %12
 
 ; <label>:10                                      ; preds = %5
-  %11 = or i16 %7, 2
-  tail call void @llvm.XInC2.outp(i16 %11, i16 50) nounwind
+  %11 = or i16 %7, 4
+  tail call void @llvm.XInC2.outp(i16 %11, i16 46) nounwind
   br label %12
 
 ; <label>:12                                      ; preds = %8, %10, %0
@@ -811,7 +811,7 @@ define i16 @_Z12led_control1j(i16 %led_state) nounwind {
 
 define void @_Z22pid_pin_initializationv() nounwind {
   tail call void @llvm.XInC2.outp(i16 -32768, i16 39) nounwind
-  tail call void @llvm.XInC2.outp(i16 512, i16 51) nounwind
+  tail call void @llvm.XInC2.outp(i16 1024, i16 47) nounwind
   ret void
 }
 
@@ -903,11 +903,7 @@ _Z14sys_clock_init12crystal_freq8sys_freq.exit:   ; preds = %15
   %19 = or i16 %18, 1
   tail call void @llvm.XInC2.outp(i16 %19, i16 50) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 39) nounwind
-  tail call void @llvm.XInC2.outp(i16 512, i16 51) nounwind
-  tail call void @llvm.XInC2.outp(i16 256, i16 51) nounwind
-  %20 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
-  %21 = or i16 %20, 1
-  tail call void @llvm.XInC2.outp(i16 %21, i16 50) nounwind
+  tail call void @llvm.XInC2.outp(i16 1024, i16 47) nounwind
   ret void
 }
 
@@ -931,11 +927,16 @@ define noalias i16* @_Z10OLEDThreadPv(i16* nocapture) noreturn nounwind {
 }
 
 define noalias i16* @_Z10TempThreadPv(i16* nocapture) noreturn nounwind {
+  br label %2
+
+; <label>:2                                       ; preds = %1, %2
+  %current_temp.0 = phi i16 [ 0, %1 ], [ %3, %2 ]
   tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([16 x i16]* @.str5, i16 0, i16 0)) nounwind, !srcloc !2
-  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoSignedDec", "{R1},~{R1},~{R6}"(i16 0) nounwind, !srcloc !4
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoSignedDec", "{R1},~{R1},~{R6}"(i16 %current_temp.0) nounwind, !srcloc !4
   tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([3 x i16]* @.str6, i16 0, i16 0)) nounwind, !srcloc !2
   tail call void @_Z7wait_msj(i16 1000)
-  unreachable
+  %3 = tail call i16 @_Z7getTempv()
+  br label %2
 }
 
 define noalias i16* @_Z9PIDThreadPv(i16* nocapture) noreturn nounwind {
@@ -996,6 +997,6 @@ declare i16 @llvm.XInC2.inp(i16) nounwind
 
 !0 = metadata !{metadata !"omnipotent char", metadata !1}
 !1 = metadata !{metadata !"Simple C/C++ TBAA"}
-!2 = metadata !{i32 -2147393149}                  
+!2 = metadata !{i32 -2147393127}                  
 !3 = metadata !{metadata !"int", metadata !0}
-!4 = metadata !{i32 -2147392799}                  
+!4 = metadata !{i32 -2147392777}                  
