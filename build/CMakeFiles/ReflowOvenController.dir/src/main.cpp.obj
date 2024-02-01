@@ -8,8 +8,9 @@ target triple = "XInC2"
 @.str = private unnamed_addr constant [38 x i16] [i16 84, i16 104, i16 101, i16 114, i16 109, i16 111, i16 99, i16 111, i16 117, i16 112, i16 108, i16 101, i16 58, i16 32, i16 69, i16 110, i16 116, i16 101, i16 114, i16 101, i16 100, i16 32, i16 70, i16 97, i16 117, i16 108, i16 116, i16 32, i16 70, i16 117, i16 110, i16 99, i16 116, i16 105, i16 111, i16 110, i16 10, i16 0], align 1
 @.str1 = private unnamed_addr constant [37 x i16] [i16 84, i16 104, i16 101, i16 114, i16 109, i16 111, i16 99, i16 111, i16 117, i16 112, i16 108, i16 101, i16 58, i16 32, i16 79, i16 112, i16 101, i16 110, i16 32, i16 67, i16 105, i16 114, i16 99, i16 117, i16 105, i16 116, i16 32, i16 100, i16 101, i16 116, i16 101, i16 99, i16 116, i16 101, i16 100, i16 10, i16 0], align 1
 @.str4 = private unnamed_addr constant [30 x i16] [i16 84, i16 104, i16 101, i16 114, i16 109, i16 111, i16 99, i16 111, i16 117, i16 112, i16 108, i16 101, i16 32, i16 69, i16 114, i16 114, i16 111, i16 114, i16 32, i16 100, i16 101, i16 116, i16 101, i16 99, i16 116, i16 101, i16 100, i16 46, i16 10, i16 0], align 1
-@.str5 = private unnamed_addr constant [16 x i16] [i16 68, i16 101, i16 116, i16 101, i16 99, i16 116, i16 101, i16 100, i16 32, i16 84, i16 101, i16 109, i16 112, i16 58, i16 32, i16 0], align 1
+@.str5 = private unnamed_addr constant [15 x i16] [i16 67, i16 117, i16 114, i16 114, i16 101, i16 110, i16 116, i16 32, i16 84, i16 101, i16 109, i16 112, i16 58, i16 32, i16 0], align 1
 @.str6 = private unnamed_addr constant [3 x i16] [i16 32, i16 10, i16 0], align 1
+@.str7 = private unnamed_addr constant [14 x i16] [i16 84, i16 97, i16 114, i16 103, i16 101, i16 116, i16 32, i16 84, i16 101, i16 109, i16 112, i16 58, i16 32, i16 0], align 1
 @thrds_vector = external global i16
 
 define void @_Z7wait_msj(i16 %ms) nounwind {
@@ -757,6 +758,15 @@ define void @_Z20timer_initializationv() nounwind {
   ret void
 }
 
+define void @_Z22pid_pin_initializationv() nounwind {
+  tail call void @llvm.XInC2.outp(i16 8192, i16 39) nounwind
+  tail call void @llvm.XInC2.outp(i16 1024, i16 47) nounwind
+  %1 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
+  %2 = or i16 %1, 32
+  tail call void @llvm.XInC2.outp(i16 %2, i16 38) nounwind
+  ret void
+}
+
 define i16 @_Z12led_control2j(i16 %led_state) nounwind {
   %1 = tail call i16 @llvm.XInC2.inp(i16 69) nounwind
   %2 = icmp slt i16 %1, 0
@@ -768,12 +778,12 @@ define i16 @_Z12led_control2j(i16 %led_state) nounwind {
   br i1 %4, label %6, label %8
 
 ; <label>:6                                       ; preds = %3
-  %7 = and i16 %5, -129
+  %7 = and i16 %5, -33
   tail call void @llvm.XInC2.outp(i16 %7, i16 38) nounwind
   br label %10
 
 ; <label>:8                                       ; preds = %3
-  %9 = or i16 %5, 128
+  %9 = or i16 %5, 32
   tail call void @llvm.XInC2.outp(i16 %9, i16 38) nounwind
   br label %10
 
@@ -782,37 +792,12 @@ define i16 @_Z12led_control2j(i16 %led_state) nounwind {
   ret i16 %.0
 }
 
-define i16 @_Z12led_control1j(i16 %led_state) nounwind {
+define i16 @_Z9check_pidj(i16 %pid_status) nounwind {
   %1 = tail call i16 @llvm.XInC2.inp(i16 62) nounwind
   %2 = tail call i16 @llvm.XInC2.inp(i16 67) nounwind
   %3 = or i16 %2, %1
-  %4 = icmp slt i16 %3, 0
-  br i1 %4, label %5, label %12
-
-; <label>:5                                       ; preds = %0
-  %6 = icmp eq i16 %led_state, 0
-  %7 = tail call i16 @llvm.XInC2.inp(i16 46) nounwind
-  br i1 %6, label %8, label %10
-
-; <label>:8                                       ; preds = %5
-  %9 = and i16 %7, -5
-  tail call void @llvm.XInC2.outp(i16 %9, i16 46) nounwind
-  br label %12
-
-; <label>:10                                      ; preds = %5
-  %11 = or i16 %7, 4
-  tail call void @llvm.XInC2.outp(i16 %11, i16 46) nounwind
-  br label %12
-
-; <label>:12                                      ; preds = %8, %10, %0
-  %.0 = phi i16 [ 1, %8 ], [ 0, %10 ], [ %led_state, %0 ]
-  ret i16 %.0
-}
-
-define void @_Z22pid_pin_initializationv() nounwind {
-  tail call void @llvm.XInC2.outp(i16 -32768, i16 39) nounwind
-  tail call void @llvm.XInC2.outp(i16 1024, i16 47) nounwind
-  ret void
+  %.lobit = lshr i16 %3, 15
+  ret i16 %.lobit
 }
 
 define void @_Z18set_pid_parametersP3Pidjjj(%struct.Pid* nocapture %pid, i16 %kp_val, i16 %ki_val, i16 %kd_val) nounwind {
@@ -835,11 +820,11 @@ define i16 @_Z11pid_computeP3Pidjj(%struct.Pid* nocapture %pid, i16 %target_temp
   %1 = sub i16 %target_temp, %measured_temp
   %2 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 4
   %3 = load i16* %2, align 1, !tbaa !3
-  %4 = add i16 %3, %1
+  %4 = add nsw i16 %3, %1
   store i16 %4, i16* %2, align 1, !tbaa !3
   %5 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 3
   %6 = load i16* %5, align 1, !tbaa !3
-  %7 = sub i16 %1, %6
+  %7 = sub nsw i16 %1, %6
   store i16 %1, i16* %5, align 1, !tbaa !3
   %8 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 0
   %9 = load i16* %8, align 1, !tbaa !3
@@ -854,9 +839,67 @@ define i16 @_Z11pid_computeP3Pidjj(%struct.Pid* nocapture %pid, i16 %target_temp
   %18 = add i16 %14, %17
   %19 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 5
   %20 = load i16* %19, align 1, !tbaa !3
-  %21 = icmp ugt i16 %18, %20
-  %. = select i1 %21, i16 %20, i16 %18
+  %21 = icmp sgt i16 %18, %20
+  br i1 %21, label %24, label %22
+
+; <label>:22                                      ; preds = %0
+  %23 = icmp slt i16 %18, 0
+  %. = select i1 %23, i16 0, i16 %18
   ret i16 %.
+
+; <label>:24                                      ; preds = %0
+  ret i16 %20
+}
+
+define void @_Z14heating_actionj(i16 %duration) nounwind {
+  %1 = mul i16 %duration, 24
+  %2 = tail call i16 @llvm.XInC2.inp(i16 63) nounwind
+  %3 = icmp ult i16 %1, %2
+  %4 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
+  br i1 %3, label %7, label %5
+
+; <label>:5                                       ; preds = %0
+  %6 = or i16 %4, 32
+  tail call void @llvm.XInC2.outp(i16 %6, i16 38) nounwind
+  br label %9
+
+; <label>:7                                       ; preds = %0
+  %8 = and i16 %4, -33
+  tail call void @llvm.XInC2.outp(i16 %8, i16 38) nounwind
+  br label %9
+
+; <label>:9                                       ; preds = %7, %5
+  ret void
+}
+
+define i16 @_Z13simulate_tempjj(i16 %duration, i16 %cur_temp) nounwind {
+  %1 = tail call i16 @llvm.XInC2.inp(i16 63) nounwind
+  %2 = icmp ult i16 %1, 24000
+  %3 = icmp ugt i16 %duration, 999
+  br i1 %2, label %4, label %6
+
+; <label>:4                                       ; preds = %0
+  %5 = sub i16 1000, %duration
+  %. = select i1 %3, i16 1000, i16 %5
+  %.duration = select i1 %3, i16 0, i16 %duration
+  br label %10
+
+; <label>:6                                       ; preds = %0
+  br i1 %3, label %7, label %10
+
+; <label>:7                                       ; preds = %6
+  %8 = add i16 %duration, -1000
+  %9 = sub i16 2000, %duration
+  br label %10
+
+; <label>:10                                      ; preds = %4, %6, %7
+  %on_time.0 = phi i16 [ %8, %7 ], [ 0, %6 ], [ %., %4 ]
+  %off_time.0 = phi i16 [ %9, %7 ], [ 1000, %6 ], [ %.duration, %4 ]
+  %11 = mul i16 %on_time.0, 5
+  %12 = sub i16 %11, %off_time.0
+  %13 = udiv i16 %12, 1000
+  %14 = add i16 %13, %cur_temp
+  ret i16 %14
 }
 
 define void @_Z8InitGPIOv() nounwind {
@@ -902,8 +945,7 @@ _Z14sys_clock_init12crystal_freq8sys_freq.exit:   ; preds = %15
   %18 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
   %19 = or i16 %18, 1
   tail call void @llvm.XInC2.outp(i16 %19, i16 50) nounwind
-  tail call void @llvm.XInC2.outp(i16 -32768, i16 39) nounwind
-  tail call void @llvm.XInC2.outp(i16 1024, i16 47) nounwind
+  tail call void @_Z22pid_pin_initializationv()
   ret void
 }
 
@@ -930,25 +972,53 @@ define noalias i16* @_Z10TempThreadPv(i16* nocapture) noreturn nounwind {
   br label %2
 
 ; <label>:2                                       ; preds = %1, %2
-  %current_temp.0 = phi i16 [ 0, %1 ], [ %3, %2 ]
-  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([16 x i16]* @.str5, i16 0, i16 0)) nounwind, !srcloc !2
-  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoSignedDec", "{R1},~{R1},~{R6}"(i16 %current_temp.0) nounwind, !srcloc !4
-  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([3 x i16]* @.str6, i16 0, i16 0)) nounwind, !srcloc !2
   tail call void @_Z7wait_msj(i16 1000)
   %3 = tail call i16 @_Z7getTempv()
   br label %2
 }
 
 define noalias i16* @_Z9PIDThreadPv(i16* nocapture) noreturn nounwind {
-  tail call void @_Z20timer_initializationv()
-  br label %2
+  %pid1 = alloca %struct.Pid, align 1
+  call void @_Z20timer_initializationv()
+  %2 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 0
+  store i16 500, i16* %2, align 1, !tbaa !3
+  %3 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 1
+  store i16 20, i16* %3, align 1, !tbaa !3
+  %4 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 2
+  store i16 1, i16* %4, align 1, !tbaa !3
+  %5 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 3
+  store i16 0, i16* %5, align 1, !tbaa !3
+  %6 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 4
+  store i16 0, i16* %6, align 1, !tbaa !3
+  %7 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 5
+  store i16 2000, i16* %7, align 1, !tbaa !3
+  br label %8
 
-; <label>:2                                       ; preds = %1, %2
-  %led_state1.0 = phi i16 [ 0, %1 ], [ %3, %2 ]
-  %led_state2.0 = phi i16 [ 0, %1 ], [ %4, %2 ]
-  %3 = tail call i16 @_Z12led_control1j(i16 %led_state1.0)
-  %4 = tail call i16 @_Z12led_control2j(i16 %led_state2.0)
-  br label %2
+; <label>:8                                       ; preds = %1, %16
+  %output.0 = phi i16 [ 0, %1 ], [ %output.1, %16 ]
+  %cur_temp.0 = phi i16 [ 0, %1 ], [ %cur_temp.1, %16 ]
+  %9 = call i16 @llvm.XInC2.inp(i16 62) nounwind
+  %10 = call i16 @llvm.XInC2.inp(i16 67) nounwind
+  %11 = or i16 %10, %9
+  %12 = icmp slt i16 %11, 0
+  br i1 %12, label %13, label %16
+
+; <label>:13                                      ; preds = %8
+  call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([15 x i16]* @.str5, i16 0, i16 0)) nounwind, !srcloc !2
+  call void asm sideeffect "\09jsr\09r6, XPD_EchoUnsignedDec", "{R1},~{R1},~{R6}"(i16 %cur_temp.0) nounwind, !srcloc !4
+  call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([3 x i16]* @.str6, i16 0, i16 0)) nounwind, !srcloc !2
+  call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([14 x i16]* @.str7, i16 0, i16 0)) nounwind, !srcloc !2
+  call void asm sideeffect "\09jsr\09r6, XPD_EchoUnsignedDec", "{R1},~{R1},~{R6}"(i16 24) nounwind, !srcloc !4
+  call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([3 x i16]* @.str6, i16 0, i16 0)) nounwind, !srcloc !2
+  %14 = call i16 @_Z11pid_computeP3Pidjj(%struct.Pid* %pid1, i16 24, i16 %cur_temp.0)
+  %15 = call i16 @_Z13simulate_tempjj(i16 %14, i16 %cur_temp.0)
+  br label %16
+
+; <label>:16                                      ; preds = %13, %8
+  %output.1 = phi i16 [ %14, %13 ], [ %output.0, %8 ]
+  %cur_temp.1 = phi i16 [ %15, %13 ], [ %cur_temp.0, %8 ]
+  call void @_Z14heating_actionj(i16 %output.1)
+  br label %8
 }
 
 define i16 @main() nounwind {
@@ -997,6 +1067,6 @@ declare i16 @llvm.XInC2.inp(i16) nounwind
 
 !0 = metadata !{metadata !"omnipotent char", metadata !1}
 !1 = metadata !{metadata !"Simple C/C++ TBAA"}
-!2 = metadata !{i32 -2147393127}                  
+!2 = metadata !{i32 -2147392363}                  
 !3 = metadata !{metadata !"int", metadata !0}
-!4 = metadata !{i32 -2147392777}                  
+!4 = metadata !{i32 -2147391666}                  

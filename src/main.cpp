@@ -42,9 +42,9 @@ void * OLEDThread(void * ) {
 void * TempThread(void *) {
    int current_temp = 0;
    while (true){
-      xpd_puts("Detected Temp: ");
-      xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
-      xpd_puts(" \n");
+      // xpd_puts("Detected Temp: ");
+      // xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
+      // xpd_puts(" \n");
       wait_ms(1000);
       current_temp = getTemp();
    }
@@ -52,14 +52,29 @@ void * TempThread(void *) {
 }
 
 void * PIDThread(void * ) {
-      //This thread will always remain active
-      unsigned int led_state1 = 0;
-      unsigned int led_state2 = 0;
-      timer_initialization();
-      while (true) {
-         led_state1 = led_control1(led_state1);
-         led_state2 = led_control2(led_state2);
+   //This thread will always remain active
+   timer_initialization();
+   unsigned int target_temp = 24;
+   unsigned int cur_temp = 0;
+   unsigned int output = 0;
+   unsigned int pid_status = 0;
+   //initialize the PID controller
+   struct Pid pid1;
+   struct Pid *pid = &pid1;
+   set_pid_parameters(pid, 500, 20, 1);
+   while (true) {
+      //check to see if 1 second has elapsed to compute a PID action
+      pid_status = check_pid(pid_status);
+      if (pid_status == 1){
+         //compute PID action
+         output = pid_compute(pid, target_temp, cur_temp);
+         //simulate the change in temperature
+         cur_temp = simulate_temp(output, cur_temp);
+         pid_status = 0;
       }
+      //implement PID action
+      heating_action(output);
+   }
 }
 
 // main() runs in thread 0

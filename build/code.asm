@@ -906,53 +906,30 @@ sxc__Z10TempThreadPv:                   // @_Z10TempThreadPv
 	add	sp, sp, 0x1
 	st	r6, sp, 0xffff          // 1-byte Folded Spill
 	bra	BB12_1
-BB12_4:                                 //   in Loop: Header=BB12_1 Depth=1
+BB12_3:                                 //   in Loop: Header=BB12_1 Depth=1
 	mov	r1, sxc_.str1
 	//APP
 		jsr	r6, XPD_EchoString
 	//NO_APP
-BB12_1:                                 // =>This Loop Header: Depth=1
-                                        //     Child Loop BB12_2 Depth 2
-	mov	r0, 0x0
-	bra	BB12_2
-BB12_5:                                 //   in Loop: Header=BB12_2 Depth=2
-	and	r0, r0, 0xff
-	rol	r0, r0, 0x8
-	ior	r0, r2, r0
-	and	r0, r0, 0xfff0
-	rol	r0, r0, 0xc
-BB12_2:                                 // %_Z7getTempv.exit
-                                        //   Parent Loop BB12_1 Depth=1
-                                        // =>  This Inner Loop Header: Depth=2
-	mov	r1, sxc_.str5
-	//APP
-		jsr	r6, XPD_EchoString
-	//NO_APP
-	add	r1, r0, 0x0
-	//APP
-		jsr	r6, XPD_EchoSignedDec
-	//NO_APP
-	mov	r1, sxc_.str6
-	//APP
-		jsr	r6, XPD_EchoString
-	//NO_APP
+BB12_1:                                 // %_Z7getTempv.exit
+                                        // =>This Inner Loop Header: Depth=1
 	mov	r2, 0x3e8
 	jsr	r6, sxc__Z7wait_msj
+	mov	r2, 0x0
 	inp	r0, 0x32
 	and	r0, r0, 0xfffe
 	outp	r0, 0x32
-	mov	r1, 0x0
-	outp	r1, 0x36
+	outp	r2, 0x36
 	inp	r0, 0x36
-	outp	r1, 0x36
-	inp	r2, 0x36
+	outp	r2, 0x36
+	inp	r0, 0x36
 	inp	r1, 0x32
 	ior	r1, r1, 0x1
 	outp	r1, 0x32
-	and	r1, r2, 0x1
-	//cmp	r1, 0x0
-	bc	ZS, BB12_5
-// BB#3:                                //   in Loop: Header=BB12_2 Depth=2
+	bic	r0, r0, 0x0
+	//cmp	r0, 0x0
+	bc	VC, BB12_1
+// BB#2:                                //   in Loop: Header=BB12_1 Depth=1
 	mov	r1, sxc_.str4
 	//APP
 		jsr	r6, XPD_EchoString
@@ -964,27 +941,28 @@ BB12_2:                                 // %_Z7getTempv.exit
 	inp	r0, 0x32
 	and	r0, r0, 0xfffe
 	outp	r0, 0x32
-	mov	r0, 0x0
-	outp	r0, 0x36
-	inp	r1, 0x36
-	outp	r0, 0x36
-	inp	r1, 0x36
-	outp	r0, 0x36
-	inp	r1, 0x36
-	outp	r0, 0x36
-	inp	r1, 0x36
-	inp	r2, 0x32
-	ior	r2, r2, 0x1
-	outp	r2, 0x32
-	bic	r1, r1, 0x0
-	//cmp	r1, 0x0
-	bc	VC, BB12_2
-	bra	BB12_4
+	outp	r2, 0x36
+	inp	r0, 0x36
+	outp	r2, 0x36
+	inp	r0, 0x36
+	outp	r2, 0x36
+	inp	r0, 0x36
+	outp	r2, 0x36
+	inp	r0, 0x36
+	inp	r1, 0x32
+	ior	r1, r1, 0x1
+	outp	r1, 0x32
+	bic	r0, r0, 0x0
+	//cmp	r0, 0x0
+	bc	VC, BB12_1
+	bra	BB12_3
 
 //align
 @ = (@ + 1-1)  & -1
 sxc__Z9PIDThreadPv:                     // @_Z9PIDThreadPv
 // BB#0:
+	add	sp, sp, 0x5
+	st	r6, sp, 0xfffb          // 1-byte Folded Spill
 	mov	r0, 0x5b
 	outp	r0, 0x3e
 	mov	r0, 0x2
@@ -996,46 +974,150 @@ sxc__Z9PIDThreadPv:                     // @_Z9PIDThreadPv
 	outp	r1, 0x42
 	outp	r0, 0x44
 	mov	r0, 0x0
-	add	r2, r0, 0x0
+	add	r4, r0, 0x0
+	mov	r6, 0x0
+	add	r3, r0, 0x0
 	bra	BB13_1
-BB13_7:                                 //   in Loop: Header=BB13_1 Depth=1
-	and	r1, r3, 0xff7f
-	outp	r1, 0x26
-	mov	r2, 0x1
-BB13_1:                                 // %_Z12led_control2j.exit
+BB13_14:                                //   in Loop: Header=BB13_1 Depth=1
+	outp	r0, 0x26
+	add	r0, r5, 0x0
+BB13_1:                                 // %_Z14heating_actionj.exit
                                         // =>This Inner Loop Header: Depth=1
 	inp	r1, 0x3e
-	inp	r3, 0x43
-	ior	r1, r3, r1
+	inp	r2, 0x43
+	ior	r1, r2, r1
 	sub	r1, r1, 0x0
-	bc	GT, BB13_5
-// BB#2:                                //   in Loop: Header=BB13_1 Depth=1
-	inp	r3, 0x2e
-	sub	r1, r0, 0x0
-	bc	NE, BB13_4
+	bc	GT, BB13_2
 // BB#3:                                //   in Loop: Header=BB13_1 Depth=1
-	and	r0, r3, 0xfffb
-	outp	r0, 0x2e
-	mov	r0, 0x1
-	bra	BB13_5
-BB13_4:                                 //   in Loop: Header=BB13_1 Depth=1
-	ior	r0, r3, 0x4
-	outp	r0, 0x2e
-	mov	r0, 0x0
-BB13_5:                                 // %_Z12led_control1j.exit
+	mov	r1, sxc_.str5
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	add	r1, r3, 0x0
+	//APP
+		jsr	r6, XPD_EchoUnsignedDec
+	//NO_APP
+	mov	r1, sxc_.str6
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	mov	r1, sxc_.str7
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	mov	r1, 0x18
+	//APP
+		jsr	r6, XPD_EchoUnsignedDec
+	//NO_APP
+	mov	r1, 0x18
+	sub	r5, r1, r3
+	st	r3, sp, 0xffff          // 1-byte Folded Spill
+	mov	r1, sxc_.str6
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	add	r4, r5, r4
+	rol	r1, r4, 0x2
+	and	r1, r1, 0xfffc
+	rol	r2, r1, 0x2
+	and	r2, r2, 0xfffc
+	add	r1, r1, r2
+	rol	r2, r5, 0x2
+	and	r2, r2, 0xfffc
+	rol	r3, r2, 0x2
+	and	r3, r3, 0xfffc
+	add	r2, r2, r3
+	rol	r3, r3, 0x1
+	and	r3, r3, 0xfffe
+	add	r2, r2, r3
+	rol	r3, r3, 0x1
+	and	r3, r3, 0xfffe
+	add	r2, r2, r3
+	rol	r3, r3, 0x1
+	and	r3, r3, 0xfffe
+	add	r2, r2, r3
+	rol	r3, r3, 0x1
+	and	r3, r3, 0xfffe
+	add	r2, r2, r3
+	sub	r0, r5, r0
+	add	r0, r0, r2
+	add	r0, r0, r1
+	mov	r6, 0x7d0
+	sub	r1, r0, 0x7d0
+	bc	GT, BB13_5
+// BB#4:                                //   in Loop: Header=BB13_1 Depth=1
+	mov	r6, 0x0
+	sub	r1, r0, 0x0
+	bc	LT, @ + 1 + 0x1
+	mov	r6, r0 //Select--False
+BB13_5:                                 // %_Z11pid_computeP3Pidjj.exit
                                         //   in Loop: Header=BB13_1 Depth=1
-	inp	r1, 0x45
-	//cmp	r1, 0x0
-	bc	NC, BB13_1
+	st	r4, sp, 0xfffe          // 1-byte Folded Spill
+	inp	r0, 0x3f
+	mov	r1, 0x5dbf
+	sub	r1, r0, r1
+	bc	UGT, BB13_7
 // BB#6:                                //   in Loop: Header=BB13_1 Depth=1
-	inp	r3, 0x26
-	sub	r1, r2, 0x0
-	bc	EQ, BB13_7
-// BB#8:                                //   in Loop: Header=BB13_1 Depth=1
-	ior	r1, r3, 0x80
-	outp	r1, 0x26
+	st	r5, sp, 0xfffd          // 1-byte Folded Spill
+	mov	r0, 0x3e8
+	sub	r0, r0, r6
+	mov	r2, 0x3e8
+	mov	r3, 0x3e7
+	sub	r1, r6, r3
+	bc	UGT, @ + 1 + 0x1
+	mov	r2, r0 //Select--False
+	mov	r0, 0x0
+	sub	r1, r6, r3
+	bc	UGT, @ + 1 + 0x1
+	mov	r0, r6 //Select--False
+	bra	BB13_10
+BB13_2:                                 //   in Loop: Header=BB13_1 Depth=1
+	add	r5, r0, 0x0
+	bra	BB13_12
+BB13_7:                                 //   in Loop: Header=BB13_1 Depth=1
+	st	r5, sp, 0xfffd          // 1-byte Folded Spill
+	mov	r0, 0x3e8
+	sub	r1, r6, r0
+	bc	ULT, BB13_8
+// BB#9:                                //   in Loop: Header=BB13_1 Depth=1
+	mov	r0, 0x7d0
+	sub	r0, r0, r6
+	add	r2, r6, 0xfc18
+BB13_10:                                //   in Loop: Header=BB13_1 Depth=1
+	st	r6, sp, 0xfffc          // 1-byte Folded Spill
+	bra	BB13_11
+BB13_8:                                 //   in Loop: Header=BB13_1 Depth=1
+	st	r6, sp, 0xfffc          // 1-byte Folded Spill
 	mov	r2, 0x0
-	bra	BB13_1
+BB13_11:                                // %_Z13simulate_tempjj.exit
+                                        //   in Loop: Header=BB13_1 Depth=1
+	rol	r1, r2, 0x2
+	and	r1, r1, 0xfffc
+	add	r1, r2, r1
+	sub	r2, r1, r0
+	mov	r3, 0x3e8
+	jsr	r6, sxc___xinc_udiv
+	ld	r3, sp, 0xffff          // 1-byte Folded Reload
+	add	r3, r0, r3
+	ld	r4, sp, 0xfffe          // 1-byte Folded Reload
+	ld	r5, sp, 0xfffd          // 1-byte Folded Reload
+	ld	r6, sp, 0xfffc          // 1-byte Folded Reload
+BB13_12:                                //   in Loop: Header=BB13_1 Depth=1
+	rol	r0, r6, 0x3
+	and	r0, r0, 0xfff8
+	rol	r1, r0, 0x1
+	and	r1, r1, 0xfffe
+	add	r1, r0, r1
+	inp	r2, 0x3f
+	inp	r0, 0x26
+	sub	r1, r1, r2
+	bc	UGE, BB13_13
+// BB#15:                               //   in Loop: Header=BB13_1 Depth=1
+	and	r0, r0, 0xffdf
+	bra	BB13_14
+BB13_13:                                //   in Loop: Header=BB13_1 Depth=1
+	ior	r0, r0, 0x20
+	bra	BB13_14
 
 //sxc_main
 //align
@@ -1093,10 +1175,14 @@ BB14_5:                                 // =>This Inner Loop Header: Depth=1
 	inp	r0, 0x32
 	ior	r0, r0, 0x1
 	outp	r0, 0x32
-	mov	r0, 0x8000
+	mov	r0, 0x2000
 	outp	r0, 0x27
-	mov	r1, 0x400
-	outp	r1, 0x2f
+	mov	r0, 0x400
+	outp	r0, 0x2f
+	inp	r0, 0x26
+	ior	r0, r0, 0x20
+	outp	r0, 0x26
+	mov	r0, 0x8000
 	outp	r0, 0x7
 	mov	r1, 0xa
 	outp	r1, 0x3
