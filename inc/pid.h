@@ -33,7 +33,6 @@ void pid_pin_initialization(void){
    gpio_set_config(0x20 << 8, GPIO_D);
    //initialize PH2 as an output
    gpio_set_config(0x4 << 8, GPIO_H);
-   gpio_write(gpio_read(GPIO_D)|PD5, GPIO_D);
 }
 
 //this function toggles the LED every 2 seconds

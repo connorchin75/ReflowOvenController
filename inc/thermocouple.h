@@ -18,7 +18,7 @@
 
 void thermocouple_pin_init(void){
 	// set the direction of PJ0 to output
-    gpio_set_config(CS_TEMP << 8, GPIO_J);
+   gpio_set_config(CS_TEMP << 8, GPIO_J);
         // 0x01 << 8 = 0000 0001 0000 0000b
         // pins : 7654 3210 0000 0000
         // upper byte is high = output

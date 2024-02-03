@@ -15,12 +15,29 @@ void InitGPIO(){
    sys_clock_init(crys_24_576_MHz, _98_304_MHz);
    //initialize SPI1 as a master device, at 98.304 MHz, with clock rate divided by 16 and enable the SPI1 device
    SPI_set_config_optimal(_98_304_MHz,SPI1);
-   // configure oled pins
-   oled_pin_initialization();
-   //config thermocouple pins
-   thermocouple_pin_init();
-   // configuration for pid
-   pid_pin_initialization();
+   
+   // configure GPIO pins
+
+   //configure port A
+   //initialize PA0 (oled_RES_PIN), PA1 (oled_RS_PIN) and PA2 (oled_CS_PIN) as outputs
+   gpio_set_config(0x07 << 8, GPIO_A);
+   //set required starting outputs for GPIOA pins
+   //set the oled_CS_PIN high at the start (Chip select is an active low signal)
+   gpio_write(gpio_read(GPIO_A)|0x04 , GPIO_A);
+
+   //configure port D
+   //initialize PD4 (oled_SHDN_PIN), PD5 (pid_SSR1_output), PD6 (pid_SSR2_output)
+   gpio_set_config(0x70 << 8, GPIO_D);
+   //set required starting outputs for GPIOD pins
+   //set the oled_SHDN_PIN high at the start (Shutdown is an active low signal)
+   gpio_write(gpio_read(GPIO_D)|0x10, GPIO_D);
+
+   //configure port J
+   //initialize PJ0 (thermocouple_CS_PIN) as an output
+   gpio_set_config(0x01 << 8, GPIO_J);
+   //set required starting outputs for GPIOJ pins
+   //set the CS_TEMP high at the start (Chip select is an active low signal)
+	gpio_write(gpio_read(GPIO_J) | 0x01, GPIO_J);
 }
 
 void * OLEDThread(void * ) {
