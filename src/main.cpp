@@ -8,6 +8,7 @@
 #include "oled.h"
 #include "thermocouple.h"
 #include "pid.h"
+#include "rotatry_encoder.h"
 
 /// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
 void InitGPIO(){
@@ -64,6 +65,25 @@ void * TempThread(void *) {
       // xpd_puts(" \n");
       wait_ms(1000);
       current_temp = getTemp();
+   }
+
+}
+
+void * RotEncodThread(void *) {
+   int encoder_pos = 0;
+   int button_press=0;
+   while (true){
+      encoder_pos = rotary_encoder_read();
+      button_press = button_read();
+      xpd_puts("Detected Position: ");
+      xpd_echo_int(encoder_pos, XPD_Flag_SignedDecimal);
+      xpd_puts(" \n");
+      xpd_puts("Detected Button Press: ");
+      xpd_echo_int(button_press, XPD_Flag_SignedDecimal);
+      xpd_puts(" \n");
+      wait_ms(1000);
+	
+      
    }
 
 }
