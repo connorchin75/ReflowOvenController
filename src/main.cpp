@@ -57,6 +57,72 @@ void * OLEDThread(void * ) {
    }
 }
 
+void * skeletonOLEDThread(void *){
+   enum scenario {
+      START_SCREEN,
+      CHANGE_PROFILE,
+      DISPLAY_PROGRESS,
+      STARTING_PROCESS,
+      EMERGENCY_STOP,
+      END_PROCESS
+   }
+   int btn_pressed = 0;
+   int dial_turned = 0;
+   int humidity = 0;
+   int progress = 0;
+   //start up oled
+   OLED_Init_160128RGB();
+   //clear oled
+   OLED_FillScreen_160128RGB(BLACK);
+   while(true){
+      switch(scenario){
+         case START_SCREEN:
+            OLED_main_page();
+            //check if there's a btn press
+            if (btn_pressed == 1){
+               //start process
+               scenario = STARTING_PROCESS;
+            }
+            if (dial_turned == 1){
+               scenario = CHANGE_PROFILE;
+            }
+            break;
+         case CHANGE_PROFILE:
+            //another state machine
+            break;
+         case STARTING_PROCESS:  
+            OLED_starting_page();
+            //this will be a page that will indicate that we are about to start the heating process
+            scenario = DISPLAY_PROGRESS;
+            break;
+         case DISPLAY_PROGRESS:
+            OLED_display_progress();
+            if (btn_pressed ==1){
+               scenario = END_PROCESS;
+            }
+            //read humidity sensor
+            humidity = readhumidity();
+            //update displayed humidity
+            //check if it's over the maximum humidity
+            if (humidity > MAX_HUMIDITY){
+               //display warning
+            }
+            //read temp
+            //update displayed temp
+            //update displayed progress
+            if (progress == 100){
+               scenario = END_PROCESS;
+            }
+            break;
+         case EMERGENCY_STOP:
+            break;
+         case END_PROCESS:
+            break;
+
+      }
+   }
+}
+
 void * TempThread(void *) {
    int current_temp = 0;
    while (true){
