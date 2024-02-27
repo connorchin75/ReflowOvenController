@@ -8,7 +8,7 @@
 #include "oled.h"
 #include "thermocouple.h"
 #include "pid.h"
-#include "rotatry_encoder.h"
+#include "rotary_encoder.h"
 
 /// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
 void InitGPIO(){
