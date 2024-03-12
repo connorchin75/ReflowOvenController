@@ -455,21 +455,6 @@ void Draw_Bar(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColou
 /************ START **************/
 /*********************************/
 
-//Pin initialization
-void oled_pin_initialization(void){  
-   //Each logic pin must be initialized as either an input or output
-   //PD4 (SHDN_PIN) as outputs
-   gpio_set_config(0x10 << 8, GPIO_D);
-   //initialize PA0 (RES_PIN), PA1 (RS_PIN) and PA2 (CS_PIN)
-   gpio_set_config(0x07 << 8, GPIO_A);
-
-   //set default values for CS_PIN and SHDN_PIN
-   //set the CS_PIN high at the start (Chip select is an active low signal)
-   gpio_write(gpio_read(GPIO_A)|CS_PIN, GPIO_A);
-   //set the SHDN_PIN high at the start (Shutdown is an active low signal)
-   gpio_write(gpio_read(GPIO_D)|SHDN_PIN, GPIO_D);
-}
-
 //Function to initialize the OLED properly
 void OLED_Init_160128RGB(void)      //OLED initialization
 {     
