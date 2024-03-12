@@ -9,15 +9,9 @@
 #include "oled.h"
 #include "thermocouple.h"
 #include "pid.h"
-<<<<<<< HEAD
-#include "rotatry_encoder.h"
-#include "humidity.h"
-
-//Initialize Global Variables here
-unsigned int light = 0;
-=======
 #include "rotary_encoder.h"
 #include "profile.h"
+#include "humidity.h"
 
 // -- GLOBAL VARIABLES -- //
 int current_temp = 23; //semaphore 0
@@ -29,7 +23,6 @@ int target_temp; // semaphore 5
 int progress = 0; //semaphore 6
 
 unsigned int* profile_pointer[3];    //array of pointers
->>>>>>> 704e71f27d5c7acc93bc8385b8539dfdae144157
 
 /// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
 void InitGPIO(){
@@ -50,20 +43,14 @@ void InitGPIO(){
    gpio_write(gpio_read(GPIO_A)|0x80, GPIO_A);
 
    //configure port D
-<<<<<<< HEAD
-   //PD5 (pid_SSR1_output), PD6 (pid_SSR2_output)
    //configure pin PD5 to have maximum current output since it is used to drive the SSR
    io_set_config(IO_DRIVE_16mA, io_PD5);
    //configure pin PD5 to have maximum current output since it is used to drive the SSR
    io_set_config(IO_DRIVE_16mA, io_PD6);
-   // set PD4 (oled_SHDN_PIN), PD5 (pid_SSR1_output), PD6 (pid_SSR2_output) to be outputs
+   // initialize PD5 (pid_SSR1_output), PD6 (pid_SSR2_output) to be outputs
    // note this also means all other port D pins such as PD3 will be set to inputs
    gpio_set_config(0x60 << 8, GPIO_D);
    //set required starting outputs for GPIOD pins
-=======
-   //initialize PD5 (pid_SSR1_output), PD6 (pid_SSR2_output)
-   gpio_set_config(0x60 << 8, GPIO_D);
->>>>>>> 704e71f27d5c7acc93bc8385b8539dfdae144157
 
    //configure port J
    //initialize PJ1 (thermocouple_CS_PIN) as an output
@@ -448,16 +435,11 @@ int main(void){
    thread_run(1);
    thread_setup(TempThread, nullptr, 2);
    thread_run(2);
-<<<<<<< HEAD
    thread_setup(PIDThread, nullptr, 3);
    thread_run(3);
    thread_setup(RotEncodThread, nullptr, 4);
    thread_run(4);
    thread_setup(HumidityThread, nullptr, 5);
    thread_run(5);
-=======
-//    thread_setup(PIDThread, nullptr, 3);
-//    thread_run(3);
->>>>>>> 704e71f27d5c7acc93bc8385b8539dfdae144157
    return 0;
 }
