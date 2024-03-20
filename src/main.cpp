@@ -13,16 +13,21 @@
 #include "profile.h"
 #include "humidity.h"
 
-// -- GLOBAL VARIABLES -- //
-int current_temp = 23; //semaphore 0
-int humidity = 0; //semaphore 1
-int btn_pressed = 0; //semaphore 2
-int encoder_pos = 0; //semaphore 3
-int chosen_profile = 0; //semaphore 4 
-int target_temp; // semaphore 5
-int progress = 0; //semaphore 6
+#define PROFILE_LIST_SIZE 3
 
-unsigned int* profile_pointer[3];    //array of pointers
+// -- GLOBAL VARIABLES -- //
+volatile unsigned int current_temp = 0; //semaphore 0
+volatile unsigned int humidity = 0; //semaphore 1
+volatile unsigned int btn_press = 0; //semaphore 2
+struct rotary_encoder r_encoder = {0,3,0}; // semaphore 3 sets encoder position to 0, initial state to 11 and rot_flag = 0
+volatile unsigned int profile_index = 1; //semaphore 4 
+volatile unsigned int target_temp; // semaphore 5
+volatile unsigned int target_temp_index = 0; //semaphore 6;
+volatile unsigned int progress = 0; //semaphore 6 this is a scaled version of target_temp
+struct profile selected_profile;
+
+//Setup Profile Generation (actual generation occurs when process begins)
+unsigned int profile_array[PROFILE_LIST_SIZE][3] = {{75, 165, 240},{80, 165, 220},{90, 152, 240}};
 
 /// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
 void InitGPIO(){
@@ -48,7 +53,7 @@ void InitGPIO(){
    //configure pin PD5 to have maximum current output since it is used to drive the SSR
    io_set_config(IO_DRIVE_16mA, io_PD6);
    // initialize PD5 (pid_SSR1_output), PD6 (pid_SSR2_output) to be outputs
-   // note this also means all other port D pins such as PD3 will be set to inputs
+   // note this also means all other port D pins such as PD3 will be set to inputs >> humidity sensor pin is an input 
    gpio_set_config(0x60 << 8, GPIO_D);
    //set required starting outputs for GPIOD pins
 
@@ -59,332 +64,80 @@ void InitGPIO(){
    //set the CS_TEMP high at the start (Chip select is an active low signal)
 	gpio_write(gpio_read(GPIO_J) | 0x02, GPIO_J);
 
-   //init pins for rotary encoder
-   //pin_init();
+   //configure port H
+   // initialize PH0 (button) PH1 (channel A) and PH2 (channel B) as inputs
+
+    uint16_t io_config_flags = IO_PULL_UP | IO_PULL_ENABLE;
+    io_set_config(io_config_flags, io_PH);
+   //note that by default, pins are set to inputs
 }
 
-
-void * stateOLEDThread(void *){
-   enum scenario_enum {
-      CHANGE_PROFILE,
-      DISPLAY_PROGRESS,
-      STARTING_PROCESS,
-      HUMIDITY_WARNING,
-      END_PROCESS
-   };
-   enum scenario_enum scenario;
-   int last_encoder_pos = 0;
-
-   int MAX_HUMIDITY = 40;
-
-   int wait_timer =0;
-   
-   //start up oled
-   OLED_Init_160128RGB();
-   //clear oled
-   OLED_FillScreen_160128RGB(BLACK);
-   while(true){
-      switch(scenario){
-         case CHANGE_PROFILE:            
-            sem_lock(4);
-            OLED_profile_page(chosen_profile);
-            sem_unlock(4);
-            sem_lock(2);
-            if (btn_pressed == 1){
-               //start process
-               sem_unlock(2);
-               scenario = STARTING_PROCESS;
-               // sem_lock(4);
-               // chosen_profile_pointer = ;
-               // sem_unlock(4);
-               break;
-            }
-            sem_unlock(2);
-
-            sem_lock(3); //encoder position
-            if (encoder_pos > last_encoder_pos){ //dial moved clockwise. increase index of profile.
-               last_encoder_pos = encoder_pos;
-               sem_unlock(3);
-               sem_lock(4);
-               if (chosen_profile == 0){
-                  chosen_profile = 1;
-               }
-               else if(chosen_profile == 1){
-                  chosen_profile = 2;
-               }
-               else if(chosen_profile == 2){
-                  chosen_profile = 0;
-               }
-               sem_unlock(4);
-               // OLED_profile_page(chosen_profile);
-            }
-            else{
-               sem_unlock(3);
-            }
-
-
-            sem_lock(3);
-            if (encoder_pos < last_encoder_pos){ //dial moved counter-clockwise. decrease index of profile
-               last_encoder_pos = encoder_pos;
-               sem_unlock(3);
-               sem_lock(4);
-               if (chosen_profile == 0){
-                  chosen_profile = 2;
-               }
-               else if(chosen_profile == 1){
-                  chosen_profile = 0;
-               }
-               else if(chosen_profile == 2){
-                  chosen_profile = 1;
-               }
-               sem_unlock(4);
-               // OLED_profile_page(chosen_profile);
-            }
-            else{
-               sem_unlock(3);
-            }
-            break;
-
-
-         case STARTING_PROCESS:
-            xpd_puts("starting_process state\n");
-            OLED_starting_page();
-            //this will be a page that will indicate that we are about to start the heating process
-            wait_timer++;
-            if (wait_timer >1000){
-               wait_timer = 0;
-               scenario = DISPLAY_PROGRESS;
-            }
-            else{
-               scenario = STARTING_PROCESS;
-            }
-            break;
-
-
-         case DISPLAY_PROGRESS:
-            xpd_puts("display_progress state\n");
-            OLED_display_progress();
-            sem_lock(2);
-            if (btn_pressed == 1){
-               sem_unlock(2);
-               scenario = END_PROCESS;
-               break;
-            }
-            sem_unlock(2);
-            
-            //update displayed progress
-            sem_lock(6);
-            if (progress == 100){
-               sem_unlock(6);
-               scenario = END_PROCESS;
-               break;
-            }
-            sem_unlock(6);
-
-            sem_lock(0);
-            //update displayed temp
-            OLED_update_temp(current_temp);
-            sem_unlock(0);
-
-            sem_lock(1);
-            //update displayed humidity
-            OLED_update_humidity(humidity);
-            //check if it's over the maximum humidity
-            if (humidity > MAX_HUMIDITY){
-               sem_unlock(1);
-               scenario = HUMIDITY_WARNING;
-               break;
-            }
-            sem_unlock(1);
-            break;
-         
-
-         case HUMIDITY_WARNING:
-            xpd_puts("humidity warning state\n");
-            OLED_display_warning();
-            sem_lock(2);
-            if (btn_pressed == 1){
-               sem_unlock(2);
-               scenario = DISPLAY_PROGRESS;
-               break;
-            }
-            sem_unlock(2);
-            break;
-
-
-         case END_PROCESS:
-            xpd_puts("end_process state\n");
-            OLED_end_progress();
-            sem_lock(2);
-            if (btn_pressed == 1){
-               sem_unlock(2);
-               scenario = CHANGE_PROFILE;
-               break;
-            }
-            sem_unlock(2);
-            break;
-
-      }
-   }
-}
-
-
-void * OLEDThread(void * ) {
-   //This thread will always remain active
-   unsigned int progress;
-   while (true) {
-      //start up oled
-      OLED_Init_160128RGB();
-      xpd_puts("Initialized OLED\n");
-      OLED_FillScreen_160128RGB(BLACK);
-      xpd_puts("Cleared OLED\n");
-      wait_ms(5);
-      for(int i=0; i<1000; i++){
-         draw_lil_guy(20, 20, GREEN, BLACK, 0);
-         draw_lil_guy(40, 20, GREEN, BLACK, 1);
-         unsigned char x_pos = 104;
-         unsigned char y_pos = 30;
-         sem_lock(0);
-         OLED_Print_Sensor_Val(x_pos, y_pos, current_temp, 0);
-         sem_unlock(0);
-         wait_ms(100);
-      }
-
-
-      // // OLED_Start_Page();
-      // // wait_ms(10000);
-      // // OLED_FillScreen_160128RGB(BLACK);
-      // // draw_arrow(50, 50, RED, BLACK, 2);
-      // draw_lil_guy(20, 20, GREEN, BLACK, 0);
-      // draw_lil_guy(40, 20, GREEN, BLACK, 1);
-      // // wait_ms(10000);
-
-      // // OLED_Start_Page();
-      // xpd_puts("Printing progress on OLED \n");
-      // for(progress=0;progress<101;progress++){
-      //    unsigned char x_pos = 104;
-      //    unsigned char y_pos = 30;
-      //    sem_lock(0);
-      //    OLED_Print_Sensor_Val(x_pos, y_pos, current_temp, 0);
-      //    sem_unlock(0);
-      //    wait_ms(250);
-      // }
-      //    Clear_Data_Chars(83, 50, BLACK); //clear previous progress reading
-      //    OLED_Print_Sensor_Val(83, 50, progress, 1); //print new progress reading
-      //    Draw_Bar(23, 73, BLUE, BLACK, 26, 122, progress); //fill the progress bar to the correct amount
-      //    // current_temp = getTemp();
-        
-         // OLED_update_temp(current_temp);
-         // OLED_Print_Sensor_Val(104, 30, current_temp, 0); //print new temperature reading
-         // int temp = current_temp;
-         
-
-         // decimal_temp = temp >> 2; //2 LSB are decimal points
-         
-         // mantissa_temp = ((2^-1) *(temp & 0x02)) + ((2^-2) * (temp & 0x01)); // this shouldd? grab the last two bits to find the value of the decimal places
-         
-         // OLED_Print_Sensor_Val(x_pos, y_pos, mantissa_temp, 2);
-         
-         
-   }
-}
 
 void * TempThread(void *) {
-   // int current_temp = 0;
-   // int decimal_temp = 0;
-   // int after_decimal_temp = 0;
    while (true){
       sem_lock(0);
       current_temp = getTemp();
       sem_unlock(0);
-      xpd_puts("Detected Temp: ");
-      xpd_echo_int(current_temp, XPD_Flag_SignedDecimal);
-      xpd_puts(" \n");
-      wait_ms(500);
-
-      // decimal_temp = current_temp >> 2; //2 LSB are decimal points
-      // after_decimal_temp = ((2^-1) *(current_temp & 0x02)) + ((2^-2) * (current_temp & 0x01)); // this shouldd? grab the last two bits to find the value of the decimal places
-
-      // xpd_puts("Decimal value of Temp: ");
-      // xpd_echo_int(decimal_temp, XPD_Flag_SignedDecimal);
-      // xpd_puts(".");
-      // xpd_echo_int(after_decimal_temp, XPD_Flag_UnsignedDecimal);
-      // xpd_puts(" \n");
-
    }
 }
 
 void * RotEncodThread(void *) {
-   int encoder_pos = 0;
-   int button_press=0;
+   // struct rotary_encoder rot_encoder = {R_START,0x0};
    while (true){
-      encoder_pos = rotary_encoder_read();
-      button_press = button_read();
-      xpd_puts("Detected Position: ");
-      xpd_echo_int(encoder_pos, XPD_Flag_SignedDecimal);
-      xpd_puts(" \n");
-      xpd_puts("Detected Button Press: ");
-      xpd_echo_int(button_press, XPD_Flag_SignedDecimal);
-      xpd_puts(" \n");
-      wait_ms(1000);	
+      sem_lock(3);
+      // rot_encoder = rotary_process(rot_encoder);
+      // xpd_echo_int(rot_encoder.state, XPD_Flag_SignedDecimal);
+      // xpd_puts(" \n");
+      // xpd_echo_int(r_encoder.rot_flag, XPD_Flag_UnsignedDecimal);
+      // xpd_puts(" \n");
+      r_encoder = get_encoder_pos(r_encoder);
+      // xpd_echo_int(r_encoder.rot_flag, XPD_Flag_UnsignedDecimal);
+      // xpd_puts(" \n");
+      sem_unlock(3);
+      sem_lock(2);
+      btn_press = button_read();
+      // xpd_echo_int(btn_press, XPD_Flag_SignedDecimal);
+      // xpd_puts(" \n");
+      sem_unlock(2);
    }
 }
 
 void * PIDThread(void * ) {
-   //This thread will always remain active
+   //start the timers for the system
+   timer_initialization();
 
-   // timer_initialization();
-   // unsigned int target_temp = 24;
-   // unsigned int cur_temp = 0;
-   // unsigned int output = 0;
-   // unsigned int pid_status = 0;
-   // //initialize the PID controller
-   // struct Pid pid1;
-   // struct Pid *pid = &pid1;
-   // set_pid_parameters(pid, 500, 20, 1);
-   // while (true) {
-   //    //check to see if 1 second has elapsed to compute a PID action
-   //    pid_status = check_pid(pid_status);
-   //    if (pid_status == 1){
-   //       //compute PID action
-   //       //Semaphore lock 0
-   //       output = pid_compute(pid, target_temp, cur_temp);
-   //       //Semaphore unlock 0
-   //       //simulate the change in temperature
-   //       cur_temp = simulate_temp(output, cur_temp);
-   //       pid_status = 0;
-   //    }
-   //    //implement PID action
-   //    heating_action(output);
-   // }
-   while (true){
-      //turn on SSR output 2
-      gpio_write(gpio_read(GPIO_D) | 0x40, GPIO_D);
-      //turn on SSR output 1
-      gpio_write(gpio_read(GPIO_D) | 0x20, GPIO_D);
-      xpd_puts("Value on output while on:");
-      xpd_echo_int(gpio_read(GPIO_D), XPD_Flag_Hex);
-      xpd_puts(" \n");
-      wait_ms(5000);
-      //turn off SSR output 2
-      gpio_write(gpio_read(GPIO_D)&~(0x40), GPIO_D);
-      //turn off SSR output 1
-      gpio_write(gpio_read(GPIO_D)&~(0x20), GPIO_D);
-      xpd_puts("Value on output while off");
-      xpd_echo_int(gpio_read(GPIO_D), XPD_Flag_Hex);
-      xpd_puts(" \n");
-      wait_ms(5000);
-
-   }
-}
-
-void * RotEncodThread(void *) {
-   int encoder_pos = 0;
-   int button_press=0;
-   while (true){
-      encoder_pos = rotary_encoder_read();
-      button_press = button_read();
-      wait_ms(1000);
+   unsigned int time_count = 0;
+   unsigned int output = 0;
+   unsigned int pid_status = 1; //start with a PID computation at time 0;
+   //initialize the PID controller
+   struct Pid pid1;
+   struct Pid *pid = &pid1;
+   set_pid_parameters(pid, 500, 20, 1);
+   while (true) {
+      //check to see if 1 second has elapsed to compute a PID action
+      pid_status = check_pid(pid_status);
+      if (pid_status == 1){
+         //compute PID action
+         sem_lock(6);
+         sem_lock(0);
+         // xpd_echo_int(selected_profile.temp_targets[target_temp_index], XPD_Flag_UnsignedDecimal);
+         // xpd_puts(" \n");
+         output = pid_compute(pid, selected_profile.temp_targets[target_temp_index], current_temp);
+         sem_unlock(0);
+         //Semaphore unlock 0
+         //simulate the change in temperature
+         pid_status = 0;
+         time_count ++;
+         if(time_count == 2){
+            //2 seconds has elapsed, increment the target temperature
+            target_temp_index ++;
+            progress = (target_temp_index + 1)*100/180;
+            time_count = 0;
+         }
+         sem_unlock(6);
+      }
+      //implement PID action
+      heating_action(output);
    }
 }
 
@@ -418,6 +171,128 @@ void * HumidityThread(void *) {
       }
    }
 }
+
+void * stateOLEDThread(void *){
+   enum scenario_enum {
+      CHANGE_PROFILE,
+      DISPLAY_PROGRESS,
+      STARTING_PROCESS,
+      HUMIDITY_WARNING,
+      END_PROCESS
+   };
+   enum scenario_enum scene = CHANGE_PROFILE;
+   
+   //start up oled
+   OLED_Init_160128RGB();
+   //clear oled
+   OLED_FillScreen_160128RGB(BLACK);
+   while(true){
+      switch(scene){
+         case CHANGE_PROFILE:
+            //print the display page with given profile selection
+            sem_lock(4);            
+            OLED_profile_page(profile_index);
+            // OLED_profile_page(r_encoder.encoder_pos);
+            sem_unlock(4);
+  
+            //check for rotary encoder rotation
+            sem_lock(3);
+            if(r_encoder.rot_flag == 1){
+               //CW rotation detected
+               sem_lock(4);
+               profile_index = profile_index + 1;
+               //ensure that selected profile remains less than 9
+               if (profile_index > PROFILE_LIST_SIZE){
+                  profile_index = 1;
+               }
+               sem_unlock(4);
+               r_encoder.rot_flag = 0;
+            }else if(r_encoder.rot_flag == 2){
+               //CCW rotation detected
+               sem_lock(4);
+               profile_index = profile_index - 1;
+               //ensure that the profile remains larger than 1
+               if (profile_index < 1){
+                  profile_index = PROFILE_LIST_SIZE;
+               }
+               sem_unlock(4);
+               r_encoder.rot_flag = 0;
+            }
+            sem_unlock(3);
+            //check for button press
+            sem_lock(2);
+            btn_press = button_read();
+            if (btn_press==1){
+               //change to the next screen
+               scene = STARTING_PROCESS;
+               OLED_FillScreen_160128RGB(BLACK);// fill screen with black
+               // generate the temperature profile depending on which profile has been selected
+               // selected_profile = generate_RSS_profile(selected_profile, profile_array[profile_index-1][0], profile_array[profile_index-1][1], profile_array[profile_index-1][2]);
+               //duplicating this line resolved screen issues
+               // selected_profile = generate_RSS_profile(selected_profile, profile_array[profile_index-1][0], profile_array[profile_index-1][1], profile_array[profile_index-1][2]);
+               selected_profile = generate_test_profile(selected_profile);
+            }
+            sem_unlock(2);
+            break;
+            
+
+         case STARTING_PROCESS:
+            OLED_starting_page();
+            //this will be a page that will indicate that we are about to start the heating process
+            wait_ms(2000);
+            //after a short delay enter the display progress screen
+            OLED_FillScreen_160128RGB(BLACK);
+            scene = DISPLAY_PROGRESS;
+            break;
+
+
+         case DISPLAY_PROGRESS:
+            //lock the temp, humidity and target_temp_index when printing the screen
+            sem_lock(0);
+            sem_lock(1);
+            sem_lock(6);
+            OLED_main_page(current_temp, humidity, progress);
+            sem_unlock(6);
+            sem_unlock(1);
+            sem_unlock(0);
+            //start the temperature sensor thread
+            thread_run(3);
+            //start the humidity sensor thread
+            thread_run(4);
+            //start the PID controller thread
+            thread_run(5);
+            while(progress < 101){
+               //start temperature
+               //start humidity thread
+               sem_lock(0);
+               sem_lock(1);
+               sem_lock(6);
+               OLED_main_page(current_temp, humidity, progress);
+               sem_unlock(6);
+               sem_unlock(1);
+               sem_unlock(0);
+            }
+            //stop the temp and humidity and pid threads
+            thread_stop(3);
+            thread_stop(4);
+            thread_stop(5);
+            //turn off the heating elements
+            gpio_write(gpio_read(GPIO_D)&~(0x20|0x40), GPIO_D);
+            scene = END_PROCESS;
+            break;
+         
+
+         case HUMIDITY_WARNING:
+            break;
+
+         case END_PROCESS:
+            OLED_end_progress();
+            wait_ms(2000);
+            scene = CHANGE_PROFILE;
+            break;
+      }
+   }
+}
 // main() runs in thread 0
 int main(void){
    // Configure a pull-up on pin PG0
@@ -425,21 +300,21 @@ int main(void){
    // there is no XPD attached.
    io_set_config(0b1110011, io_PG0);
 
+   //initialize and configure pins
    InitGPIO();
-
-   profile_pointer[0] = generate_RSS_profile(75, 165, 240); //soak, spike, cooling times
-   profile_pointer[1] = generate_RSS_profile(30, 30, 180);
-   profile_pointer[2] = generate_RSS_profile(60, 75, 200);
-
+   
+   //setup and run OLED thread
    thread_setup(stateOLEDThread, nullptr, 1);
    thread_run(1);
-   thread_setup(TempThread, nullptr, 2);
+   //setup and run rotary encoder thread
+   thread_setup(RotEncodThread, nullptr, 2);
    thread_run(2);
-   thread_setup(PIDThread, nullptr, 3);
-   thread_run(3);
-   thread_setup(RotEncodThread, nullptr, 4);
-   thread_run(4);
-   thread_setup(HumidityThread, nullptr, 5);
-   thread_run(5);
+   //setup temp thread, will activate it later in the code
+   thread_setup(TempThread, nullptr, 3);
+   //setup humidity thread, will activate it later in the code
+   thread_setup(HumidityThread, nullptr, 4);
+   //setup PID thread, will activate it later in the code
+   thread_setup(PIDThread, nullptr, 5);
+   
    return 0;
 }

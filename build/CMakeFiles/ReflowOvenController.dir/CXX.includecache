@@ -6,6 +6,12 @@
 
 #IncludeRegexTransform: 
 
+../inc/humidity.h
+GPIO.h
+-
+Timer.h
+-
+
 ../inc/oled.h
 SystemClock.h
 -
@@ -25,6 +31,24 @@ Timer.h
 -
 XPD.h
 -
+wait.h
+../inc/wait.h
+
+../inc/profile.h
+
+../inc/rotary_encoder.h
+SystemClock.h
+-
+IOConfig.h
+-
+GPIO.h
+-
+SPI.h
+-
+XPD.h
+-
+wait.h
+../inc/wait.h
 
 ../inc/thermocouple.h
 SystemClock.h
@@ -351,6 +375,8 @@ GPIO.h
 -
 Thread.h
 -
+Semaphore.h
+-
 wait.h
 C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/wait.h
 oled.h
@@ -359,4 +385,10 @@ thermocouple.h
 C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/thermocouple.h
 pid.h
 C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/pid.h
+rotary_encoder.h
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/rotary_encoder.h
+profile.h
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/profile.h
+humidity.h
+C:/Users/cchin/CapstoneFirmware/Xinc2/ReflowOvenController/src/humidity.h
 

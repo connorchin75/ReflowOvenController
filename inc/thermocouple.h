@@ -11,7 +11,7 @@
 /***************************************/
 
 // define pinouts
-#define CS_TEMP 0x01 ////SDIO0/PJ0 / pin 8
+#define CS_TEMP 0x02 ////SDIO0/PJ1 / pin 8
 #define MISO 	0x14 //MISO1/PD0 / pin 20
 #define SCLK 	0x16 //SCLK1/PD2 / pin 22
 

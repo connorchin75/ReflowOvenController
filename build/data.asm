@@ -11,6 +11,21 @@ JTI1_0:
 		BB1_10
 		BB1_11
 
+//	.section	.rdata,"r"
+JTI13_0:
+		BB13_4
+		BB13_7
+		BB13_9
+		BB13_11
+
+//	.section	.rdata,"r"
+JTI16_0:
+		BB16_4
+		BB16_17
+		BB16_16
+		BB16_21
+		BB16_20
+
 //	.section	//.data,"w"
 sxc_Ascii_1:                            // @Ascii_1
 	@ = @ + 5
@@ -500,6 +515,51 @@ sxc_Ascii_1:                            // @Ascii_1
 		9                       // 0x9
 		15                      // 0xf
 
+sxc__ZZ17OLED_profile_pagejE5text1:     // @_ZZ17OLED_profile_pagejE5text1
+		80                      // 0x50
+		114                     // 0x72
+		111                     // 0x6f
+		102                     // 0x66
+		105                     // 0x69
+		108                     // 0x6c
+		101                     // 0x65
+		32                      // 0x20
+		80                      // 0x50
+		97                      // 0x61
+		103                     // 0x67
+		101                     // 0x65
+
+sxc__ZZ17OLED_profile_pagejE5text2:     // @_ZZ17OLED_profile_pagejE5text2
+		80                      // 0x50
+		114                     // 0x72
+		111                     // 0x6f
+		102                     // 0x66
+		105                     // 0x69
+		108                     // 0x6c
+		101                     // 0x65
+		32                      // 0x20
+		35                      // 0x23
+
+sxc__ZZ18OLED_starting_pagevE5text1:    // @_ZZ18OLED_starting_pagevE5text1
+		87                      // 0x57
+		97                      // 0x61
+		105                     // 0x69
+		116                     // 0x74
+		105                     // 0x69
+		110                     // 0x6e
+		103                     // 0x67
+
+sxc__ZZ17OLED_end_progressvE4text:      // @_ZZ17OLED_end_progressvE4text
+		67                      // 0x43
+		111                     // 0x6f
+		109                     // 0x6d
+		112                     // 0x70
+		108                     // 0x6c
+		101                     // 0x65
+		116                     // 0x74
+		101                     // 0x65
+		33                      // 0x21
+
 sxc_.str:                               // @.str
 		84                      // 0x54
 		104                     // 0x68
@@ -611,44 +671,20 @@ sxc_.str4:                              // @.str4
 		10                      // 0xa
 		0                       // 0x0
 
-sxc_.str5:                              // @.str5
-		67                      // 0x43
-		117                     // 0x75
-		114                     // 0x72
-		114                     // 0x72
-		101                     // 0x65
-		110                     // 0x6e
-		116                     // 0x74
-		32                      // 0x20
-		84                      // 0x54
-		101                     // 0x65
-		109                     // 0x6d
-		112                     // 0x70
-		58                      // 0x3a
-		32                      // 0x20
+	sxc_current_temp: @ = @ + 1 // .lcomm // @current_temp
+	sxc_humidity: @ = @ + 1 // .lcomm // @humidity
+	sxc_btn_press: @ = @ + 1 // .lcomm // @btn_press
+sxc_r_encoder:                          // @r_encoder
+		0                       // 0x0
+		3                       // 0x3
 		0                       // 0x0
 
-sxc_.str6:                              // @.str6
-		32                      // 0x20
-		10                      // 0xa
-		0                       // 0x0
+sxc_profile_index:                      // @profile_index
+		1                       // 0x1
 
-sxc_.str7:                              // @.str7
-		84                      // 0x54
-		97                      // 0x61
-		114                     // 0x72
-		103                     // 0x67
-		101                     // 0x65
-		116                     // 0x74
-		32                      // 0x20
-		84                      // 0x54
-		101                     // 0x65
-		109                     // 0x6d
-		112                     // 0x70
-		58                      // 0x3a
-		32                      // 0x20
-		0                       // 0x0
-
+	sxc_target_temp_index: @ = @ + 1 // .lcomm // @target_temp_index
+	sxc_progress: @ = @ + 1 // .lcomm // @progress
+	sxc_selected_profile: @ = @ + 180 // .lcomm // @selected_profile
 
 SXCA_PARSED_CONSTRUCTOR_LIST_START:
 SXCA_PARSED_CONSTRUCTOR_LIST_END:

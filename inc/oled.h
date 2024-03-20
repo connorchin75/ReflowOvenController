@@ -6,6 +6,7 @@
 
 #include "wait.h"
 
+
 //Define pin names as their bit shifted positions to improve code readability
 #define CS_PIN 0x04 
 #define RS_PIN 0x02
@@ -134,7 +135,7 @@ unsigned char Ascii_1[98][5] = {     // Refer to "Times New Roman" Font Database
 //This function takes in a single digit and outputs the coresponding ascii index
 int Num_To_ASCII(unsigned int num)
 {
-    unsigned int ascii_index = 99; //starts as an invalid entry
+    unsigned int ascii_index = 100; //starts as an invalid entry
     //0 to 9 maps from 16 to 25
     switch (num){
         case 0:
@@ -172,17 +173,25 @@ int Num_To_ASCII(unsigned int num)
 }
 
 //This function takes in a single letter and outputs the coresponding ascii index. case insensitive.
-int char_to_ASCII(char letter){
+int char_to_ASCII(char entry){
     unsigned int ascii_index = 99; //starts as an invalid entry
     //a to z maps from 65 to 90
     //A to Z maps to 33 to 58
+    //0 to 9 maps to 16 to 25
+    //space to / maps to 0 to 15
 
-    if (letter >= 'a' && letter <= 'z') { // Lowercase letters
-        ascii_index = letter - 'a' + 65;
-    } else if (letter >= 'A' && letter <= 'Z') { // Uppercase letters
-        ascii_index = letter - 'A' + 33;
+    if (entry >= 'a' && entry <= 'z') { // Lowercase letters
+        ascii_index = entry - 'a' + 65;
+    } else if (entry >= 'A' && entry <= 'Z') { // Uppercase letters
+        ascii_index = entry - 'A' + 33;
+    }else if (entry >= '0' && entry <='9'){
+        //handling numeral conversion
+        ascii_index = entry - '0' + 16;
+    }else if (entry >= ' ' && entry <='/'){
+        //handling special characters
+        ascii_index = entry - ' ';
     }
-    return ascii_index;
+     return ascii_index;
 }
 
 /*********************************/
@@ -747,8 +756,8 @@ void OLED_Start_Page(void){
     // Clear_Data_Chars(104, 30, BLACK);
 }
 
-void OLED_main_page(void){
-    OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
+void OLED_main_page(unsigned int temp, unsigned int hum, unsigned int prog){
+    // OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
 
     OLED_Text_160128RGB(20, 100, 48, WHITE, BLACK);   // P
     OLED_Text_160128RGB(27, 100, 82, WHITE, BLACK);   // r
@@ -760,7 +769,7 @@ void OLED_main_page(void){
     OLED_Text_160128RGB(69, 100, 26, WHITE, BLACK);   // :
 
     Draw_Box(20, 96, BLUE, BLACK, 32, 128);
-    Draw_Bar(23, 96, BLUE, BLACK, 26, 122, 0);
+    Draw_Bar(23, 96, BLUE, BLACK, 26, 122, prog);
 
     OLED_Text_160128RGB(20, 46, 48, WHITE, BLACK);   // P
     OLED_Text_160128RGB(27, 46, 82, WHITE, BLACK);   // r
@@ -795,38 +804,28 @@ void OLED_main_page(void){
     OLED_Text_160128RGB(69, 10, 89, WHITE, BLACK);   // y
     OLED_Text_160128RGB(76, 10, 26, WHITE, BLACK);   // :
 
-    OLED_Print_Sensor_Val(83, 46, 0, 1); //progress
-    OLED_Print_Sensor_Val(104, 28, 223, 0); //temp
-    OLED_Print_Sensor_Val(83, 10, 48, 1); //humidity
+    OLED_Print_Sensor_Val(83, 46, prog, 1); //progress
+    OLED_Print_Sensor_Val(104, 28, temp, 0); //temp
+    OLED_Print_Sensor_Val(83, 10, hum, 1); //humidity
 }
 
-void OLED_profile_page(int profile){
-    unsigned int ascii_index;
-    
+void OLED_profile_page(unsigned int selected_profile){
     //these characters are 16 pixels tall and 10 pixels wide.
     //leave 2 pixels in between each character
-
-    unsigned char arr1[7] = {'P','r','o','f','i','l','e'};
-    OLED_write_text(2, 5, 100, arr1, 7, WHITE, BLACK);
-
-    OLED_Text2x_160128RGB(77, 100, 26, WHITE, BLACK);   // :
-
-    OLED_Text2x_160128RGB(89, 100, 3, WHITE, BLACK);    // #
-
-    ascii_index = Num_To_ASCII(profile); //get ascii index for digit
-    OLED_Text2x_160128RGB(101, 100, ascii_index, WHITE, BLACK); //print the digit
-
-    //normal text is 8 pixels tall, 5 pixels wide
-    // OLED_Text_160128RGB(76, 10, 26, WHITE, BLACK);   // :
-    unsigned char arr[4] = {'H','e','r','e'};
-    OLED_write_text(1, 10, 10, arr, 4, WHITE, BLACK);
-
-    OLED_write_text(2, 60, 10, arr, 4, WHITE, BLACK);
+    unsigned char text1[12] = {'P','r','o','f','i','l','e', ' ', 'P', 'a', 'g', 'e'};
+    unsigned char text2[9] = {'P','r','o','f','i','l','e', ' ', '#'};
+    unsigned char profile[1] = {selected_profile + 48}; // adding 48 converts a single int to char numeral
+    OLED_write_text(2, 5, 100, text1, 12, WHITE, BLACK);
+    OLED_write_text(2, 5, 50, text2, 9, WHITE, BLACK);
+    OLED_write_text(2, 120, 50, profile, 1, WHITE, BLACK);
 
 };
 
 void OLED_starting_page(){
-    OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
+    unsigned char text1[7] = {'W','a','i','t','i','n','g'};
+    unsigned char text2[8] = {'t','o',' ','b','e','g','i','n'};
+    OLED_write_text(2, 5, 100, text1, 7, WHITE, BLACK);
+    OLED_write_text(2, 5, 50, text2, 8, WHITE, BLACK);
 };
 
 void OLED_display_progress(){
@@ -842,6 +841,7 @@ void OLED_update_humidity(unsigned int humidity){
 void OLED_update_temp(int temp){
     unsigned char x_pos = 104;
     unsigned char y_pos = 30;
+    Clear_Data_Chars(x_pos, y_pos, BLACK);
     OLED_Print_Sensor_Val(x_pos, y_pos, temp, 0);
 };
 
@@ -852,7 +852,9 @@ void OLED_update_progress(int progress){
 };
 
 void OLED_end_progress(){
+    unsigned char text[9] = {'C','o','m','p','l','e','t','e', '!'};
     OLED_FillScreen_160128RGB(RED);                // fill screen with red
+    OLED_write_text(2, 5, 100, text, 9, WHITE, RED);
 };
 
 void OLED_display_warning(void){

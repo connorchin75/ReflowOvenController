@@ -2,15 +2,30 @@
 target datalayout = "e-p:16:16:16-i1:16:16-i8:16:16-i16:16:16-i32:16:16-a0:16:16-s0:16:16-n16"
 target triple = "XInC2"
 
+%struct.rotary_encoder = type { i16, i16, i16 }
+%struct.profile = type { [180 x i16] }
 %struct.Pid = type { i16, i16, i16, i16, i16, i16 }
 
 @Ascii_1 = global [98 x [5 x i16]] [[5 x i16] zeroinitializer, [5 x i16] [i16 0, i16 0, i16 79, i16 0, i16 0], [5 x i16] [i16 0, i16 7, i16 0, i16 7, i16 0], [5 x i16] [i16 20, i16 127, i16 20, i16 127, i16 20], [5 x i16] [i16 36, i16 42, i16 127, i16 42, i16 18], [5 x i16] [i16 35, i16 19, i16 8, i16 100, i16 98], [5 x i16] [i16 54, i16 73, i16 85, i16 34, i16 80], [5 x i16] [i16 0, i16 5, i16 3, i16 0, i16 0], [5 x i16] [i16 0, i16 28, i16 34, i16 65, i16 0], [5 x i16] [i16 0, i16 65, i16 34, i16 28, i16 0], [5 x i16] [i16 20, i16 8, i16 62, i16 8, i16 20], [5 x i16] [i16 8, i16 8, i16 62, i16 8, i16 8], [5 x i16] [i16 0, i16 80, i16 48, i16 0, i16 0], [5 x i16] [i16 8, i16 8, i16 8, i16 8, i16 8], [5 x i16] [i16 0, i16 96, i16 96, i16 0, i16 0], [5 x i16] [i16 32, i16 16, i16 8, i16 4, i16 2], [5 x i16] [i16 62, i16 81, i16 73, i16 69, i16 62], [5 x i16] [i16 0, i16 66, i16 127, i16 64, i16 0], [5 x i16] [i16 66, i16 97, i16 81, i16 73, i16 70], [5 x i16] [i16 33, i16 65, i16 69, i16 75, i16 49], [5 x i16] [i16 24, i16 20, i16 18, i16 127, i16 16], [5 x i16] [i16 39, i16 69, i16 69, i16 69, i16 57], [5 x i16] [i16 60, i16 74, i16 73, i16 73, i16 48], [5 x i16] [i16 1, i16 113, i16 9, i16 5, i16 3], [5 x i16] [i16 54, i16 73, i16 73, i16 73, i16 54], [5 x i16] [i16 6, i16 73, i16 73, i16 41, i16 30], [5 x i16] [i16 0, i16 54, i16 54, i16 0, i16 0], [5 x i16] [i16 0, i16 86, i16 54, i16 0, i16 0], [5 x i16] [i16 8, i16 20, i16 34, i16 65, i16 0], [5 x i16] [i16 20, i16 20, i16 20, i16 20, i16 20], [5 x i16] [i16 0, i16 65, i16 34, i16 20, i16 8], [5 x i16] [i16 2, i16 1, i16 81, i16 9, i16 6], [5 x i16] [i16 50, i16 73, i16 121, i16 65, i16 62], [5 x i16] [i16 126, i16 17, i16 17, i16 17, i16 126], [5 x i16] [i16 127, i16 73, i16 73, i16 73, i16 54], [5 x i16] [i16 62, i16 65, i16 65, i16 65, i16 34], [5 x i16] [i16 127, i16 65, i16 65, i16 34, i16 28], [5 x i16] [i16 127, i16 73, i16 73, i16 73, i16 65], [5 x i16] [i16 127, i16 9, i16 9, i16 9, i16 1], [5 x i16] [i16 62, i16 65, i16 73, i16 73, i16 122], [5 x i16] [i16 127, i16 8, i16 8, i16 8, i16 127], [5 x i16] [i16 0, i16 65, i16 127, i16 65, i16 0], [5 x i16] [i16 32, i16 64, i16 65, i16 63, i16 1], [5 x i16] [i16 127, i16 8, i16 20, i16 34, i16 65], [5 x i16] [i16 127, i16 64, i16 64, i16 64, i16 64], [5 x i16] [i16 127, i16 2, i16 12, i16 2, i16 127], [5 x i16] [i16 127, i16 4, i16 8, i16 16, i16 127], [5 x i16] [i16 62, i16 65, i16 65, i16 65, i16 62], [5 x i16] [i16 127, i16 9, i16 9, i16 9, i16 6], [5 x i16] [i16 62, i16 65, i16 81, i16 33, i16 94], [5 x i16] [i16 127, i16 9, i16 25, i16 41, i16 70], [5 x i16] [i16 70, i16 73, i16 73, i16 73, i16 49], [5 x i16] [i16 1, i16 1, i16 127, i16 1, i16 1], [5 x i16] [i16 63, i16 64, i16 64, i16 64, i16 63], [5 x i16] [i16 31, i16 32, i16 64, i16 32, i16 31], [5 x i16] [i16 63, i16 64, i16 56, i16 64, i16 63], [5 x i16] [i16 99, i16 20, i16 8, i16 20, i16 99], [5 x i16] [i16 7, i16 8, i16 112, i16 8, i16 7], [5 x i16] [i16 97, i16 81, i16 73, i16 69, i16 67], [5 x i16] [i16 0, i16 127, i16 65, i16 65, i16 0], [5 x i16] [i16 2, i16 4, i16 8, i16 16, i16 32], [5 x i16] [i16 0, i16 65, i16 65, i16 127, i16 0], [5 x i16] [i16 4, i16 2, i16 1, i16 2, i16 4], [5 x i16] [i16 64, i16 64, i16 64, i16 64, i16 64], [5 x i16] [i16 1, i16 2, i16 4, i16 0, i16 0], [5 x i16] [i16 32, i16 84, i16 84, i16 84, i16 120], [5 x i16] [i16 127, i16 72, i16 68, i16 68, i16 56], [5 x i16] [i16 56, i16 68, i16 68, i16 68, i16 32], [5 x i16] [i16 56, i16 68, i16 68, i16 72, i16 127], [5 x i16] [i16 56, i16 84, i16 84, i16 84, i16 24], [5 x i16] [i16 8, i16 126, i16 9, i16 1, i16 2], [5 x i16] [i16 6, i16 73, i16 73, i16 73, i16 63], [5 x i16] [i16 127, i16 8, i16 4, i16 4, i16 120], [5 x i16] [i16 0, i16 68, i16 125, i16 64, i16 0], [5 x i16] [i16 32, i16 64, i16 68, i16 61, i16 0], [5 x i16] [i16 127, i16 16, i16 40, i16 68, i16 0], [5 x i16] [i16 0, i16 65, i16 127, i16 64, i16 0], [5 x i16] [i16 124, i16 4, i16 24, i16 4, i16 124], [5 x i16] [i16 124, i16 8, i16 4, i16 4, i16 120], [5 x i16] [i16 56, i16 68, i16 68, i16 68, i16 56], [5 x i16] [i16 124, i16 20, i16 20, i16 20, i16 8], [5 x i16] [i16 8, i16 20, i16 20, i16 24, i16 124], [5 x i16] [i16 124, i16 8, i16 4, i16 4, i16 8], [5 x i16] [i16 72, i16 84, i16 84, i16 84, i16 32], [5 x i16] [i16 4, i16 63, i16 68, i16 64, i16 32], [5 x i16] [i16 60, i16 64, i16 64, i16 32, i16 124], [5 x i16] [i16 28, i16 32, i16 64, i16 32, i16 28], [5 x i16] [i16 60, i16 64, i16 48, i16 64, i16 60], [5 x i16] [i16 68, i16 40, i16 16, i16 40, i16 68], [5 x i16] [i16 12, i16 80, i16 80, i16 80, i16 60], [5 x i16] [i16 68, i16 100, i16 84, i16 76, i16 68], [5 x i16] [i16 0, i16 8, i16 54, i16 65, i16 0], [5 x i16] [i16 0, i16 0, i16 127, i16 0, i16 0], [5 x i16] [i16 0, i16 65, i16 54, i16 8, i16 0], [5 x i16] [i16 2, i16 1, i16 2, i16 4, i16 2], [5 x i16] [i16 8, i16 12, i16 14, i16 12, i16 8], [5 x i16] [i16 8, i16 24, i16 56, i16 24, i16 8], [5 x i16] [i16 0, i16 15, i16 9, i16 9, i16 15]], align 1
+@_ZZ10draw_arrowhhmmjE16first_side_arrow = private unnamed_addr constant [2 x [41 x i16]] [[41 x i16] [i16 0, i16 0, i16 0, i16 0, i16 0, i16 1, i16 3, i16 7, i16 15, i16 31, i16 63, i16 127, i16 255, i16 511, i16 1023, i16 2047, i16 4095, i16 8191, i16 16383, i16 32767, i16 -1, i16 32767, i16 16383, i16 8191, i16 4095, i16 2047, i16 1023, i16 511, i16 255, i16 127, i16 63, i16 31, i16 15, i16 7, i16 3, i16 1, i16 0, i16 0, i16 0, i16 0, i16 0], [41 x i16] [i16 16, i16 24, i16 28, i16 30, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 -1, i16 -1, i16 -1, i16 -1, i16 -1, i16 -1, i16 -1, i16 -1, i16 -1, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 31, i16 30, i16 28, i16 24, i16 16]], align 1
+@_ZZ12draw_lil_guyhhmmjE7lil_guy = private unnamed_addr constant [2 x [24 x i16]] [[24 x i16] [i16 0, i16 2050, i16 1028, i16 520, i16 272, i16 160, i16 64, i16 64, i16 64, i16 64, i16 64, i16 224, i16 592, i16 584, i16 1092, i16 224, i16 17, i16 520, i16 1028, i16 1028, i16 520, i16 272, i16 224, i16 0], [24 x i16] [i16 0, i16 160, i16 160, i16 160, i16 160, i16 160, i16 64, i16 592, i16 592, i16 592, i16 592, i16 224, i16 64, i16 64, i16 64, i16 1092, i16 224, i16 520, i16 1028, i16 1028, i16 520, i16 272, i16 224, i16 0]], align 1
+@_ZZ17OLED_profile_pagejE5text1 = private unnamed_addr constant [12 x i16] [i16 80, i16 114, i16 111, i16 102, i16 105, i16 108, i16 101, i16 32, i16 80, i16 97, i16 103, i16 101], align 1
+@_ZZ17OLED_profile_pagejE5text2 = private unnamed_addr constant [9 x i16] [i16 80, i16 114, i16 111, i16 102, i16 105, i16 108, i16 101, i16 32, i16 35], align 1
+@_ZZ18OLED_starting_pagevE5text1 = private unnamed_addr constant [7 x i16] [i16 87, i16 97, i16 105, i16 116, i16 105, i16 110, i16 103], align 1
+@_ZZ17OLED_end_progressvE4text = private unnamed_addr constant [9 x i16] [i16 67, i16 111, i16 109, i16 112, i16 108, i16 101, i16 116, i16 101, i16 33], align 1
 @.str = private unnamed_addr constant [38 x i16] [i16 84, i16 104, i16 101, i16 114, i16 109, i16 111, i16 99, i16 111, i16 117, i16 112, i16 108, i16 101, i16 58, i16 32, i16 69, i16 110, i16 116, i16 101, i16 114, i16 101, i16 100, i16 32, i16 70, i16 97, i16 117, i16 108, i16 116, i16 32, i16 70, i16 117, i16 110, i16 99, i16 116, i16 105, i16 111, i16 110, i16 10, i16 0], align 1
 @.str1 = private unnamed_addr constant [37 x i16] [i16 84, i16 104, i16 101, i16 114, i16 109, i16 111, i16 99, i16 111, i16 117, i16 112, i16 108, i16 101, i16 58, i16 32, i16 79, i16 112, i16 101, i16 110, i16 32, i16 67, i16 105, i16 114, i16 99, i16 117, i16 105, i16 116, i16 32, i16 100, i16 101, i16 116, i16 101, i16 99, i16 116, i16 101, i16 100, i16 10, i16 0], align 1
 @.str4 = private unnamed_addr constant [30 x i16] [i16 84, i16 104, i16 101, i16 114, i16 109, i16 111, i16 99, i16 111, i16 117, i16 112, i16 108, i16 101, i16 32, i16 69, i16 114, i16 114, i16 111, i16 114, i16 32, i16 100, i16 101, i16 116, i16 101, i16 99, i16 116, i16 101, i16 100, i16 46, i16 10, i16 0], align 1
-@.str5 = private unnamed_addr constant [15 x i16] [i16 67, i16 117, i16 114, i16 114, i16 101, i16 110, i16 116, i16 32, i16 84, i16 101, i16 109, i16 112, i16 58, i16 32, i16 0], align 1
-@.str6 = private unnamed_addr constant [3 x i16] [i16 32, i16 10, i16 0], align 1
-@.str7 = private unnamed_addr constant [14 x i16] [i16 84, i16 97, i16 114, i16 103, i16 101, i16 116, i16 32, i16 84, i16 101, i16 109, i16 112, i16 58, i16 32, i16 0], align 1
+@current_temp = global i16 0, align 1
+@humidity = global i16 0, align 1
+@btn_press = global i16 0, align 1
+@r_encoder = global %struct.rotary_encoder { i16 0, i16 3, i16 0 }, align 1
+@profile_index = global i16 1, align 1
+@target_temp = global i16 0, align 1
+@target_temp_index = global i16 0, align 1
+@progress = global i16 0, align 1
+@selected_profile = global %struct.profile zeroinitializer, align 1
+@profile_array = global [3 x [3 x i16]] [[3 x i16] [i16 75, i16 165, i16 240], [3 x i16] [i16 80, i16 165, i16 220], [3 x i16] [i16 90, i16 152, i16 240]], align 1
 @thrds_vector = external global i16
 
 define void @_Z7wait_msj(i16 %ms) nounwind {
@@ -142,7 +157,41 @@ define i16 @_Z12Num_To_ASCIIj(i16 %num) nounwind readnone {
   br label %11
 
 ; <label>:11                                      ; preds = %0, %10, %9, %8, %7, %6, %5, %4, %3, %2, %1
-  %ascii_index.0 = phi i16 [ 99, %0 ], [ 25, %10 ], [ 24, %9 ], [ 23, %8 ], [ 22, %7 ], [ 21, %6 ], [ 20, %5 ], [ 19, %4 ], [ 18, %3 ], [ 17, %2 ], [ 16, %1 ]
+  %ascii_index.0 = phi i16 [ 100, %0 ], [ 25, %10 ], [ 24, %9 ], [ 23, %8 ], [ 22, %7 ], [ 21, %6 ], [ 20, %5 ], [ 19, %4 ], [ 18, %3 ], [ 17, %2 ], [ 16, %1 ]
+  ret i16 %ascii_index.0
+}
+
+define i16 @_Z13char_to_ASCIIc(i16 signext %entry) nounwind readnone {
+  %entry.off = add i16 %entry, -97
+  %1 = icmp ult i16 %entry.off, 26
+  br i1 %1, label %2, label %4
+
+; <label>:2                                       ; preds = %0
+  %3 = add nsw i16 %entry, -32
+  br label %13
+
+; <label>:4                                       ; preds = %0
+  %entry.off16 = add i16 %entry, -65
+  %5 = icmp ult i16 %entry.off16, 26
+  br i1 %5, label %6, label %8
+
+; <label>:6                                       ; preds = %4
+  %7 = add nsw i16 %entry, -32
+  br label %13
+
+; <label>:8                                       ; preds = %4
+  %entry.off17 = add i16 %entry, -48
+  %9 = icmp ult i16 %entry.off17, 10
+  %10 = add i16 %entry, -32
+  br i1 %9, label %13, label %11
+
+; <label>:11                                      ; preds = %8
+  %12 = icmp ult i16 %10, 16
+  %. = select i1 %12, i16 %10, i16 99
+  ret i16 %.
+
+; <label>:13                                      ; preds = %8, %6, %2
+  %ascii_index.0 = phi i16 [ %3, %2 ], [ %7, %6 ], [ %10, %8 ]
   ret i16 %ascii_index.0
 }
 
@@ -360,23 +409,25 @@ define void @_Z21OLED_Print_Sensor_Valhhjj(i16 zeroext %x_pos, i16 zeroext %y_po
   br label %23
 
 ; <label>:23                                      ; preds = %12, %5, %.thread
-  %digits.033 = phi i16 [ 21, %12 ], [ 14, %5 ], [ 7, %.thread ]
-  %24 = icmp eq i16 %selection, 0
-  %25 = add i16 %digits.033, %x_pos
-  br i1 %24, label %26, label %29
+  %digits.037 = phi i16 [ 21, %12 ], [ 14, %5 ], [ 7, %.thread ]
+  switch i16 %selection, label %29 [
+    i16 0, label %24
+    i16 1, label %27
+  ]
 
-; <label>:26                                      ; preds = %23
+; <label>:24                                      ; preds = %23
+  %25 = add i16 %digits.037, %x_pos
   tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext %25, i16 zeroext %y_pos, i16 zeroext 97, i32 65535, i32 0)
-  %27 = add i16 %x_pos, 7
-  %28 = add i16 %27, %digits.033
-  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext %28, i16 zeroext %y_pos, i16 zeroext 35, i32 65535, i32 0)
-  br label %30
+  %26 = add i16 %25, 1
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext %26, i16 zeroext %y_pos, i16 zeroext 35, i32 65535, i32 0)
+  br label %29
 
-; <label>:29                                      ; preds = %23
-  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext %25, i16 zeroext %y_pos, i16 zeroext 5, i32 65535, i32 0)
-  br label %30
+; <label>:27                                      ; preds = %23
+  %28 = add i16 %digits.037, %x_pos
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext %28, i16 zeroext %y_pos, i16 zeroext 5, i32 65535, i32 0)
+  br label %29
 
-; <label>:30                                      ; preds = %29, %26
+; <label>:29                                      ; preds = %23, %27, %24
   ret void
 }
 
@@ -543,15 +594,141 @@ define void @_Z8Draw_Barhhmmjjj(i16 zeroext %x_pos, i16 zeroext %y_pos, i32 %sha
   ret void
 }
 
-define void @_Z23oled_pin_initializationv() nounwind {
-  tail call void @llvm.XInC2.outp(i16 4096, i16 39) nounwind
-  tail call void @llvm.XInC2.outp(i16 1792, i16 33) nounwind
-  %1 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
-  %2 = or i16 %1, 4
-  tail call void @llvm.XInC2.outp(i16 %2, i16 32) nounwind
-  %3 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
-  %4 = or i16 %3, 16
-  tail call void @llvm.XInC2.outp(i16 %4, i16 38) nounwind
+define void @_Z10draw_arrowhhmmj(i16 zeroext %x_pos, i16 zeroext %y_pos, i32 %shapeColour, i32 %backgroundColour, i16 %direction) nounwind {
+  br label %1
+
+; <label>:1                                       ; preds = %14, %0
+  %.025 = phi i16 [ %y_pos, %0 ], [ %15, %14 ]
+  %i.024 = phi i16 [ 0, %0 ], [ %16, %14 ]
+  tail call void @_Z26OLED_SetPosition_160128RGBhh(i16 zeroext %x_pos, i16 zeroext %.025)
+  tail call void @_Z31OLED_WriteMemoryStart_160128RGBv()
+  br label %2
+
+; <label>:2                                       ; preds = %9, %1
+  %mask.121 = phi i16 [ -32768, %1 ], [ %10, %9 ]
+  %count.020 = phi i16 [ 0, %1 ], [ %11, %9 ]
+  %3 = getelementptr inbounds [2 x [41 x i16]]* @_ZZ10draw_arrowhhmmjE16first_side_arrow, i16 0, i16 %direction, i16 %count.020
+  %4 = load i16* %3, align 1, !tbaa !0
+  %5 = and i16 %4, %mask.121
+  %6 = icmp eq i16 %5, %mask.121
+  br i1 %6, label %7, label %8
+
+; <label>:7                                       ; preds = %2
+  tail call void @_Z20OLED_Pixel_160128RGBm(i32 %shapeColour)
+  br label %9
+
+; <label>:8                                       ; preds = %2
+  tail call void @_Z20OLED_Pixel_160128RGBm(i32 %backgroundColour)
+  br label %9
+
+; <label>:9                                       ; preds = %8, %7
+  %10 = lshr i16 %mask.121, 1
+  %11 = add nsw i16 %count.020, 1
+  %exitcond = icmp eq i16 %11, 16
+  br i1 %exitcond, label %12, label %2
+
+; <label>:12                                      ; preds = %9, %12
+  %count.122 = phi i16 [ %13, %12 ], [ 0, %9 ]
+  tail call void @_Z20OLED_Pixel_160128RGBm(i32 %shapeColour)
+  %13 = add nsw i16 %count.122, 1
+  %exitcond26 = icmp eq i16 %13, 16
+  br i1 %exitcond26, label %14, label %12
+
+; <label>:14                                      ; preds = %12
+  %15 = add i16 %.025, 1
+  %16 = add nsw i16 %i.024, 1
+  %exitcond27 = icmp eq i16 %16, 41
+  br i1 %exitcond27, label %17, label %1
+
+; <label>:17                                      ; preds = %14
+  ret void
+}
+
+declare void @llvm.memcpy.p0i16.p0i16.i16(i16* nocapture, i16* nocapture, i16, i32, i1) nounwind
+
+define void @_Z12draw_lil_guyhhmmj(i16 zeroext %x_pos, i16 zeroext %y_pos, i32 %shapeColour, i32 %backgroundColour, i16 %position) nounwind {
+  br label %1
+
+; <label>:1                                       ; preds = %12, %0
+  %.014 = phi i16 [ %y_pos, %0 ], [ %13, %12 ]
+  %i.013 = phi i16 [ 0, %0 ], [ %14, %12 ]
+  tail call void @_Z26OLED_SetPosition_160128RGBhh(i16 zeroext %x_pos, i16 zeroext %.014)
+  tail call void @_Z31OLED_WriteMemoryStart_160128RGBv()
+  %2 = getelementptr inbounds [2 x [24 x i16]]* @_ZZ12draw_lil_guyhhmmjE7lil_guy, i16 0, i16 %position, i16 %i.013
+  %3 = load i16* %2, align 1, !tbaa !2
+  br label %4
+
+; <label>:4                                       ; preds = %9, %1
+  %mask.012 = phi i16 [ 4096, %1 ], [ %10, %9 ]
+  %count.011 = phi i16 [ 0, %1 ], [ %11, %9 ]
+  %5 = and i16 %3, %mask.012
+  %6 = icmp eq i16 %5, %mask.012
+  br i1 %6, label %7, label %8
+
+; <label>:7                                       ; preds = %4
+  tail call void @_Z20OLED_Pixel_160128RGBm(i32 %shapeColour)
+  br label %9
+
+; <label>:8                                       ; preds = %4
+  tail call void @_Z20OLED_Pixel_160128RGBm(i32 %backgroundColour)
+  br label %9
+
+; <label>:9                                       ; preds = %8, %7
+  %10 = lshr i16 %mask.012, 1
+  %11 = add nsw i16 %count.011, 1
+  %exitcond = icmp eq i16 %11, 13
+  br i1 %exitcond, label %12, label %4
+
+; <label>:12                                      ; preds = %9
+  %13 = add i16 %.014, 1
+  %14 = add nsw i16 %i.013, 1
+  %exitcond15 = icmp eq i16 %14, 24
+  br i1 %exitcond15, label %15, label %1
+
+; <label>:15                                      ; preds = %12
+  ret void
+}
+
+define void @_Z15OLED_write_textihhPhimm(i16 %charsize, i16 zeroext %x_pos, i16 zeroext %y_pos, i16* nocapture %toWrite, i16 %length, i32 %textColor, i32 %backgroundColor) nounwind {
+  %1 = icmp sgt i16 %length, 0
+  br i1 %1, label %.lr.ph, label %._crit_edge
+
+.lr.ph:                                           ; preds = %0
+  %2 = icmp eq i16 %charsize, 1
+  br i1 %2, label %3, label %.lr.ph..lr.ph.split_crit_edge
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %i.013.us = phi i16 [ %9, %3 ], [ 0, %.lr.ph ]
+  %4 = getelementptr inbounds i16* %toWrite, i16 %i.013.us
+  %5 = load i16* %4, align 1, !tbaa !0
+  %6 = tail call i16 @_Z13char_to_ASCIIc(i16 signext %5)
+  %7 = mul nsw i16 %i.013.us, 7
+  %8 = add i16 %7, %x_pos
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext %8, i16 zeroext %y_pos, i16 zeroext %6, i32 65535, i32 0)
+  %9 = add nsw i16 %i.013.us, 1
+  %exitcond = icmp eq i16 %9, %length
+  br i1 %exitcond, label %._crit_edge, label %3
+
+.lr.ph..lr.ph.split_crit_edge:                    ; preds = %.lr.ph, %16
+  %i.013 = phi i16 [ %17, %16 ], [ 0, %.lr.ph ]
+  %cond = icmp eq i16 %charsize, 2
+  br i1 %cond, label %10, label %16
+
+; <label>:10                                      ; preds = %.lr.ph..lr.ph.split_crit_edge
+  %11 = getelementptr inbounds i16* %toWrite, i16 %i.013
+  %12 = load i16* %11, align 1, !tbaa !0
+  %13 = tail call i16 @_Z13char_to_ASCIIc(i16 signext %12)
+  %14 = mul nsw i16 %i.013, 12
+  %15 = add i16 %14, %x_pos
+  tail call void @_Z21OLED_Text2x_160128RGBhhhmm(i16 zeroext %15, i16 zeroext %y_pos, i16 zeroext %13, i32 65535, i32 0)
+  br label %16
+
+; <label>:16                                      ; preds = %.lr.ph..lr.ph.split_crit_edge, %10
+  %17 = add nsw i16 %i.013, 1
+  %18 = icmp slt i16 %17, %length
+  br i1 %18, label %.lr.ph..lr.ph.split_crit_edge, label %._crit_edge
+
+._crit_edge:                                      ; preds = %3, %16, %0
   ret void
 }
 
@@ -655,17 +832,128 @@ define void @_Z15OLED_Start_Pagev() nounwind {
   ret void
 }
 
+define void @_Z14OLED_main_pagejjj(i16 %temp, i16 %hum, i16 %prog) nounwind {
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 20, i16 zeroext 100, i16 zeroext 48, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 27, i16 zeroext 100, i16 zeroext 82, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 34, i16 zeroext 100, i16 zeroext 79, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 41, i16 zeroext 100, i16 zeroext 70, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 48, i16 zeroext 100, i16 zeroext 73, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 55, i16 zeroext 100, i16 zeroext 76, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 62, i16 zeroext 100, i16 zeroext 69, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 69, i16 zeroext 100, i16 zeroext 26, i32 65535, i32 0)
+  tail call void @_Z8Draw_Boxhhmmjj(i16 zeroext 20, i16 zeroext 96, i32 63488, i32 0, i16 32, i16 128)
+  tail call void @_Z8Draw_Barhhmmjjj(i16 zeroext 23, i16 zeroext 96, i32 63488, i32 undef, i16 26, i16 122, i16 %prog)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 20, i16 zeroext 46, i16 zeroext 48, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 27, i16 zeroext 46, i16 zeroext 82, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 34, i16 zeroext 46, i16 zeroext 79, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 41, i16 zeroext 46, i16 zeroext 71, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 48, i16 zeroext 46, i16 zeroext 82, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 55, i16 zeroext 46, i16 zeroext 69, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 62, i16 zeroext 46, i16 zeroext 83, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 69, i16 zeroext 46, i16 zeroext 83, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 76, i16 zeroext 46, i16 zeroext 26, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 20, i16 zeroext 28, i16 zeroext 52, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 27, i16 zeroext 28, i16 zeroext 69, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 34, i16 zeroext 28, i16 zeroext 77, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 41, i16 zeroext 28, i16 zeroext 80, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 48, i16 zeroext 28, i16 zeroext 69, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 55, i16 zeroext 28, i16 zeroext 82, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 62, i16 zeroext 28, i16 zeroext 65, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 69, i16 zeroext 28, i16 zeroext 84, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 76, i16 zeroext 28, i16 zeroext 85, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 83, i16 zeroext 28, i16 zeroext 82, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 90, i16 zeroext 28, i16 zeroext 69, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 97, i16 zeroext 28, i16 zeroext 26, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 20, i16 zeroext 10, i16 zeroext 40, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 27, i16 zeroext 10, i16 zeroext 85, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 34, i16 zeroext 10, i16 zeroext 77, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 41, i16 zeroext 10, i16 zeroext 73, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 48, i16 zeroext 10, i16 zeroext 68, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 55, i16 zeroext 10, i16 zeroext 73, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 62, i16 zeroext 10, i16 zeroext 84, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 69, i16 zeroext 10, i16 zeroext 89, i32 65535, i32 0)
+  tail call void @_Z19OLED_Text_160128RGBhhhmm(i16 zeroext 76, i16 zeroext 10, i16 zeroext 26, i32 65535, i32 0)
+  tail call void @_Z21OLED_Print_Sensor_Valhhjj(i16 zeroext 83, i16 zeroext 46, i16 %prog, i16 1)
+  tail call void @_Z21OLED_Print_Sensor_Valhhjj(i16 zeroext 104, i16 zeroext 28, i16 %temp, i16 0)
+  tail call void @_Z21OLED_Print_Sensor_Valhhjj(i16 zeroext 83, i16 zeroext 10, i16 %hum, i16 1)
+  ret void
+}
+
+define void @_Z17OLED_profile_pagej(i16 %selected_profile) nounwind {
+  %text1 = alloca [12 x i16], align 1
+  %text2 = alloca [9 x i16], align 1
+  %profile = alloca [1 x i16], align 1
+  %1 = getelementptr inbounds [12 x i16]* %text1, i16 0, i16 0
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %1, i16* getelementptr inbounds ([12 x i16]* @_ZZ17OLED_profile_pagejE5text1, i16 0, i16 0), i16 12, i32 1, i1 false)
+  %2 = getelementptr inbounds [9 x i16]* %text2, i16 0, i16 0
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %2, i16* getelementptr inbounds ([9 x i16]* @_ZZ17OLED_profile_pagejE5text2, i16 0, i16 0), i16 9, i32 1, i1 false)
+  %3 = getelementptr inbounds [1 x i16]* %profile, i16 0, i16 0
+  %4 = add i16 %selected_profile, 48
+  store i16 %4, i16* %3, align 1, !tbaa !0
+  call void @_Z15OLED_write_textihhPhimm(i16 2, i16 zeroext 5, i16 zeroext 100, i16* %1, i16 12, i32 undef, i32 undef)
+  call void @_Z15OLED_write_textihhPhimm(i16 2, i16 zeroext 5, i16 zeroext 50, i16* %2, i16 9, i32 undef, i32 undef)
+  call void @_Z15OLED_write_textihhPhimm(i16 2, i16 zeroext 120, i16 zeroext 50, i16* %3, i16 1, i32 undef, i32 undef)
+  ret void
+}
+
+define void @_Z18OLED_starting_pagev() nounwind {
+  %text1 = alloca [7 x i16], align 1
+  %text2 = alloca i128, align 8
+  %1 = getelementptr inbounds [7 x i16]* %text1, i16 0, i16 0
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %1, i16* getelementptr inbounds ([7 x i16]* @_ZZ18OLED_starting_pagevE5text1, i16 0, i16 0), i16 7, i32 1, i1 false)
+  store i128 571160973520416259462844853152317556, i128* %text2, align 8
+  call void @_Z15OLED_write_textihhPhimm(i16 2, i16 zeroext 5, i16 zeroext 100, i16* %1, i16 7, i32 undef, i32 undef)
+  %2 = bitcast i128* %text2 to i16*
+  call void @_Z15OLED_write_textihhPhimm(i16 2, i16 zeroext 5, i16 zeroext 50, i16* %2, i16 8, i32 undef, i32 undef)
+  ret void
+}
+
+define void @_Z21OLED_display_progressv() nounwind {
+  tail call void @_Z25OLED_FillScreen_160128RGBm(i32 7936)
+  ret void
+}
+
+define void @_Z20OLED_update_humidityj(i16 %humidity) nounwind {
+  tail call void @_Z21OLED_Print_Sensor_Valhhjj(i16 zeroext 0, i16 zeroext 0, i16 %humidity, i16 1)
+  ret void
+}
+
+define void @_Z16OLED_update_tempi(i16 %temp) nounwind {
+  tail call void @_Z16Clear_Data_Charshhm(i16 zeroext 104, i16 zeroext 30, i32 0)
+  tail call void @_Z21OLED_Print_Sensor_Valhhjj(i16 zeroext 104, i16 zeroext 30, i16 %temp, i16 0)
+  ret void
+}
+
+define void @_Z20OLED_update_progressi(i16 %progress) nounwind {
+  tail call void @_Z21OLED_Print_Sensor_Valhhjj(i16 zeroext 0, i16 zeroext 0, i16 %progress, i16 1)
+  ret void
+}
+
+define void @_Z17OLED_end_progressv() nounwind {
+  %text = alloca [9 x i16], align 1
+  %1 = getelementptr inbounds [9 x i16]* %text, i16 0, i16 0
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %1, i16* getelementptr inbounds ([9 x i16]* @_ZZ17OLED_end_progressvE4text, i16 0, i16 0), i16 9, i32 1, i1 false)
+  call void @_Z25OLED_FillScreen_160128RGBm(i32 31)
+  call void @_Z15OLED_write_textihhPhimm(i16 2, i16 zeroext 5, i16 zeroext 100, i16* %1, i16 9, i32 undef, i32 undef)
+  ret void
+}
+
+define void @_Z20OLED_display_warningv() nounwind {
+  tail call void @_Z25OLED_FillScreen_160128RGBm(i32 31)
+  ret void
+}
+
 define void @_Z21thermocouple_pin_initv() nounwind {
-  tail call void @llvm.XInC2.outp(i16 256, i16 51) nounwind
+  tail call void @llvm.XInC2.outp(i16 512, i16 51) nounwind
   %1 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
-  %2 = or i16 %1, 1
+  %2 = or i16 %1, 2
   tail call void @llvm.XInC2.outp(i16 %2, i16 50) nounwind
   ret void
 }
 
 define i16 @_Z13readUpperDatav() nounwind {
   %1 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
-  %2 = and i16 %1, -2
+  %2 = and i16 %1, -3
   tail call void @llvm.XInC2.outp(i16 %2, i16 50) nounwind
   tail call void @llvm.XInC2.outp(i16 0, i16 54) nounwind
   %3 = tail call i16 @llvm.XInC2.inp(i16 54) nounwind
@@ -674,7 +962,7 @@ define i16 @_Z13readUpperDatav() nounwind {
   %5 = shl i16 %3, 8
   %6 = or i16 %4, %5
   %7 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
-  %8 = or i16 %7, 1
+  %8 = or i16 %7, 2
   tail call void @llvm.XInC2.outp(i16 %8, i16 50) nounwind
   ret i16 %6
 }
@@ -682,7 +970,7 @@ define i16 @_Z13readUpperDatav() nounwind {
 define i16 @_Z13readLowerDatav() nounwind {
 .preheader:
   %0 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
-  %1 = and i16 %0, -2
+  %1 = and i16 %0, -3
   tail call void @llvm.XInC2.outp(i16 %1, i16 50) nounwind
   tail call void @llvm.XInC2.outp(i16 0, i16 54) nounwind
   %2 = tail call i16 @llvm.XInC2.inp(i16 54) nounwind
@@ -695,7 +983,7 @@ define i16 @_Z13readLowerDatav() nounwind {
   %6 = shl i16 %4, 8
   %7 = or i16 %5, %6
   %8 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
-  %9 = or i16 %8, 1
+  %9 = or i16 %8, 2
   tail call void @llvm.XInC2.outp(i16 %9, i16 50) nounwind
   ret i16 %7
 }
@@ -707,14 +995,14 @@ define i16 @_Z7isFaultv() nounwind {
 }
 
 define i16 @_Z8getFaultv() nounwind {
-  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([38 x i16]* @.str, i16 0, i16 0)) nounwind, !srcloc !2
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([38 x i16]* @.str, i16 0, i16 0)) nounwind, !srcloc !3
   %1 = tail call i16 @_Z13readLowerDatav()
   %2 = and i16 %1, 1
   %3 = icmp eq i16 %2, 0
   br i1 %3, label %5, label %4
 
 ; <label>:4                                       ; preds = %0
-  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([37 x i16]* @.str1, i16 0, i16 0)) nounwind, !srcloc !2
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([37 x i16]* @.str1, i16 0, i16 0)) nounwind, !srcloc !3
   br label %5
 
 ; <label>:5                                       ; preds = %0, %4
@@ -729,7 +1017,7 @@ define i16 @_Z7getTempv() nounwind {
   br i1 %3, label %6, label %4
 
 ; <label>:4                                       ; preds = %0
-  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([30 x i16]* @.str4, i16 0, i16 0)) nounwind, !srcloc !2
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([30 x i16]* @.str4, i16 0, i16 0)) nounwind, !srcloc !3
   %5 = tail call i16 @_Z8getFaultv()
   br label %8
 
@@ -758,40 +1046,6 @@ define void @_Z20timer_initializationv() nounwind {
   ret void
 }
 
-define void @_Z22pid_pin_initializationv() nounwind {
-  tail call void @llvm.XInC2.outp(i16 8192, i16 39) nounwind
-  tail call void @llvm.XInC2.outp(i16 1024, i16 47) nounwind
-  %1 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
-  %2 = or i16 %1, 32
-  tail call void @llvm.XInC2.outp(i16 %2, i16 38) nounwind
-  ret void
-}
-
-define i16 @_Z12led_control2j(i16 %led_state) nounwind {
-  %1 = tail call i16 @llvm.XInC2.inp(i16 69) nounwind
-  %2 = icmp slt i16 %1, 0
-  br i1 %2, label %3, label %10
-
-; <label>:3                                       ; preds = %0
-  %4 = icmp eq i16 %led_state, 0
-  %5 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
-  br i1 %4, label %6, label %8
-
-; <label>:6                                       ; preds = %3
-  %7 = and i16 %5, -33
-  tail call void @llvm.XInC2.outp(i16 %7, i16 38) nounwind
-  br label %10
-
-; <label>:8                                       ; preds = %3
-  %9 = or i16 %5, 32
-  tail call void @llvm.XInC2.outp(i16 %9, i16 38) nounwind
-  br label %10
-
-; <label>:10                                      ; preds = %6, %8, %0
-  %.0 = phi i16 [ 1, %6 ], [ 0, %8 ], [ %led_state, %0 ]
-  ret i16 %.0
-}
-
 define i16 @_Z9check_pidj(i16 %pid_status) nounwind {
   %1 = tail call i16 @llvm.XInC2.inp(i16 62) nounwind
   %2 = tail call i16 @llvm.XInC2.inp(i16 67) nounwind
@@ -802,53 +1056,49 @@ define i16 @_Z9check_pidj(i16 %pid_status) nounwind {
 
 define void @_Z18set_pid_parametersP3Pidjjj(%struct.Pid* nocapture %pid, i16 %kp_val, i16 %ki_val, i16 %kd_val) nounwind {
   %1 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 0
-  store i16 %kp_val, i16* %1, align 1, !tbaa !3
+  store i16 %kp_val, i16* %1, align 1, !tbaa !2
   %2 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 1
-  store i16 %ki_val, i16* %2, align 1, !tbaa !3
+  store i16 %ki_val, i16* %2, align 1, !tbaa !2
   %3 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 2
-  store i16 %kd_val, i16* %3, align 1, !tbaa !3
+  store i16 %kd_val, i16* %3, align 1, !tbaa !2
   %4 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 3
-  store i16 0, i16* %4, align 1, !tbaa !3
+  store i16 0, i16* %4, align 1, !tbaa !2
   %5 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 4
-  store i16 0, i16* %5, align 1, !tbaa !3
+  store i16 0, i16* %5, align 1, !tbaa !2
   %6 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 5
-  store i16 2000, i16* %6, align 1, !tbaa !3
+  store i16 2000, i16* %6, align 1, !tbaa !2
   ret void
 }
 
 define i16 @_Z11pid_computeP3Pidjj(%struct.Pid* nocapture %pid, i16 %target_temp, i16 %measured_temp) nounwind {
   %1 = sub i16 %target_temp, %measured_temp
   %2 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 4
-  %3 = load i16* %2, align 1, !tbaa !3
+  %3 = load i16* %2, align 1, !tbaa !2
   %4 = add nsw i16 %3, %1
-  store i16 %4, i16* %2, align 1, !tbaa !3
-  %5 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 3
-  %6 = load i16* %5, align 1, !tbaa !3
-  %7 = sub nsw i16 %1, %6
-  store i16 %1, i16* %5, align 1, !tbaa !3
-  %8 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 0
-  %9 = load i16* %8, align 1, !tbaa !3
-  %10 = mul i16 %9, %1
-  %11 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 1
-  %12 = load i16* %11, align 1, !tbaa !3
-  %13 = mul i16 %4, %12
-  %14 = add i16 %13, %10
-  %15 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 2
-  %16 = load i16* %15, align 1, !tbaa !3
-  %17 = mul i16 %16, %7
-  %18 = add i16 %14, %17
-  %19 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 5
-  %20 = load i16* %19, align 1, !tbaa !3
-  %21 = icmp sgt i16 %18, %20
-  br i1 %21, label %24, label %22
-
-; <label>:22                                      ; preds = %0
-  %23 = icmp slt i16 %18, 0
-  %. = select i1 %23, i16 0, i16 %18
-  ret i16 %.
-
-; <label>:24                                      ; preds = %0
-  ret i16 %20
+  %5 = icmp sgt i16 %4, 200
+  %. = select i1 %5, i16 200, i16 %4
+  store i16 %., i16* %2, align 1
+  %6 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 3
+  %7 = load i16* %6, align 1, !tbaa !2
+  %8 = sub nsw i16 %1, %7
+  store i16 %1, i16* %6, align 1, !tbaa !2
+  %9 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 0
+  %10 = load i16* %9, align 1, !tbaa !2
+  %11 = mul i16 %10, %1
+  %12 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 1
+  %13 = load i16* %12, align 1, !tbaa !2
+  %14 = mul i16 %., %13
+  %15 = add i16 %14, %11
+  %16 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 2
+  %17 = load i16* %16, align 1, !tbaa !2
+  %18 = mul i16 %17, %8
+  %19 = add i16 %15, %18
+  %20 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 5
+  %21 = load i16* %20, align 1, !tbaa !2
+  %22 = icmp ugt i16 %19, %21
+  %output.0 = select i1 %22, i16 %21, i16 %19
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoUnsignedDec", "{R1},~{R1},~{R6}"(i16 %output.0) nounwind, !srcloc !4
+  ret i16 %output.0
 }
 
 define void @_Z14heating_actionj(i16 %duration) nounwind {
@@ -859,12 +1109,12 @@ define void @_Z14heating_actionj(i16 %duration) nounwind {
   br i1 %3, label %7, label %5
 
 ; <label>:5                                       ; preds = %0
-  %6 = or i16 %4, 32
+  %6 = or i16 %4, 96
   tail call void @llvm.XInC2.outp(i16 %6, i16 38) nounwind
   br label %9
 
 ; <label>:7                                       ; preds = %0
-  %8 = and i16 %4, -33
+  %8 = and i16 %4, -97
   tail call void @llvm.XInC2.outp(i16 %8, i16 38) nounwind
   br label %9
 
@@ -872,34 +1122,386 @@ define void @_Z14heating_actionj(i16 %duration) nounwind {
   ret void
 }
 
-define i16 @_Z13simulate_tempjj(i16 %duration, i16 %cur_temp) nounwind {
-  %1 = tail call i16 @llvm.XInC2.inp(i16 63) nounwind
-  %2 = icmp ult i16 %1, 24000
-  %3 = icmp ugt i16 %duration, 999
-  br i1 %2, label %4, label %6
+define i16 @_Z11button_readv() nounwind {
+  %1 = tail call i16 @llvm.XInC2.inp(i16 46) nounwind
+  %2 = lshr i16 %1, 2
+  %.lobit = and i16 %2, 1
+  %3 = xor i16 %.lobit, 1
+  ret i16 %3
+}
 
-; <label>:4                                       ; preds = %0
-  %5 = sub i16 1000, %duration
-  %. = select i1 %3, i16 1000, i16 %5
-  %.duration = select i1 %3, i16 0, i16 %duration
-  br label %10
+define void @_Z15get_encoder_pos14rotary_encoder(%struct.rotary_encoder* noalias nocapture sret %agg.result, %struct.rotary_encoder* nocapture byval %encoder1) nounwind {
+  %1 = tail call i16 @llvm.XInC2.inp(i16 46) nounwind
+  %2 = and i16 %1, 2
+  %3 = tail call i16 @llvm.XInC2.inp(i16 46) nounwind
+  %4 = and i16 %3, 1
+  %5 = or i16 %4, %2
+  %6 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 1
+  %7 = load volatile i16* %6, align 1, !tbaa !0
+  %8 = icmp eq i16 %5, %7
+  br i1 %8, label %48, label %9
 
-; <label>:6                                       ; preds = %0
-  br i1 %3, label %7, label %10
+; <label>:9                                       ; preds = %0
+  %10 = load volatile i16* %6, align 1, !tbaa !0
+  switch i16 %10, label %47 [
+    i16 0, label %11
+    i16 1, label %20
+    i16 2, label %29
+    i16 3, label %38
+  ]
 
-; <label>:7                                       ; preds = %6
-  %8 = add i16 %duration, -1000
-  %9 = sub i16 2000, %duration
-  br label %10
+; <label>:11                                      ; preds = %9
+  switch i16 %5, label %47 [
+    i16 1, label %12
+    i16 2, label %16
+  ]
 
-; <label>:10                                      ; preds = %4, %6, %7
-  %on_time.0 = phi i16 [ %8, %7 ], [ 0, %6 ], [ %., %4 ]
-  %off_time.0 = phi i16 [ %9, %7 ], [ 1000, %6 ], [ %.duration, %4 ]
-  %11 = mul i16 %on_time.0, 5
-  %12 = sub i16 %11, %off_time.0
-  %13 = udiv i16 %12, 1000
-  %14 = add i16 %13, %cur_temp
-  ret i16 %14
+; <label>:12                                      ; preds = %11
+  %13 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 0
+  %14 = load volatile i16* %13, align 1, !tbaa !0
+  %15 = add nsw i16 %14, 1
+  store volatile i16 %15, i16* %13, align 1, !tbaa !0
+  br label %47
+
+; <label>:16                                      ; preds = %11
+  %17 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 0
+  %18 = load volatile i16* %17, align 1, !tbaa !0
+  %19 = add nsw i16 %18, -1
+  store volatile i16 %19, i16* %17, align 1, !tbaa !0
+  br label %47
+
+; <label>:20                                      ; preds = %9
+  switch i16 %5, label %47 [
+    i16 3, label %21
+    i16 0, label %25
+  ]
+
+; <label>:21                                      ; preds = %20
+  %22 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 0
+  %23 = load volatile i16* %22, align 1, !tbaa !0
+  %24 = add nsw i16 %23, 1
+  store volatile i16 %24, i16* %22, align 1, !tbaa !0
+  br label %47
+
+; <label>:25                                      ; preds = %20
+  %26 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 0
+  %27 = load volatile i16* %26, align 1, !tbaa !0
+  %28 = add nsw i16 %27, -1
+  store volatile i16 %28, i16* %26, align 1, !tbaa !0
+  br label %47
+
+; <label>:29                                      ; preds = %9
+  switch i16 %5, label %47 [
+    i16 0, label %30
+    i16 3, label %34
+  ]
+
+; <label>:30                                      ; preds = %29
+  %31 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 0
+  %32 = load volatile i16* %31, align 1, !tbaa !0
+  %33 = add nsw i16 %32, 1
+  store volatile i16 %33, i16* %31, align 1, !tbaa !0
+  br label %47
+
+; <label>:34                                      ; preds = %29
+  %35 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 0
+  %36 = load volatile i16* %35, align 1, !tbaa !0
+  %37 = add nsw i16 %36, -1
+  store volatile i16 %37, i16* %35, align 1, !tbaa !0
+  br label %47
+
+; <label>:38                                      ; preds = %9
+  switch i16 %5, label %47 [
+    i16 2, label %39
+    i16 1, label %43
+  ]
+
+; <label>:39                                      ; preds = %38
+  %40 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 0
+  %41 = load volatile i16* %40, align 1, !tbaa !0
+  %42 = add nsw i16 %41, 1
+  store volatile i16 %42, i16* %40, align 1, !tbaa !0
+  br label %47
+
+; <label>:43                                      ; preds = %38
+  %44 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 0
+  %45 = load volatile i16* %44, align 1, !tbaa !0
+  %46 = add nsw i16 %45, -1
+  store volatile i16 %46, i16* %44, align 1, !tbaa !0
+  br label %47
+
+; <label>:47                                      ; preds = %39, %30, %21, %12, %38, %29, %20, %11, %43, %34, %25, %16, %9
+  store volatile i16 %5, i16* %6, align 1, !tbaa !0
+  br label %48
+
+; <label>:48                                      ; preds = %0, %47
+  %49 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 0
+  %50 = load volatile i16* %49, align 1, !tbaa !0
+  %51 = icmp sgt i16 %50, 3
+  br i1 %51, label %52, label %54
+
+; <label>:52                                      ; preds = %48
+  %53 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 2
+  store volatile i16 1, i16* %53, align 1, !tbaa !2
+  store volatile i16 0, i16* %49, align 1, !tbaa !0
+  br label %59
+
+; <label>:54                                      ; preds = %48
+  %55 = load volatile i16* %49, align 1, !tbaa !0
+  %56 = icmp slt i16 %55, -3
+  br i1 %56, label %57, label %59
+
+; <label>:57                                      ; preds = %54
+  %58 = getelementptr inbounds %struct.rotary_encoder* %encoder1, i16 0, i32 2
+  store volatile i16 2, i16* %58, align 1, !tbaa !2
+  store volatile i16 0, i16* %49, align 1, !tbaa !0
+  br label %59
+
+; <label>:59                                      ; preds = %54, %57, %52
+  %60 = getelementptr inbounds %struct.rotary_encoder* %agg.result, i16 0, i32 0
+  tail call void @llvm.memcpy.p0i16.p0i16.i16(i16* %60, i16* %49, i16 3, i32 1, i1 false), !tbaa.struct !5
+  ret void
+}
+
+define void @_Z20generate_RSS_profile7profilejjj(%struct.profile* noalias nocapture sret %agg.result, %struct.profile* nocapture byval %temp_profile, i16 %soak_time, i16 %spike_time, i16 %cooling_time) nounwind {
+  %1 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 0
+  store volatile i16 25, i16* %1, align 1, !tbaa !2
+  %2 = and i16 %soak_time, 1
+  %3 = icmp eq i16 %2, 0
+  br i1 %3, label %.preheader87, label %8
+
+.preheader87:                                     ; preds = %0
+  %4 = lshr i16 %soak_time, 1
+  %5 = add i16 %4, 1
+  %6 = icmp ugt i16 %5, 1
+  br i1 %6, label %.lr.ph92, label %.loopexit88
+
+.lr.ph92:                                         ; preds = %.preheader87
+  %7 = shl i16 %4, 2
+  br label %20
+
+; <label>:8                                       ; preds = %0
+  %9 = add i16 %soak_time, 1
+  %10 = lshr i16 %9, 1
+  %11 = add i16 %10, 1
+  %12 = icmp ugt i16 %11, 1
+  br i1 %12, label %.lr.ph99, label %18
+
+.lr.ph99:                                         ; preds = %8
+  %13 = shl i16 %10, 2
+  br label %14
+
+; <label>:14                                      ; preds = %14, %.lr.ph99
+  %time_index.097 = phi i16 [ 1, %.lr.ph99 ], [ %17, %14 ]
+  %target_temp.096 = phi i16 [ 25, %.lr.ph99 ], [ %15, %14 ]
+  %15 = add i16 %target_temp.096, 4
+  %16 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index.097
+  store volatile i16 %15, i16* %16, align 1, !tbaa !2
+  %17 = add nsw i16 %time_index.097, 1
+  %exitcond108 = icmp eq i16 %17, %11
+  br i1 %exitcond108, label %._crit_edge100, label %14
+
+._crit_edge100:                                   ; preds = %14
+  %phitmp = add i16 %13, 23
+  br label %18
+
+; <label>:18                                      ; preds = %._crit_edge100, %8
+  %target_temp.0.lcssa = phi i16 [ %phitmp, %._crit_edge100 ], [ 23, %8 ]
+  %19 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %10
+  store volatile i16 %target_temp.0.lcssa, i16* %19, align 1, !tbaa !2
+  br label %.loopexit88
+
+; <label>:20                                      ; preds = %20, %.lr.ph92
+  %time_index1.091 = phi i16 [ 1, %.lr.ph92 ], [ %23, %20 ]
+  %target_temp.190 = phi i16 [ 25, %.lr.ph92 ], [ %21, %20 ]
+  %21 = add i16 %target_temp.190, 4
+  %22 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index1.091
+  store volatile i16 %21, i16* %22, align 1, !tbaa !2
+  %23 = add nsw i16 %time_index1.091, 1
+  %exitcond107 = icmp eq i16 %23, %5
+  br i1 %exitcond107, label %..loopexit88_crit_edge, label %20
+
+..loopexit88_crit_edge:                           ; preds = %20
+  %24 = add i16 %7, 25
+  br label %.loopexit88
+
+.loopexit88:                                      ; preds = %.preheader87, %..loopexit88_crit_edge, %18
+  %target_temp.2 = phi i16 [ %target_temp.0.lcssa, %18 ], [ %24, %..loopexit88_crit_edge ], [ 25, %.preheader87 ]
+  %cur_time_index.0 = phi i16 [ %10, %18 ], [ %4, %..loopexit88_crit_edge ], [ %4, %.preheader87 ]
+  %25 = and i16 %spike_time, 1
+  %26 = icmp eq i16 %25, 0
+  br i1 %26, label %.preheader76, label %30
+
+.preheader76:                                     ; preds = %.loopexit88
+  %27 = lshr i16 %spike_time, 1
+  %28 = add i16 %27, 1
+  %29 = icmp ult i16 %cur_time_index.0, %28
+  br i1 %29, label %.lr.ph79, label %.loopexit
+
+; <label>:30                                      ; preds = %.loopexit88
+  %31 = add i16 %spike_time, -1
+  %32 = lshr i16 %31, 1
+  %33 = add i16 %32, 1
+  %34 = icmp ult i16 %cur_time_index.0, %33
+  br i1 %34, label %.lr.ph85, label %.loopexit
+
+.lr.ph85:                                         ; preds = %30, %.lr.ph85
+  %time_index2.083 = phi i16 [ %36, %.lr.ph85 ], [ %cur_time_index.0, %30 ]
+  %35 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index2.083
+  store volatile i16 %target_temp.2, i16* %35, align 1, !tbaa !2
+  %36 = add nsw i16 %time_index2.083, 1
+  %exitcond106 = icmp eq i16 %36, %33
+  br i1 %exitcond106, label %.loopexit, label %.lr.ph85
+
+.lr.ph79:                                         ; preds = %.preheader76, %.lr.ph79
+  %time_index3.078 = phi i16 [ %38, %.lr.ph79 ], [ %cur_time_index.0, %.preheader76 ]
+  %37 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index3.078
+  store volatile i16 %target_temp.2, i16* %37, align 1, !tbaa !2
+  %38 = add nsw i16 %time_index3.078, 1
+  %exitcond105 = icmp eq i16 %38, %28
+  br i1 %exitcond105, label %.loopexit, label %.lr.ph79
+
+.loopexit:                                        ; preds = %30, %.lr.ph85, %.preheader76, %.lr.ph79
+  %cur_time_index.1 = phi i16 [ %27, %.lr.ph79 ], [ %27, %.preheader76 ], [ %32, %.lr.ph85 ], [ %32, %30 ]
+  %39 = add i16 %cur_time_index.1, 1
+  %40 = and i16 %cooling_time, 1
+  %41 = icmp eq i16 %40, 0
+  br i1 %41, label %.preheader63, label %47
+
+.preheader63:                                     ; preds = %.loopexit
+  %42 = lshr i16 %cooling_time, 1
+  %43 = add i16 %42, 1
+  %44 = icmp ult i16 %39, %43
+  br i1 %44, label %.lr.ph66, label %.preheader
+
+.lr.ph66:                                         ; preds = %.preheader63
+  %45 = shl nuw i16 %42, 1
+  %46 = shl nuw i16 %cur_time_index.1, 1
+  br label %63
+
+; <label>:47                                      ; preds = %.loopexit
+  %48 = add i16 %cooling_time, -1
+  %49 = lshr i16 %48, 1
+  %50 = add i16 %49, 1
+  %51 = icmp ult i16 %39, %50
+  br i1 %51, label %.lr.ph73, label %.preheader
+
+.lr.ph73:                                         ; preds = %47
+  %52 = shl nuw i16 %49, 1
+  %53 = shl nuw i16 %cur_time_index.1, 1
+  br label %59
+
+..preheader.loopexit_crit_edge:                   ; preds = %63
+  %54 = add i16 %target_temp.2, %45
+  %55 = sub i16 %54, %46
+  br label %.preheader
+
+..preheader.loopexit68_crit_edge:                 ; preds = %59
+  %56 = add i16 %target_temp.2, %52
+  %57 = sub i16 %56, %53
+  br label %.preheader
+
+.preheader:                                       ; preds = %47, %..preheader.loopexit68_crit_edge, %.preheader63, %..preheader.loopexit_crit_edge
+  %target_temp.6.ph = phi i16 [ %55, %..preheader.loopexit_crit_edge ], [ %target_temp.2, %.preheader63 ], [ %57, %..preheader.loopexit68_crit_edge ], [ %target_temp.2, %47 ]
+  %time_index6.0.in.ph = phi i16 [ %42, %..preheader.loopexit_crit_edge ], [ %42, %.preheader63 ], [ %49, %..preheader.loopexit68_crit_edge ], [ %49, %47 ]
+  %time_index6.060 = add i16 %time_index6.0.in.ph, 1
+  %58 = icmp slt i16 %time_index6.060, 181
+  br i1 %58, label %.lr.ph, label %._crit_edge
+
+; <label>:59                                      ; preds = %59, %.lr.ph73
+  %time_index4.071 = phi i16 [ %39, %.lr.ph73 ], [ %62, %59 ]
+  %target_temp.370 = phi i16 [ %target_temp.2, %.lr.ph73 ], [ %60, %59 ]
+  %60 = add i16 %target_temp.370, 2
+  %61 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index4.071
+  store volatile i16 %60, i16* %61, align 1, !tbaa !2
+  %62 = add nsw i16 %time_index4.071, 1
+  %exitcond104 = icmp eq i16 %62, %50
+  br i1 %exitcond104, label %..preheader.loopexit68_crit_edge, label %59
+
+; <label>:63                                      ; preds = %63, %.lr.ph66
+  %time_index5.065 = phi i16 [ %39, %.lr.ph66 ], [ %66, %63 ]
+  %target_temp.464 = phi i16 [ %target_temp.2, %.lr.ph66 ], [ %64, %63 ]
+  %64 = add i16 %target_temp.464, 2
+  %65 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index5.065
+  store volatile i16 %64, i16* %65, align 1, !tbaa !2
+  %66 = add nsw i16 %time_index5.065, 1
+  %exitcond103 = icmp eq i16 %66, %43
+  br i1 %exitcond103, label %..preheader.loopexit_crit_edge, label %63
+
+.lr.ph:                                           ; preds = %.preheader, %.lr.ph
+  %time_index6.062 = phi i16 [ %time_index6.0, %.lr.ph ], [ %time_index6.060, %.preheader ]
+  %target_temp.661 = phi i16 [ %67, %.lr.ph ], [ %target_temp.6.ph, %.preheader ]
+  %67 = add i16 %target_temp.661, -4
+  %68 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index6.062
+  store volatile i16 %67, i16* %68, align 1, !tbaa !2
+  %time_index6.0 = add i16 %time_index6.062, 1
+  %exitcond = icmp eq i16 %time_index6.0, 181
+  br i1 %exitcond, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %.preheader
+  %69 = getelementptr inbounds %struct.profile* %agg.result, i16 0, i32 0, i16 0
+  tail call void @llvm.memcpy.p0i16.p0i16.i16(i16* %69, i16* %1, i16 180, i32 1, i1 false), !tbaa.struct !6
+  ret void
+}
+
+define void @_Z21generate_test_profile7profile(%struct.profile* noalias nocapture sret %agg.result, %struct.profile* nocapture byval %temp_profile) nounwind {
+  br label %1
+
+; <label>:1                                       ; preds = %1, %0
+  %i.03 = phi i16 [ 0, %0 ], [ %3, %1 ]
+  %2 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %i.03
+  store volatile i16 100, i16* %2, align 1, !tbaa !2
+  %3 = add nsw i16 %i.03, 1
+  %exitcond = icmp eq i16 %3, 180
+  br i1 %exitcond, label %4, label %1
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds %struct.profile* %agg.result, i16 0, i32 0, i16 0
+  %6 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 0
+  tail call void @llvm.memcpy.p0i16.p0i16.i16(i16* %5, i16* %6, i16 180, i32 1, i1 false), !tbaa.struct !6
+  ret void
+}
+
+define i16 @_Z9get_inputv() nounwind {
+  %1 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
+  %2 = lshr i16 %1, 3
+  %.lobit = and i16 %2, 1
+  ret i16 %.lobit
+}
+
+define void @_Z20start_humidity_timerv() nounwind {
+  tail call void @llvm.XInC2.outp(i16 91, i16 72) nounwind
+  tail call void @llvm.XInC2.outp(i16 199, i16 74) nounwind
+  ret void
+}
+
+define i16 @_Z11rising_edgev() nounwind {
+  %1 = tail call i16 @llvm.XInC2.inp(i16 73) nounwind
+  ret i16 %1
+}
+
+define i16 @_Z12get_humidityj(i16 %tpw_start) nounwind {
+  %1 = tail call i16 @llvm.XInC2.inp(i16 73) nounwind
+  %2 = icmp ugt i16 %1, %tpw_start
+  br i1 %2, label %3, label %5
+
+; <label>:3                                       ; preds = %0
+  %4 = sub i16 %1, %tpw_start
+  br label %8
+
+; <label>:5                                       ; preds = %0
+  %6 = sub i16 199, %tpw_start
+  %7 = add i16 %6, %1
+  br label %8
+
+; <label>:8                                       ; preds = %5, %3
+  %tpw.0 = phi i16 [ %4, %3 ], [ %7, %5 ]
+  %9 = mul i16 %tpw.0, 100
+  %10 = udiv i16 %9, 199
+  %11 = mul i16 %10, 125
+  %12 = udiv i16 %11, 100
+  %13 = add i16 %12, -6
+  ret i16 %13
 }
 
 define void @_Z8InitGPIOv() nounwind {
@@ -940,85 +1542,346 @@ define void @_Z8InitGPIOv() nounwind {
 _Z14sys_clock_init12crystal_freq8sys_freq.exit:   ; preds = %15
   tail call void @llvm.XInC2.outp(i16 -32381, i16 115) nounwind
   tail call void @llvm.XInC2.outp(i16 15, i16 55) nounwind
-  tail call void @_Z23oled_pin_initializationv()
-  tail call void @llvm.XInC2.outp(i16 256, i16 51) nounwind
-  %18 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
-  %19 = or i16 %18, 1
-  tail call void @llvm.XInC2.outp(i16 %19, i16 50) nounwind
-  tail call void @_Z22pid_pin_initializationv()
+  tail call void @llvm.XInC2.outp(i16 -28928, i16 33) nounwind
+  %18 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
+  %19 = or i16 %18, 4
+  tail call void @llvm.XInC2.outp(i16 %19, i16 32) nounwind
+  %20 = tail call i16 @llvm.XInC2.inp(i16 32) nounwind
+  %21 = or i16 %20, 128
+  tail call void @llvm.XInC2.outp(i16 %21, i16 32) nounwind
+  tail call void @llvm.XInC2.outp(i16 17, i16 112) nounwind
+  tail call void @llvm.XInC2.outp(i16 14, i16 113) nounwind
+  tail call void @llvm.XInC2.outp(i16 18, i16 112) nounwind
+  tail call void @llvm.XInC2.outp(i16 14, i16 113) nounwind
+  tail call void @llvm.XInC2.outp(i16 24576, i16 39) nounwind
+  tail call void @llvm.XInC2.outp(i16 512, i16 51) nounwind
+  %22 = tail call i16 @llvm.XInC2.inp(i16 50) nounwind
+  %23 = or i16 %22, 2
+  tail call void @llvm.XInC2.outp(i16 %23, i16 50) nounwind
+  tail call void @llvm.XInC2.outp(i16 26, i16 112) nounwind
+  tail call void @llvm.XInC2.outp(i16 96, i16 113) nounwind
   ret void
-}
-
-define noalias i16* @_Z10OLEDThreadPv(i16* nocapture) noreturn nounwind {
-  br label %.loopexit
-
-.loopexit:                                        ; preds = %2, %1
-  tail call void @_Z19OLED_Init_160128RGBv()
-  tail call void @_Z15OLED_Start_Pagev()
-  br label %2
-
-; <label>:2                                       ; preds = %2, %.loopexit
-  %progress.04 = phi i16 [ 0, %.loopexit ], [ %3, %2 ]
-  tail call void @_Z16Clear_Data_Charshhm(i16 zeroext 83, i16 zeroext 50, i32 0)
-  tail call void @_Z21OLED_Print_Sensor_Valhhjj(i16 zeroext 83, i16 zeroext 50, i16 %progress.04, i16 1)
-  tail call void @_Z8Draw_Barhhmmjjj(i16 zeroext 23, i16 zeroext 73, i32 63488, i32 undef, i16 26, i16 122, i16 %progress.04)
-  tail call void @_Z7wait_msj(i16 500)
-  %3 = add i16 %progress.04, 1
-  %exitcond = icmp eq i16 %3, 101
-  br i1 %exitcond, label %.loopexit, label %2
 }
 
 define noalias i16* @_Z10TempThreadPv(i16* nocapture) noreturn nounwind {
   br label %2
 
 ; <label>:2                                       ; preds = %1, %2
-  tail call void @_Z7wait_msj(i16 1000)
+  tail call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
   %3 = tail call i16 @_Z7getTempv()
+  store volatile i16 %3, i16* @current_temp, align 1, !tbaa !2
+  tail call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
   br label %2
+}
+
+define noalias i16* @_Z14RotEncodThreadPv(i16* nocapture) noreturn nounwind {
+  %2 = alloca %struct.rotary_encoder, align 1
+  %3 = alloca %struct.rotary_encoder, align 1
+  %4 = getelementptr inbounds %struct.rotary_encoder* %3, i16 0, i32 0
+  %5 = getelementptr inbounds %struct.rotary_encoder* %2, i16 0, i32 0
+  br label %6
+
+; <label>:6                                       ; preds = %1, %6
+  call void @llvm.XInC2.outp(i16 8, i16 7) nounwind
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %4, i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 0), i16 3, i32 1, i1 false), !tbaa.struct !5
+  call void @_Z15get_encoder_pos14rotary_encoder(%struct.rotary_encoder* sret %2, %struct.rotary_encoder* byval %3)
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 0), i16* %5, i16 3, i32 1, i1 false), !tbaa.struct !5
+  call void @llvm.XInC2.outp(i16 8, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 4, i16 7) nounwind
+  %7 = call i16 @llvm.XInC2.inp(i16 46) nounwind
+  %8 = lshr i16 %7, 2
+  %.lobit.i = and i16 %8, 1
+  %9 = xor i16 %.lobit.i, 1
+  store volatile i16 %9, i16* @btn_press, align 1, !tbaa !2
+  call void @llvm.XInC2.outp(i16 4, i16 6) nounwind
+  br label %6
 }
 
 define noalias i16* @_Z9PIDThreadPv(i16* nocapture) noreturn nounwind {
   %pid1 = alloca %struct.Pid, align 1
   call void @_Z20timer_initializationv()
   %2 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 0
-  store i16 500, i16* %2, align 1, !tbaa !3
+  store i16 500, i16* %2, align 1, !tbaa !2
   %3 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 1
-  store i16 20, i16* %3, align 1, !tbaa !3
+  store i16 20, i16* %3, align 1, !tbaa !2
   %4 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 2
-  store i16 1, i16* %4, align 1, !tbaa !3
+  store i16 1, i16* %4, align 1, !tbaa !2
   %5 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 3
-  store i16 0, i16* %5, align 1, !tbaa !3
+  store i16 0, i16* %5, align 1, !tbaa !2
   %6 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 4
-  store i16 0, i16* %6, align 1, !tbaa !3
+  store i16 0, i16* %6, align 1, !tbaa !2
   %7 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 5
-  store i16 2000, i16* %7, align 1, !tbaa !3
+  store i16 2000, i16* %7, align 1, !tbaa !2
   br label %8
 
-; <label>:8                                       ; preds = %1, %16
-  %output.0 = phi i16 [ 0, %1 ], [ %output.1, %16 ]
-  %cur_temp.0 = phi i16 [ 0, %1 ], [ %cur_temp.1, %16 ]
+; <label>:8                                       ; preds = %1, %29
+  %output.0 = phi i16 [ 0, %1 ], [ %output.1, %29 ]
+  %time_count.0 = phi i16 [ 0, %1 ], [ %time_count.2, %29 ]
   %9 = call i16 @llvm.XInC2.inp(i16 62) nounwind
   %10 = call i16 @llvm.XInC2.inp(i16 67) nounwind
   %11 = or i16 %10, %9
   %12 = icmp slt i16 %11, 0
-  br i1 %12, label %13, label %16
+  br i1 %12, label %13, label %29
 
 ; <label>:13                                      ; preds = %8
-  call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([15 x i16]* @.str5, i16 0, i16 0)) nounwind, !srcloc !2
-  call void asm sideeffect "\09jsr\09r6, XPD_EchoUnsignedDec", "{R1},~{R1},~{R6}"(i16 %cur_temp.0) nounwind, !srcloc !4
-  call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([3 x i16]* @.str6, i16 0, i16 0)) nounwind, !srcloc !2
-  call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([14 x i16]* @.str7, i16 0, i16 0)) nounwind, !srcloc !2
-  call void asm sideeffect "\09jsr\09r6, XPD_EchoUnsignedDec", "{R1},~{R1},~{R6}"(i16 24) nounwind, !srcloc !4
-  call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([3 x i16]* @.str6, i16 0, i16 0)) nounwind, !srcloc !2
-  %14 = call i16 @_Z11pid_computeP3Pidjj(%struct.Pid* %pid1, i16 24, i16 %cur_temp.0)
-  %15 = call i16 @_Z13simulate_tempjj(i16 %14, i16 %cur_temp.0)
-  br label %16
+  call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
+  call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
+  %14 = load volatile i16* @target_temp_index, align 1, !tbaa !2
+  %15 = getelementptr inbounds %struct.profile* @selected_profile, i16 0, i32 0, i16 %14
+  %16 = load volatile i16* %15, align 1, !tbaa !2
+  %17 = load volatile i16* @current_temp, align 1, !tbaa !2
+  %18 = call i16 @_Z11pid_computeP3Pidjj(%struct.Pid* %pid1, i16 %16, i16 %17)
+  call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
+  %19 = add i16 %time_count.0, 1
+  %20 = icmp eq i16 %19, 2
+  br i1 %20, label %21, label %28
 
-; <label>:16                                      ; preds = %13, %8
-  %output.1 = phi i16 [ %14, %13 ], [ %output.0, %8 ]
-  %cur_temp.1 = phi i16 [ %15, %13 ], [ %cur_temp.0, %8 ]
+; <label>:21                                      ; preds = %13
+  %22 = load volatile i16* @target_temp_index, align 1, !tbaa !2
+  %23 = add i16 %22, 1
+  store volatile i16 %23, i16* @target_temp_index, align 1, !tbaa !2
+  %24 = load volatile i16* @target_temp_index, align 1, !tbaa !2
+  %25 = mul i16 %24, 100
+  %26 = add i16 %25, 100
+  %27 = udiv i16 %26, 180
+  store volatile i16 %27, i16* @progress, align 1, !tbaa !2
+  br label %28
+
+; <label>:28                                      ; preds = %21, %13
+  %time_count.1 = phi i16 [ 0, %21 ], [ %19, %13 ]
+  call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
+  br label %29
+
+; <label>:29                                      ; preds = %28, %8
+  %output.1 = phi i16 [ %18, %28 ], [ %output.0, %8 ]
+  %time_count.2 = phi i16 [ %time_count.1, %28 ], [ %time_count.0, %8 ]
   call void @_Z14heating_actionj(i16 %output.1)
   br label %8
+}
+
+define noalias i16* @_Z14HumidityThreadPv(i16* nocapture) noreturn nounwind {
+  tail call void @llvm.XInC2.outp(i16 91, i16 72) nounwind
+  tail call void @llvm.XInC2.outp(i16 199, i16 74) nounwind
+  br label %2
+
+; <label>:2                                       ; preds = %7, %12, %9, %1
+  %prev_state.0 = phi i16 [ 0, %1 ], [ %.lobit.i, %7 ], [ 0, %12 ], [ %prev_state.0, %9 ]
+  %tpw_start.0 = phi i16 [ 0, %1 ], [ %8, %7 ], [ %tpw_start.0, %12 ], [ %tpw_start.0, %9 ]
+  %3 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
+  %4 = lshr i16 %3, 3
+  %.lobit.i = and i16 %4, 1
+  %5 = icmp ne i16 %.lobit.i, 0
+  %6 = icmp eq i16 %prev_state.0, 0
+  %or.cond = and i1 %5, %6
+  br i1 %or.cond, label %7, label %9
+
+; <label>:7                                       ; preds = %2
+  %8 = tail call i16 @llvm.XInC2.inp(i16 73) nounwind
+  br label %2
+
+; <label>:9                                       ; preds = %2
+  %10 = icmp eq i16 %.lobit.i, 0
+  %11 = icmp eq i16 %prev_state.0, 1
+  %or.cond6 = and i1 %10, %11
+  br i1 %or.cond6, label %12, label %2
+
+; <label>:12                                      ; preds = %9
+  %13 = tail call i16 @_Z12get_humidityj(i16 %tpw_start.0)
+  br label %2
+}
+
+define noalias i16* @_Z15stateOLEDThreadPv(i16* nocapture) noreturn nounwind {
+  %2 = alloca %struct.profile, align 1
+  %.sroa.03 = alloca [180 x i16], align 1
+  %.sroa.0 = alloca [180 x i16], align 1
+  call void @_Z19OLED_Init_160128RGBv()
+  call void @_Z25OLED_FillScreen_160128RGBm(i32 0)
+  %.sroa.0.0.idx2 = getelementptr inbounds [180 x i16]* %.sroa.0, i16 0, i16 0
+  %tmp = getelementptr inbounds %struct.profile* %2, i16 0, i32 0, i16 0
+  %.sroa.03.0.idx = getelementptr inbounds [180 x i16]* %.sroa.03, i16 0, i16 0
+  br label %.outer
+
+.outer:                                           ; preds = %33, %.split6, %._crit_edge, %.split12, %1
+  %scene.0.ph = phi i16 [ 0, %1 ], [ 0, %.split12 ], [ 4, %._crit_edge ], [ 1, %.split6 ], [ %scene.1, %33 ]
+  switch i16 %scene.0.ph, label %infloop [
+    i16 0, label %.split
+    i16 2, label %.split6
+    i16 1, label %.split9
+    i16 4, label %.split12
+  ]
+
+.split:                                           ; preds = %.outer
+  call void @llvm.XInC2.outp(i16 16, i16 7) nounwind
+  %3 = load volatile i16* @profile_index, align 1, !tbaa !2
+  call void @_Z17OLED_profile_pagej(i16 %3)
+  call void @llvm.XInC2.outp(i16 16, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 8, i16 7) nounwind
+  %4 = load volatile i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
+  %5 = icmp eq i16 %4, 1
+  br i1 %5, label %6, label %13
+
+; <label>:6                                       ; preds = %.split
+  call void @llvm.XInC2.outp(i16 16, i16 7) nounwind
+  %7 = load volatile i16* @profile_index, align 1, !tbaa !2
+  %8 = add i16 %7, 1
+  store volatile i16 %8, i16* @profile_index, align 1, !tbaa !2
+  %9 = load volatile i16* @profile_index, align 1, !tbaa !2
+  %10 = icmp ugt i16 %9, 3
+  br i1 %10, label %11, label %12
+
+; <label>:11                                      ; preds = %6
+  store volatile i16 1, i16* @profile_index, align 1, !tbaa !2
+  br label %12
+
+; <label>:12                                      ; preds = %11, %6
+  call void @llvm.XInC2.outp(i16 16, i16 6) nounwind
+  store volatile i16 0, i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
+  br label %23
+
+; <label>:13                                      ; preds = %.split
+  %14 = load volatile i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
+  %15 = icmp eq i16 %14, 2
+  br i1 %15, label %16, label %23
+
+; <label>:16                                      ; preds = %13
+  call void @llvm.XInC2.outp(i16 16, i16 7) nounwind
+  %17 = load volatile i16* @profile_index, align 1, !tbaa !2
+  %18 = add i16 %17, -1
+  store volatile i16 %18, i16* @profile_index, align 1, !tbaa !2
+  %19 = load volatile i16* @profile_index, align 1, !tbaa !2
+  %20 = icmp eq i16 %19, 0
+  br i1 %20, label %21, label %22
+
+; <label>:21                                      ; preds = %16
+  store volatile i16 3, i16* @profile_index, align 1, !tbaa !2
+  br label %22
+
+; <label>:22                                      ; preds = %21, %16
+  call void @llvm.XInC2.outp(i16 16, i16 6) nounwind
+  store volatile i16 0, i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
+  br label %23
+
+; <label>:23                                      ; preds = %13, %22, %12
+  call void @llvm.XInC2.outp(i16 8, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 4, i16 7) nounwind
+  %24 = call i16 @llvm.XInC2.inp(i16 46) nounwind
+  %25 = lshr i16 %24, 2
+  %.lobit.i = and i16 %25, 1
+  %26 = xor i16 %.lobit.i, 1
+  store volatile i16 %26, i16* @btn_press, align 1, !tbaa !2
+  %27 = load volatile i16* @btn_press, align 1, !tbaa !2
+  %28 = icmp eq i16 %27, 1
+  br i1 %28, label %29, label %33
+
+; <label>:29                                      ; preds = %23
+  call void @_Z25OLED_FillScreen_160128RGBm(i32 0)
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %.sroa.0.0.idx2, i16* getelementptr inbounds (%struct.profile* @selected_profile, i16 0, i32 0, i16 0), i16 180, i32 1, i1 false)
+  call void @llvm.memcpy.p0i16.p0i16.i64(i16* %tmp, i16* %.sroa.0.0.idx2, i64 180, i32 1, i1 false)
+  br label %30
+
+; <label>:30                                      ; preds = %30, %29
+  %i.03.i = phi i16 [ 0, %29 ], [ %32, %30 ]
+  %31 = getelementptr inbounds %struct.profile* %2, i16 0, i32 0, i16 %i.03.i
+  store volatile i16 100, i16* %31, align 1, !tbaa !2
+  %32 = add nsw i16 %i.03.i, 1
+  %exitcond.i = icmp eq i16 %32, 180
+  br i1 %exitcond.i, label %_Z21generate_test_profile7profile.exit, label %30
+
+_Z21generate_test_profile7profile.exit:           ; preds = %30
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %.sroa.03.0.idx, i16* %tmp, i16 180, i32 1, i1 false)
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* getelementptr inbounds (%struct.profile* @selected_profile, i16 0, i32 0, i16 0), i16* %.sroa.03.0.idx, i16 180, i32 1, i1 false)
+  br label %33
+
+; <label>:33                                      ; preds = %_Z21generate_test_profile7profile.exit, %23
+  %scene.1 = phi i16 [ 2, %_Z21generate_test_profile7profile.exit ], [ %scene.0.ph, %23 ]
+  call void @llvm.XInC2.outp(i16 4, i16 6) nounwind
+  br label %.outer
+
+.split6:                                          ; preds = %.outer
+  call void @_Z18OLED_starting_pagev()
+  call void @_Z7wait_msj(i16 2000)
+  call void @_Z25OLED_FillScreen_160128RGBm(i32 0)
+  br label %.outer
+
+.split9:                                          ; preds = %.outer
+  call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
+  call void @llvm.XInC2.outp(i16 2, i16 7) nounwind
+  call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
+  %34 = load volatile i16* @current_temp, align 1, !tbaa !2
+  %35 = load volatile i16* @humidity, align 1, !tbaa !2
+  %36 = load volatile i16* @progress, align 1, !tbaa !2
+  call void @_Z14OLED_main_pagejjj(i16 %34, i16 %35, i16 %36)
+  call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 2, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %37 = load i16* @thrds_vector, align 1, !tbaa !2
+  %38 = and i16 %37, -9
+  store i16 %38, i16* @thrds_vector, align 1, !tbaa !2
+  call void @llvm.XInC2.outp(i16 %38, i16 4) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %39 = load i16* @thrds_vector, align 1, !tbaa !2
+  %40 = and i16 %39, -17
+  store i16 %40, i16* @thrds_vector, align 1, !tbaa !2
+  call void @llvm.XInC2.outp(i16 %40, i16 4) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %41 = load i16* @thrds_vector, align 1, !tbaa !2
+  %42 = and i16 %41, -33
+  store i16 %42, i16* @thrds_vector, align 1, !tbaa !2
+  call void @llvm.XInC2.outp(i16 %42, i16 4) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  %43 = load volatile i16* @progress, align 1, !tbaa !2
+  %44 = icmp ult i16 %43, 101
+  br i1 %44, label %.lr.ph, label %._crit_edge
+
+.lr.ph:                                           ; preds = %.split9, %.lr.ph
+  call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
+  call void @llvm.XInC2.outp(i16 2, i16 7) nounwind
+  call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
+  %45 = load volatile i16* @current_temp, align 1, !tbaa !2
+  %46 = load volatile i16* @humidity, align 1, !tbaa !2
+  %47 = load volatile i16* @progress, align 1, !tbaa !2
+  call void @_Z14OLED_main_pagejjj(i16 %45, i16 %46, i16 %47)
+  call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 2, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
+  %48 = load volatile i16* @progress, align 1, !tbaa !2
+  %49 = icmp ult i16 %48, 101
+  br i1 %49, label %.lr.ph, label %._crit_edge
+
+._crit_edge:                                      ; preds = %.lr.ph, %.split9
+  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %50 = load i16* @thrds_vector, align 1, !tbaa !2
+  %51 = or i16 %50, 8
+  store i16 %51, i16* @thrds_vector, align 1, !tbaa !2
+  call void @llvm.XInC2.outp(i16 %51, i16 4) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %52 = load i16* @thrds_vector, align 1, !tbaa !2
+  %53 = or i16 %52, 16
+  store i16 %53, i16* @thrds_vector, align 1, !tbaa !2
+  call void @llvm.XInC2.outp(i16 %53, i16 4) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %54 = load i16* @thrds_vector, align 1, !tbaa !2
+  %55 = or i16 %54, 32
+  store i16 %55, i16* @thrds_vector, align 1, !tbaa !2
+  call void @llvm.XInC2.outp(i16 %55, i16 4) nounwind
+  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  %56 = call i16 @llvm.XInC2.inp(i16 38) nounwind
+  %57 = and i16 %56, -97
+  call void @llvm.XInC2.outp(i16 %57, i16 38) nounwind
+  br label %.outer
+
+.split12:                                         ; preds = %.outer
+  call void @_Z17OLED_end_progressv()
+  call void @_Z7wait_msj(i16 2000)
+  br label %.outer
+
+infloop:                                          ; preds = %.outer, %infloop
+  br label %infloop
 }
 
 define i16 @main() nounwind {
@@ -1028,35 +1891,39 @@ define i16 @main() nounwind {
   tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
   tail call void @llvm.XInC2.outp(i16 10, i16 3) nounwind
   tail call void @llvm.XInC2.outp(i16 0, i16 0) nounwind
-  tail call void @llvm.XInC2.outp(i16 ptrtoint (i16* (i16*)* @_Z10OLEDThreadPv to i16), i16 1) nounwind
+  tail call void @llvm.XInC2.outp(i16 ptrtoint (i16* (i16*)* @_Z15stateOLEDThreadPv to i16), i16 1) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
-  %1 = load i16* @thrds_vector, align 1, !tbaa !3
+  %1 = load i16* @thrds_vector, align 1, !tbaa !2
   %2 = and i16 %1, -3
-  store i16 %2, i16* @thrds_vector, align 1, !tbaa !3
+  store i16 %2, i16* @thrds_vector, align 1, !tbaa !2
   tail call void @llvm.XInC2.outp(i16 %2, i16 4) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
   tail call void @llvm.XInC2.outp(i16 18, i16 3) nounwind
   tail call void @llvm.XInC2.outp(i16 0, i16 0) nounwind
-  tail call void @llvm.XInC2.outp(i16 ptrtoint (i16* (i16*)* @_Z10TempThreadPv to i16), i16 1) nounwind
+  tail call void @llvm.XInC2.outp(i16 ptrtoint (i16* (i16*)* @_Z14RotEncodThreadPv to i16), i16 1) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
-  %3 = load i16* @thrds_vector, align 1, !tbaa !3
+  %3 = load i16* @thrds_vector, align 1, !tbaa !2
   %4 = and i16 %3, -5
-  store i16 %4, i16* @thrds_vector, align 1, !tbaa !3
+  store i16 %4, i16* @thrds_vector, align 1, !tbaa !2
   tail call void @llvm.XInC2.outp(i16 %4, i16 4) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
   tail call void @llvm.XInC2.outp(i16 26, i16 3) nounwind
   tail call void @llvm.XInC2.outp(i16 0, i16 0) nounwind
-  tail call void @llvm.XInC2.outp(i16 ptrtoint (i16* (i16*)* @_Z9PIDThreadPv to i16), i16 1) nounwind
+  tail call void @llvm.XInC2.outp(i16 ptrtoint (i16* (i16*)* @_Z10TempThreadPv to i16), i16 1) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
-  %5 = load i16* @thrds_vector, align 1, !tbaa !3
-  %6 = and i16 %5, -9
-  store i16 %6, i16* @thrds_vector, align 1, !tbaa !3
-  tail call void @llvm.XInC2.outp(i16 %6, i16 4) nounwind
+  tail call void @llvm.XInC2.outp(i16 34, i16 3) nounwind
+  tail call void @llvm.XInC2.outp(i16 0, i16 0) nounwind
+  tail call void @llvm.XInC2.outp(i16 ptrtoint (i16* (i16*)* @_Z14HumidityThreadPv to i16), i16 1) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  tail call void @llvm.XInC2.outp(i16 42, i16 3) nounwind
+  tail call void @llvm.XInC2.outp(i16 0, i16 0) nounwind
+  tail call void @llvm.XInC2.outp(i16 ptrtoint (i16* (i16*)* @_Z9PIDThreadPv to i16), i16 1) nounwind
   tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
   ret i16 0
 }
@@ -1065,8 +1932,12 @@ declare void @llvm.XInC2.outp(i16, i16) nounwind
 
 declare i16 @llvm.XInC2.inp(i16) nounwind
 
+declare void @llvm.memcpy.p0i16.p0i16.i64(i16* nocapture, i16* nocapture, i64, i32, i1) nounwind
+
 !0 = metadata !{metadata !"omnipotent char", metadata !1}
 !1 = metadata !{metadata !"Simple C/C++ TBAA"}
-!2 = metadata !{i32 -2147392363}                  
-!3 = metadata !{metadata !"int", metadata !0}
-!4 = metadata !{i32 -2147391666}                  
+!2 = metadata !{metadata !"int", metadata !0}
+!3 = metadata !{i32 -2147383855}                  
+!4 = metadata !{i32 -2147383158}                  
+!5 = metadata !{i64 0, i64 1, metadata !0, i64 1, i64 1, metadata !0, i64 2, i64 1, metadata !2}
+!6 = metadata !{i64 0, i64 180, metadata !0}
