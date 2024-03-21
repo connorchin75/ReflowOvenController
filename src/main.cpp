@@ -112,7 +112,8 @@ void * PIDThread(void * ) {
    //initialize the PID controller
    struct Pid pid1;
    struct Pid *pid = &pid1;
-   set_pid_parameters(pid, 500, 20, 1);
+   set_pid_parameters(pid, 120, 2, 500);
+   //max of proportional term should be around 120
    while (true) {
       //check to see if 1 second has elapsed to compute a PID action
       pid_status = check_pid(pid_status);
@@ -272,6 +273,10 @@ void * stateOLEDThread(void *){
                sem_unlock(1);
                sem_unlock(0);
             }
+            sem_lock(6);
+            //reset the progress counter for the next cycle
+            progress = 0;
+            sem_unlock(6);
             //stop the temp and humidity and pid threads
             thread_stop(3);
             thread_stop(4);

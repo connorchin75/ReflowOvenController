@@ -59,7 +59,10 @@ unsigned int pid_compute(struct Pid *pid, unsigned int target_temp, unsigned int
    //add the error to the error accumulator for the integral term
    if((pid->acc_error + cur_error) > 200){
       pid->acc_error = 200;
-   }else{
+   }else if((pid->acc_error + cur_error) < -200){
+      pid->acc_error = -200;
+   }
+   else{
       pid->acc_error += cur_error;
    }
    //find the error difference between current and previous PID computations
@@ -73,10 +76,26 @@ unsigned int pid_compute(struct Pid *pid, unsigned int target_temp, unsigned int
    if (output > pid->max_output){
       output = pid->max_output;
    }else if(output <0){
-      xpd_puts("Culprit \n"); 
       output = 0;
    }
-   xpd_echo_int(output, XPD_Flag_UnsignedDecimal);
+   // xpd_puts("Total Output:");
+   // xpd_echo_int(output, XPD_Flag_SignedDecimal);
+   // xpd_puts(" \n");
+
+   // xpd_puts("Proportional Output:");
+   // xpd_echo_int(pid->kp * cur_error, XPD_Flag_SignedDecimal);
+   // xpd_puts(" \n");
+
+   // xpd_puts("Integral Output:");
+   // xpd_echo_int(pid->ki * pid->acc_error, XPD_Flag_SignedDecimal);
+   // xpd_puts(" \n");
+
+   // xpd_puts("Derivative Output:");
+   // xpd_echo_int(pid->kd * error_diff, XPD_Flag_SignedDecimal);
+   // xpd_puts(" \n");
+   // xpd_puts("Total Output:");
+   // xpd_echo_int(output, XPD_Flag_SignedDecimal);
+   // xpd_puts(" \n");
    
    return output;
 }

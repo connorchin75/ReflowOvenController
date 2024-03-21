@@ -104,7 +104,7 @@ struct profile generate_RSS_profile(struct profile temp_profile, unsigned int so
 
 struct profile generate_test_profile(struct profile temp_profile){
    for (int i=0; i<180; i++){
-      temp_profile.temp_targets[i] = 100;
+      temp_profile.temp_targets[i] = 0;
    }
    return temp_profile;
 }

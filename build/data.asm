@@ -21,10 +21,10 @@ JTI13_0:
 //	.section	.rdata,"r"
 JTI16_0:
 		BB16_4
+		BB16_18
 		BB16_17
-		BB16_16
+		BB16_22
 		BB16_21
-		BB16_20
 
 //	.section	//.data,"w"
 sxc_Ascii_1:                            // @Ascii_1
