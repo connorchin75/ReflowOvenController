@@ -874,33 +874,51 @@ sxc__Z10TempThreadPv:                   // @_Z10TempThreadPv
 	add	sp, sp, 0x1
 	st	r6, sp, 0xffff          // 1-byte Folded Spill
 	mov	r0, 0x1
-	mov	r2, 0x0
 	bra	BB12_1
 BB12_5:                                 // %_Z7getTempv.exit
                                         //   in Loop: Header=BB12_1 Depth=1
-	st	r3, sxc_current_temp
+	st	r0, sxc_current_temp
+	ld	r0, sxc_current_temp
+	rol	r1, r0, 0x2
+	and	r1, r1, 0xfffc
+	add	r0, r0, r1
+	rol	r1, r1, 0x1
+	and	r1, r1, 0xfffe
+	add	r0, r0, r1
+	rol	r1, r1, 0x2
+	and	r1, r1, 0xfffc
+	add	r0, r0, r1
+	rol	r1, r1, 0x1
+	and	r1, r1, 0xfffe
+	add	r0, r0, r1
+	add	r2, r0, 0xfee5
+	mov	r3, 0x64
+	jsr	r6, sxc___xinc_udiv
+	st	r0, sxc_current_temp
+	mov	r0, 0x1
 	outp	r0, 0x6
 BB12_1:                                 // =>This Inner Loop Header: Depth=1
 	outp	r0, 0x7
-	inp	r1, 0x32
-	and	r1, r1, 0xfffd
-	outp	r1, 0x32
-	outp	r2, 0x36
-	inp	r3, 0x36
-	outp	r2, 0x36
-	inp	r4, 0x36
+	inp	r0, 0x32
+	and	r0, r0, 0xfffd
+	outp	r0, 0x32
+	mov	r1, 0x0
+	outp	r1, 0x36
+	inp	r0, 0x36
+	outp	r1, 0x36
+	inp	r2, 0x36
 	inp	r1, 0x32
 	ior	r1, r1, 0x2
 	outp	r1, 0x32
-	and	r1, r4, 0x1
+	and	r1, r2, 0x1
 	//cmp	r1, 0x0
 	bc	ZC, BB12_2
 // BB#4:                                //   in Loop: Header=BB12_1 Depth=1
-	and	r1, r3, 0xff
-	rol	r1, r1, 0x8
-	ior	r1, r4, r1
-	and	r1, r1, 0xfff0
-	rol	r3, r1, 0xc
+	and	r0, r0, 0xff
+	rol	r0, r0, 0x8
+	ior	r0, r2, r0
+	and	r0, r0, 0xfff0
+	rol	r0, r0, 0xc
 	bra	BB12_5
 BB12_2:                                 //   in Loop: Header=BB12_1 Depth=1
 	mov	r1, sxc_.str4
@@ -911,21 +929,21 @@ BB12_2:                                 //   in Loop: Header=BB12_1 Depth=1
 	//APP
 		jsr	r6, XPD_EchoString
 	//NO_APP
-	inp	r1, 0x32
-	and	r1, r1, 0xfffd
-	outp	r1, 0x32
-	mov	r3, 0x0
-	outp	r3, 0x36
+	inp	r0, 0x32
+	and	r0, r0, 0xfffd
+	outp	r0, 0x32
+	mov	r0, 0x0
+	outp	r0, 0x36
 	inp	r1, 0x36
-	outp	r3, 0x36
+	outp	r0, 0x36
 	inp	r1, 0x36
-	outp	r3, 0x36
+	outp	r0, 0x36
 	inp	r1, 0x36
-	outp	r3, 0x36
+	outp	r0, 0x36
 	inp	r1, 0x36
-	inp	r4, 0x32
-	ior	r4, r4, 0x2
-	outp	r4, 0x32
+	inp	r2, 0x32
+	ior	r2, r2, 0x2
+	outp	r2, 0x32
 	bic	r1, r1, 0x0
 	//cmp	r1, 0x0
 	bc	VC, BB12_5
@@ -934,7 +952,7 @@ BB12_2:                                 //   in Loop: Header=BB12_1 Depth=1
 	//APP
 		jsr	r6, XPD_EchoString
 	//NO_APP
-	mov	r3, 0x0
+	mov	r0, 0x0
 	bra	BB12_5
 
 //align
@@ -1055,8 +1073,8 @@ JTI13_0:
 @ = (@ + 1-1)  & -1
 sxc__Z9PIDThreadPv:                     // @_Z9PIDThreadPv
 // BB#0:
-	add	sp, sp, 0x4
-	st	r6, sp, 0xfffc          // 1-byte Folded Spill
+	add	sp, sp, 0x5
+	st	r6, sp, 0xfffb          // 1-byte Folded Spill
 	mov	r0, 0x5b
 	outp	r0, 0x3e
 	mov	r0, 0x2
@@ -1067,100 +1085,105 @@ sxc__Z9PIDThreadPv:                     // @_Z9PIDThreadPv
 	mov	r1, 0x5dc0
 	outp	r1, 0x42
 	outp	r0, 0x44
-	mov	r2, 0x0
+	mov	r3, 0x0
 	mov	r4, 0x40
-	mov	r6, 0x1
 	mov	r5, 0x0
+	mov	r2, 0x0
 	mov	r0, 0x0
-	st	r0, sp, 0xfffe          // 1-byte Folded Spill
-	mov	r0, 0x0
+	st	r0, sp, 0xfffc          // 1-byte Folded Spill
 	bra	BB14_1
 BB14_13:                                //   in Loop: Header=BB14_1 Depth=1
-	outp	r1, 0x26
-	ld	r2, sp, 0xfffd          // 1-byte Folded Reload
+	outp	r0, 0x26
+	add	r3, r6, 0x0
 BB14_1:                                 // %_Z14heating_actionj.exit
                                         // =>This Inner Loop Header: Depth=1
-	inp	r1, 0x3e
-	inp	r3, 0x43
-	ior	r1, r3, r1
-	sub	r1, r1, 0x0
+	inp	r0, 0x3e
+	inp	r1, 0x43
+	ior	r0, r1, r0
+	sub	r1, r0, 0x0
 	bc	GT, BB14_2
 // BB#3:                                //   in Loop: Header=BB14_1 Depth=1
 	outp	r4, 0x7
-	outp	r6, 0x7
-	ld	r1, sxc_target_temp_index
-	ld	r1, r1,sxc_selected_profile
-	ld	r3, sxc_current_temp
-	sub	r6, r1, r3
-	add	r4, r6, r5
-	sub	r1, r4, 0xc8
+	mov	r0, 0x1
+	outp	r0, 0x7
+	ld	r0, sxc_target_temp_index
+	ld	r1, r0,sxc_selected_profile
+	ld	r0, sxc_current_temp
+	sub	r2, r1, r0
+	add	r5, r2, r5
+	sub	r1, r5, 0xd2
 	bc	LE, BB14_5
 // BB#4:                                //   in Loop: Header=BB14_1 Depth=1
-	mov	r5, 0xc8
-	mov	r3, 0x190
+	mov	r6, 0xd2
+	mov	r4, 0x1a4
 	bra	BB14_6
 BB14_2:                                 //   in Loop: Header=BB14_1 Depth=1
-	st	r2, sp, 0xfffd          // 1-byte Folded Spill
+	add	r6, r3, 0x0
 	bra	BB14_11
 BB14_5:                                 //   in Loop: Header=BB14_1 Depth=1
-	and	r3, r4, 0x7fff
-	rol	r5, r3, 0x1
-	mov	r3, 0xfe70
-	sub	r1, r4, 0xff38
+	and	r4, r5, 0x7fff
+	rol	r6, r4, 0x1
+	mov	r4, 0xfe5c
+	sub	r1, r5, 0xff2e
 	bc	LT, @ + 1 + 0x1
-	mov	r3, r5 //Select--False
-	mov	r5, 0xff38
-	sub	r1, r4, 0xff38
+	mov	r4, r6 //Select--False
+	mov	r6, 0xff2e
+	sub	r1, r5, 0xff2e
 	bc	LT, @ + 1 + 0x1
-	mov	r5, r4 //Select--False
+	mov	r6, r5 //Select--False
 BB14_6:                                 //   in Loop: Header=BB14_1 Depth=1
 	st	r6, sp, 0xfffd          // 1-byte Folded Spill
-	sub	r1, r6, r2
-	rol	r1, r1, 0x2
-	and	r1, r1, 0xfffc
-	rol	r2, r1, 0x2
-	and	r2, r2, 0xfffc
-	add	r1, r1, r2
-	rol	r2, r2, 0x1
-	and	r2, r2, 0xfffe
-	add	r1, r1, r2
-	rol	r2, r2, 0x1
-	and	r2, r2, 0xfffe
-	add	r1, r1, r2
-	rol	r2, r2, 0x1
-	and	r2, r2, 0xfffe
-	add	r1, r1, r2
-	rol	r2, r2, 0x1
-	and	r2, r2, 0xfffe
-	add	r1, r1, r2
-	rol	r2, r6, 0x3
-	and	r2, r2, 0xfff8
-	rol	r4, r2, 0x1
-	and	r4, r4, 0xfffe
-	add	r2, r2, r4
-	rol	r4, r4, 0x1
-	and	r4, r4, 0xfffe
-	add	r2, r2, r4
-	rol	r4, r4, 0x1
-	and	r4, r4, 0xfffe
-	add	r2, r2, r4
-	add	r1, r1, r2
-	add	r2, r1, r3
-	mov	r1, 0x7d0
-	st	r1, sp, 0xfffe          // 1-byte Folded Spill
-	sub	r1, r2, 0x7d0
+	st	r2, sp, 0xfffe          // 1-byte Folded Spill
+	sub	r1, r2, r3
+	rol	r1, r1, 0x3
+	and	r1, r1, 0xfff8
+	rol	r3, r1, 0x1
+	and	r3, r3, 0xfffe
+	add	r1, r1, r3
+	rol	r3, r3, 0x4
+	and	r3, r3, 0xfff0
+	add	r1, r1, r3
+	rol	r3, r2, 0x1
+	and	r3, r3, 0xfffe
+	rol	r5, r3, 0x2
+	and	r5, r5, 0xfffc
+	add	r3, r3, r5
+	rol	r5, r5, 0x1
+	and	r5, r5, 0xfffe
+	add	r3, r3, r5
+	rol	r5, r5, 0x1
+	and	r5, r5, 0xfffe
+	add	r3, r3, r5
+	rol	r5, r5, 0x1
+	and	r5, r5, 0xfffe
+	add	r3, r3, r5
+	rol	r5, r5, 0x1
+	and	r5, r5, 0xfffe
+	add	r3, r3, r5
+	add	r1, r1, r3
+	add	r3, r1, r4
+	mov	r2, 0x7d0
+	sub	r1, r3, 0x7d0
 	bc	GT, BB14_8
 // BB#7:                                //   in Loop: Header=BB14_1 Depth=1
-	mov	r3, 0x0
-	sub	r1, r2, 0x0
+	mov	r2, 0x0
+	sub	r1, r3, 0x0
 	bc	LT, @ + 1 + 0x1
-	mov	r3, r2 //Select--False
-	st	r3, sp, 0xfffe          // 1-byte Folded Spill
+	mov	r2, r3 //Select--False
 BB14_8:                                 // %_Z11pid_computeP3Pidjj.exit
                                         //   in Loop: Header=BB14_1 Depth=1
-	st	r5, sp, 0xffff          // 1-byte Folded Spill
-	mov	r1, 0x1
-	outp	r1, 0x6
+	st	r2, sp, 0xffff          // 1-byte Folded Spill
+	add	r1, r0, 0x0
+	//APP
+		jsr	r6, XPD_EchoUnsignedDec
+	//NO_APP
+	mov	r1, sxc_.str5
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	mov	r0, 0x1
+	outp	r0, 0x6
+	ld	r0, sp, 0xfffc          // 1-byte Folded Reload
 	add	r0, r0, 0x1
 	sub	r1, r0, 0x2
 	bc	NE, BB14_10
@@ -1178,31 +1201,32 @@ BB14_8:                                 // %_Z11pid_computeP3Pidjj.exit
 	and	r1, r1, 0xfffe
 	add	r0, r0, r1
 	add	r2, r0, 0x64
-	mov	r3, 0xb4
+	ld	r3, sxc_progress_scaler
 	jsr	r6, sxc___xinc_udiv
 	st	r0, sxc_progress
 	mov	r0, 0x0
 BB14_10:                                //   in Loop: Header=BB14_1 Depth=1
+	st	r0, sp, 0xfffc          // 1-byte Folded Spill
 	mov	r4, 0x40
 	outp	r4, 0x6
-	mov	r6, 0x1
-	ld	r5, sp, 0xffff          // 1-byte Folded Reload
+	ld	r5, sp, 0xfffd          // 1-byte Folded Reload
+	ld	r6, sp, 0xfffe          // 1-byte Folded Reload
+	ld	r2, sp, 0xffff          // 1-byte Folded Reload
 BB14_11:                                //   in Loop: Header=BB14_1 Depth=1
-	ld	r1, sp, 0xfffe          // 1-byte Folded Reload
-	rol	r1, r1, 0x3
-	and	r1, r1, 0xfff8
-	rol	r2, r1, 0x1
-	and	r2, r2, 0xfffe
-	add	r1, r1, r2
+	rol	r0, r2, 0x3
+	and	r0, r0, 0xfff8
+	rol	r1, r0, 0x1
+	and	r1, r1, 0xfffe
+	add	r1, r0, r1
 	inp	r3, 0x3f
-	inp	r2, 0x26
+	inp	r0, 0x26
 	sub	r1, r1, r3
 	bc	UGE, BB14_12
 // BB#14:                               //   in Loop: Header=BB14_1 Depth=1
-	and	r1, r2, 0xff9f
+	and	r0, r0, 0xff9f
 	bra	BB14_13
 BB14_12:                                //   in Loop: Header=BB14_1 Depth=1
-	ior	r1, r2, 0x60
+	ior	r0, r0, 0x60
 	bra	BB14_13
 
 //align
@@ -1257,8 +1281,8 @@ BB15_5:                                 // =>This Inner Loop Header: Depth=1
 @ = (@ + 1-1)  & -1
 sxc__Z15stateOLEDThreadPv:              // @_Z15stateOLEDThreadPv
 // BB#0:
-	add	sp, sp, 0xd7
-	st	r6, sp, 0xff29          // 1-byte Folded Spill
+	add	sp, sp, 0x27
+	st	r6, sp, 0xffd9          // 1-byte Folded Spill
 	inp	r0, 0x20
 	and	r0, r0, 0xfffe
 	outp	r0, 0x20
@@ -1378,11 +1402,17 @@ sxc__Z15stateOLEDThreadPv:              // @_Z15stateOLEDThreadPv
 	mov	r2, 0x0
 	mov	r3, 0x0
 	jsr	r6, sxc__Z25OLED_FillScreen_160128RGBm
+	mov	r0, 0x3d
+	add	r0, r0, sxc_selected_profile
+	st	r0, sp, 0xfff9          // 1-byte Folded Spill
+	mov	r0, 0x6d
+	add	r0, r0, sxc_selected_profile
+	st	r0, sp, 0xfffa          // 1-byte Folded Spill
 	bra	BB16_1
-BB16_21:                                // %.split12
+BB16_27:                                // %.split11
                                         //   in Loop: Header=BB16_1 Depth=1
-	add	r2, sp, 0xff3c
-	st	r2, sp, 0xfffa          // 1-byte Folded Spill
+	add	r2, sp, 0xffec
+	st	r2, sp, 0xfff6          // 1-byte Folded Spill
 	mov	r3, sxc__ZZ17OLED_end_progressvE4text
 	mov	r4, 0x9
 	jsr	r6, sxc_memcpy
@@ -1391,18 +1421,22 @@ BB16_21:                                // %.split12
 	jsr	r6, sxc__Z25OLED_FillScreen_160128RGBm
 	mov	r2, 0x5
 	mov	r3, 0x64
-	ld	r4, sp, 0xfffa          // 1-byte Folded Reload
+	ld	r4, sp, 0xfff6          // 1-byte Folded Reload
 	mov	r5, 0x9
 	jsr	r6, sxc__Z15OLED_write_textihhPhimm
 	mov	r2, 0x7d0
 	jsr	r6, sxc__Z7wait_msj
 BB16_1:                                 // =>This Loop Header: Depth=1
                                         //     Child Loop BB16_2 Depth 2
-                                        //       Child Loop BB16_19 Depth 3
+                                        //       Child Loop BB16_25 Depth 3
+                                        //       Child Loop BB16_13 Depth 3
                                         //       Child Loop BB16_14 Depth 3
+                                        //       Child Loop BB16_16 Depth 3
+                                        //       Child Loop BB16_18 Depth 3
+                                        //       Child Loop BB16_19 Depth 3
 	mov	r2, 0x0
 	bra	BB16_2
-BB16_20:                                // %._crit_edge
+BB16_26:                                // %._crit_edge
                                         //   in Loop: Header=BB16_2 Depth=2
 	outp	r3, 0x7
 	mov	r0, 0x0
@@ -1434,11 +1468,15 @@ BB16_20:                                // %._crit_edge
 BB16_2:                                 // %.outer
                                         //   Parent Loop BB16_1 Depth=1
                                         // =>  This Loop Header: Depth=2
-                                        //       Child Loop BB16_19 Depth 3
+                                        //       Child Loop BB16_25 Depth 3
+                                        //       Child Loop BB16_13 Depth 3
                                         //       Child Loop BB16_14 Depth 3
+                                        //       Child Loop BB16_16 Depth 3
+                                        //       Child Loop BB16_18 Depth 3
+                                        //       Child Loop BB16_19 Depth 3
 	mov	r0, 0x4
 	sub	r1, r2, r0
-	bc	UGT, BB16_22
+	bc	UGT, BB16_28
 // BB#3:                                // %.outer
                                         //   in Loop: Header=BB16_2 Depth=2
 	ld	r1, r2,JTI16_0
@@ -1448,31 +1486,31 @@ BB16_4:                                 // %.split
 	mov	r0, 0x10
 	outp	r0, 0x7
 	ld	r0, sxc_profile_index
-	st	r0, sp, 0xfffc          // 1-byte Folded Spill
-	add	r2, sp, 0xff30
-	st	r2, sp, 0xfffa          // 1-byte Folded Spill
+	st	r0, sp, 0xfff8          // 1-byte Folded Spill
+	add	r2, sp, 0xffe0
+	st	r2, sp, 0xfff6          // 1-byte Folded Spill
 	mov	r3, sxc__ZZ17OLED_profile_pagejE5text1
 	mov	r4, 0xc
 	jsr	r6, sxc_memcpy
-	add	r2, sp, 0xff3c
-	st	r2, sp, 0xfffb          // 1-byte Folded Spill
+	add	r2, sp, 0xffec
+	st	r2, sp, 0xfff7          // 1-byte Folded Spill
 	mov	r3, sxc__ZZ17OLED_profile_pagejE5text2
 	mov	r4, 0x9
 	jsr	r6, sxc_memcpy
-	ld	r0, sp, 0xfffc          // 1-byte Folded Reload
+	ld	r0, sp, 0xfff8          // 1-byte Folded Reload
 	add	r0, r0, 0x30
-	st	r0, sp, 0xff45
+	st	r0, sp, 0xfff5
 	mov	r2, 0x5
 	mov	r3, 0x64
-	ld	r4, sp, 0xfffa          // 1-byte Folded Reload
+	ld	r4, sp, 0xfff6          // 1-byte Folded Reload
 	mov	r5, 0xc
 	jsr	r6, sxc__Z15OLED_write_textihhPhimm
 	mov	r2, 0x5
 	mov	r3, 0x32
-	ld	r4, sp, 0xfffb          // 1-byte Folded Reload
+	ld	r4, sp, 0xfff7          // 1-byte Folded Reload
 	mov	r5, 0x9
 	jsr	r6, sxc__Z15OLED_write_textihhPhimm
-	add	r4, sp, 0xff45
+	add	r4, sp, 0xfff5
 	mov	r2, 0x78
 	mov	r3, 0x32
 	mov	r5, 0x1
@@ -1484,7 +1522,7 @@ BB16_4:                                 // %.split
 	mov	r4, sxc_r_encoder
 	ld	r0, r4, 0x2
 	sub	r1, r0, 0x1
-	bc	NE, BB16_8
+	bc	NE, BB16_7
 // BB#5:                                //   in Loop: Header=BB16_2 Depth=2
 	outp	r3, 0x7
 	ld	r0, sxc_profile_index
@@ -1494,15 +1532,11 @@ BB16_4:                                 // %.split
 	mov	r1, 0x4
 	mov	r2, 0x1
 	sub	r1, r0, r1
-	bc	ULT, BB16_7
+	bc	ULT, BB16_10
 // BB#6:                                //   in Loop: Header=BB16_2 Depth=2
 	st	r2, sxc_profile_index
-BB16_7:                                 //   in Loop: Header=BB16_2 Depth=2
-	outp	r3, 0x6
-	mov	r0, 0x0
-	st	r0, r4, 0x2
-	bra	BB16_12
-BB16_18:                                // %.split9
+	bra	BB16_10
+BB16_24:                                // %.split8
                                         //   in Loop: Header=BB16_2 Depth=2
 	mov	r0, 0x1
 	outp	r0, 0x7
@@ -1523,12 +1557,6 @@ BB16_18:                                // %.split9
 	mov	r1, 0x8000
 	outp	r1, 0x7
 	ld	r0, thrds_vector
-	and	r0, r0, 0xfff7
-	st	r0, thrds_vector
-	outp	r0, 0x4
-	outp	r1, 0x6
-	outp	r1, 0x7
-	ld	r0, thrds_vector
 	and	r0, r0, 0xffef
 	st	r0, thrds_vector
 	outp	r0, 0x4
@@ -1542,8 +1570,8 @@ BB16_18:                                // %.split9
 	ld	r0, sxc_progress
 	mov	r1, 0x64
 	sub	r1, r0, r1
-	bc	UGT, BB16_20
-BB16_19:                                // %.lr.ph
+	bc	UGT, BB16_26
+BB16_25:                                // %.lr.ph
                                         //   Parent Loop BB16_1 Depth=1
                                         //     Parent Loop BB16_2 Depth=2
                                         // =>    This Inner Loop Header: Depth=3
@@ -1564,51 +1592,73 @@ BB16_19:                                // %.lr.ph
 	ld	r0, sxc_progress
 	mov	r1, 0x65
 	sub	r1, r0, r1
-	bc	ULT, BB16_19
-	bra	BB16_20
-BB16_17:                                // %.split6
+	bc	ULT, BB16_25
+	bra	BB16_26
+BB16_21:                                // %.split5
                                         //   in Loop: Header=BB16_2 Depth=2
 	mov	r1, sxc__ZZ18OLED_starting_pagevE5text1
 	ld	r0, r1, 0x6
-	st	r0, sp, 0xff42
+	st	r0, sp, 0xfff2
 	ld	r0, r1, 0x5
-	st	r0, sp, 0xff41
+	st	r0, sp, 0xfff1
 	ld	r0, r1, 0x4
-	st	r0, sp, 0xff40
+	st	r0, sp, 0xfff0
 	ld	r0, r1, 0x3
-	st	r0, sp, 0xff3f
+	st	r0, sp, 0xffef
 	ld	r0, r1, 0x2
-	st	r0, sp, 0xff3e
+	st	r0, sp, 0xffee
 	ld	r0, r1, 0x1
-	st	r0, sp, 0xff3d
+	st	r0, sp, 0xffed
 	ld	r0, sxc__ZZ18OLED_starting_pagevE5text1
-	st	r0, sp, 0xff3c
+	st	r0, sp, 0xffec
 	mov	r0, 0x6e
-	st	r0, sp, 0xff37
+	st	r0, sp, 0xffe7
 	mov	r0, 0x69
-	st	r0, sp, 0xff36
+	st	r0, sp, 0xffe6
 	mov	r0, 0x67
-	st	r0, sp, 0xff35
+	st	r0, sp, 0xffe5
 	mov	r0, 0x65
-	st	r0, sp, 0xff34
+	st	r0, sp, 0xffe4
 	mov	r0, 0x62
-	st	r0, sp, 0xff33
+	st	r0, sp, 0xffe3
 	mov	r0, 0x20
-	st	r0, sp, 0xff32
+	st	r0, sp, 0xffe2
 	mov	r0, 0x6f
-	st	r0, sp, 0xff31
+	st	r0, sp, 0xffe1
 	mov	r0, 0x74
-	st	r0, sp, 0xff30
-	add	r4, sp, 0xff3c
+	st	r0, sp, 0xffe0
+	add	r4, sp, 0xffec
 	mov	r2, 0x5
 	mov	r3, 0x64
 	mov	r5, 0x7
 	jsr	r6, sxc__Z15OLED_write_textihhPhimm
-	add	r4, sp, 0xff30
+	add	r4, sp, 0xffe0
 	mov	r2, 0x5
 	mov	r3, 0x32
 	mov	r5, 0x8
 	jsr	r6, sxc__Z15OLED_write_textihhPhimm
+	mov	r1, 0x8000
+	outp	r1, 0x7
+	ld	r0, thrds_vector
+	and	r0, r0, 0xfff7
+	st	r0, thrds_vector
+	outp	r0, 0x4
+	outp	r1, 0x6
+	mov	r2, 0x7d0
+	jsr	r6, sxc__Z7wait_msj
+	mov	r0, 0x1
+	outp	r0, 0x7
+	ld	r0, sxc_current_temp
+	mov	r1, 0x63
+	sub	r1, r0, r1
+	bc	UGT, BB16_23
+// BB#22:                               //   in Loop: Header=BB16_2 Depth=2
+	inp	r0, 0x26
+	ior	r0, r0, 0x60
+	outp	r0, 0x26
+BB16_23:                                //   in Loop: Header=BB16_2 Depth=2
+	mov	r0, 0x1
+	outp	r0, 0x6
 	mov	r2, 0x7d0
 	jsr	r6, sxc__Z7wait_msj
 	mov	r2, 0x0
@@ -1616,26 +1666,26 @@ BB16_17:                                // %.split6
 	jsr	r6, sxc__Z25OLED_FillScreen_160128RGBm
 	mov	r2, 0x1
 	bra	BB16_2
-BB16_8:                                 //   in Loop: Header=BB16_2 Depth=2
+BB16_7:                                 //   in Loop: Header=BB16_2 Depth=2
 	ld	r0, r4, 0x2
-	mov	r2, 0x0
 	sub	r1, r0, 0x2
-	bc	NE, BB16_12
-// BB#9:                                //   in Loop: Header=BB16_2 Depth=2
+	bc	NE, BB16_11
+// BB#8:                                //   in Loop: Header=BB16_2 Depth=2
 	outp	r3, 0x7
 	ld	r0, sxc_profile_index
 	add	r0, r0, 0xffff
 	st	r0, sxc_profile_index
 	ld	r0, sxc_profile_index
 	//cmp	r0, 0x0
-	bc	ZC, BB16_11
-// BB#10:                               //   in Loop: Header=BB16_2 Depth=2
+	bc	ZC, BB16_10
+// BB#9:                                //   in Loop: Header=BB16_2 Depth=2
 	mov	r0, 0x3
 	st	r0, sxc_profile_index
-BB16_11:                                //   in Loop: Header=BB16_2 Depth=2
+BB16_10:                                //   in Loop: Header=BB16_2 Depth=2
 	outp	r3, 0x6
-	st	r2, r4, 0x2
-BB16_12:                                //   in Loop: Header=BB16_2 Depth=2
+	mov	r0, 0x0
+	st	r0, r4, 0x2
+BB16_11:                                //   in Loop: Header=BB16_2 Depth=2
 	mov	r0, 0x8
 	outp	r0, 0x6
 	mov	r0, 0x4
@@ -1649,48 +1699,105 @@ BB16_12:                                //   in Loop: Header=BB16_2 Depth=2
 	mov	r2, 0x0
 	ld	r0, sxc_btn_press
 	sub	r1, r0, 0x1
-	bc	NE, BB16_16
-// BB#13:                               //   in Loop: Header=BB16_2 Depth=2
+	bc	NE, BB16_20
+// BB#12:                               //   in Loop: Header=BB16_2 Depth=2
 	mov	r2, 0x0
 	mov	r3, 0x0
 	jsr	r6, sxc__Z25OLED_FillScreen_160128RGBm
-	add	r2, sp, 0xff46
-	st	r2, sp, 0xfffa          // 1-byte Folded Spill
-	mov	r3, sxc_selected_profile
-	mov	r4, 0xb4
-	jsr	r6, sxc_memcpy
-	mov	r4, 0xb4
-	ld	r3, sp, 0xfffa          // 1-byte Folded Reload
-	mov	r2, 0x0
-BB16_14:                                //   Parent Loop BB16_1 Depth=1
+	mov	r0, 0x19
+	st	r0, sxc_selected_profile
+	mov	r0, 0x23
+	mov	r1, 0x1
+	add	r2, r1, sxc_selected_profile
+BB16_13:                                //   Parent Loop BB16_1 Depth=1
                                         //     Parent Loop BB16_2 Depth=2
                                         // =>    This Inner Loop Header: Depth=3
-	sub	r0, r3, r4
-	st	r2, r0, 0xb4
-	add	r4, r4, 0xffff
-	//cmp	r4, 0x0
-	bc	ZC, BB16_14
-// BB#15:                               // %_Z21generate_test_profile7profile.exit
+	add	r1, r0, 0xfffb
+	st	r1, r2, 0x0
+	add	r1, r0, 0x0
+	//APP
+		jsr	r6, XPD_EchoUnsignedDec
+	//NO_APP
+	mov	r1, sxc_.str5
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
+	mov	r3, 0x65
+	add	r2, r2, 0x1
+	add	r0, r0, 0x5
+	sub	r1, r0, 0x6e
+	bc	NE, BB16_13
+BB16_14:                                // %._crit_edge85.i
+                                        //   Parent Loop BB16_1 Depth=1
+                                        //     Parent Loop BB16_2 Depth=2
+                                        // =>    This Inner Loop Header: Depth=3
+	st	r3, r3,sxc_selected_profile-85
+	add	r3, r3, 0x1
+	sub	r1, r3, 0x92
+	bc	NE, BB16_14
+// BB#15:                               //   in Loop: Header=BB16_2 Depth=2
+	mov	r0, 0x93
+	ld	r2, sp, 0xfff9          // 1-byte Folded Reload
+	mov	r4, sxc_selected_profile
+BB16_16:                                // %..preheader63_crit_edge.i
+                                        //   Parent Loop BB16_1 Depth=1
+                                        //     Parent Loop BB16_2 Depth=2
+                                        // =>    This Inner Loop Header: Depth=3
+	st	r0, r2, 0x0
+	add	r2, r2, 0x1
+	add	r0, r0, 0x2
+	sub	r1, r0, 0xed
+	bc	NE, BB16_16
+// BB#17:                               // %.lr.ph62.i.loopexit
                                         //   in Loop: Header=BB16_2 Depth=2
-	add	r3, sp, 0xff46
-	mov	r2, sxc_selected_profile
-	mov	r4, 0xb4
-	jsr	r6, sxc_memcpy
+	mov	r0, 0xeb
+	st	r0, r4, 0x6a
+	st	r0, r4, 0x6b
+	st	r0, r4, 0x6c
+	mov	r2, 0xe6
+	ld	r3, sp, 0xfffa          // 1-byte Folded Reload
+BB16_18:                                // %.lr.ph.i
+                                        //   Parent Loop BB16_1 Depth=1
+                                        //     Parent Loop BB16_2 Depth=2
+                                        // =>    This Inner Loop Header: Depth=3
+	mov	r0, 0x8d
+	st	r2, r3, 0x0
+	add	r3, r3, 0x1
+	add	r2, r2, 0xfffb
+	sub	r1, r2, 0x46
+	bc	NE, BB16_18
+BB16_19:                                // %_Z20generate_RSS_profileP7profilejjjjjj.exit
+                                        //   Parent Loop BB16_1 Depth=1
+                                        //     Parent Loop BB16_2 Depth=2
+                                        // =>    This Inner Loop Header: Depth=3
+	sub	r1, r4, r0
+	ld	r1, r1, 0x8d
+	//APP
+		jsr	r6, XPD_EchoUnsignedDec
+	//NO_APP
+	mov	r1, sxc_.str5
+	//APP
+		jsr	r6, XPD_EchoString
+	//NO_APP
 	mov	r2, 0x2
-BB16_16:                                //   in Loop: Header=BB16_2 Depth=2
+	add	r0, r0, 0xffff
+	//cmp	r0, 0x0
+	bc	ZC, BB16_19
+BB16_20:                                // %.loopexit
+                                        //   in Loop: Header=BB16_2 Depth=2
 	mov	r0, 0x4
 	outp	r0, 0x6
 	bra	BB16_2
-BB16_22:                                // %infloop
+BB16_28:                                // %infloop
                                         // =>This Inner Loop Header: Depth=1
-	bra	BB16_22
+	bra	BB16_28
 //	.section	.rdata,"r"
 JTI16_0:
 		BB16_4
-		BB16_18
-		BB16_17
-		BB16_22
+		BB16_24
 		BB16_21
+		BB16_28
+		BB16_27
 
 //	.section	//.text,"xr"
 //sxc_main
@@ -2581,6 +2688,11 @@ sxc_.str4:                              // @.str4
 		10                      // 0xa
 		0                       // 0x0
 
+sxc_.str5:                              // @.str5
+		32                      // 0x20
+		10                      // 0xa
+		0                       // 0x0
+
 	sxc_current_temp: @ = @ + 1 // .lcomm // @current_temp
 	sxc_humidity: @ = @ + 1 // .lcomm // @humidity
 	sxc_btn_press: @ = @ + 1 // .lcomm // @btn_press
@@ -2594,5 +2706,8 @@ sxc_profile_index:                      // @profile_index
 
 	sxc_target_temp_index: @ = @ + 1 // .lcomm // @target_temp_index
 	sxc_progress: @ = @ + 1 // .lcomm // @progress
-	sxc_selected_profile: @ = @ + 180 // .lcomm // @selected_profile
+	sxc_selected_profile: @ = @ + 141 // .lcomm // @selected_profile
+sxc_progress_scaler:                    // @progress_scaler
+		141                     // 0x8d
+
 

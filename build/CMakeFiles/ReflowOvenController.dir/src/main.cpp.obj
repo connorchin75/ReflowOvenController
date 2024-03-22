@@ -3,7 +3,7 @@ target datalayout = "e-p:16:16:16-i1:16:16-i8:16:16-i16:16:16-i32:16:16-a0:16:16
 target triple = "XInC2"
 
 %struct.rotary_encoder = type { i16, i16, i16 }
-%struct.profile = type { [180 x i16] }
+%struct.profile = type { [141 x i16] }
 %struct.Pid = type { i16, i16, i16, i16, i16, i16 }
 
 @Ascii_1 = global [98 x [5 x i16]] [[5 x i16] zeroinitializer, [5 x i16] [i16 0, i16 0, i16 79, i16 0, i16 0], [5 x i16] [i16 0, i16 7, i16 0, i16 7, i16 0], [5 x i16] [i16 20, i16 127, i16 20, i16 127, i16 20], [5 x i16] [i16 36, i16 42, i16 127, i16 42, i16 18], [5 x i16] [i16 35, i16 19, i16 8, i16 100, i16 98], [5 x i16] [i16 54, i16 73, i16 85, i16 34, i16 80], [5 x i16] [i16 0, i16 5, i16 3, i16 0, i16 0], [5 x i16] [i16 0, i16 28, i16 34, i16 65, i16 0], [5 x i16] [i16 0, i16 65, i16 34, i16 28, i16 0], [5 x i16] [i16 20, i16 8, i16 62, i16 8, i16 20], [5 x i16] [i16 8, i16 8, i16 62, i16 8, i16 8], [5 x i16] [i16 0, i16 80, i16 48, i16 0, i16 0], [5 x i16] [i16 8, i16 8, i16 8, i16 8, i16 8], [5 x i16] [i16 0, i16 96, i16 96, i16 0, i16 0], [5 x i16] [i16 32, i16 16, i16 8, i16 4, i16 2], [5 x i16] [i16 62, i16 81, i16 73, i16 69, i16 62], [5 x i16] [i16 0, i16 66, i16 127, i16 64, i16 0], [5 x i16] [i16 66, i16 97, i16 81, i16 73, i16 70], [5 x i16] [i16 33, i16 65, i16 69, i16 75, i16 49], [5 x i16] [i16 24, i16 20, i16 18, i16 127, i16 16], [5 x i16] [i16 39, i16 69, i16 69, i16 69, i16 57], [5 x i16] [i16 60, i16 74, i16 73, i16 73, i16 48], [5 x i16] [i16 1, i16 113, i16 9, i16 5, i16 3], [5 x i16] [i16 54, i16 73, i16 73, i16 73, i16 54], [5 x i16] [i16 6, i16 73, i16 73, i16 41, i16 30], [5 x i16] [i16 0, i16 54, i16 54, i16 0, i16 0], [5 x i16] [i16 0, i16 86, i16 54, i16 0, i16 0], [5 x i16] [i16 8, i16 20, i16 34, i16 65, i16 0], [5 x i16] [i16 20, i16 20, i16 20, i16 20, i16 20], [5 x i16] [i16 0, i16 65, i16 34, i16 20, i16 8], [5 x i16] [i16 2, i16 1, i16 81, i16 9, i16 6], [5 x i16] [i16 50, i16 73, i16 121, i16 65, i16 62], [5 x i16] [i16 126, i16 17, i16 17, i16 17, i16 126], [5 x i16] [i16 127, i16 73, i16 73, i16 73, i16 54], [5 x i16] [i16 62, i16 65, i16 65, i16 65, i16 34], [5 x i16] [i16 127, i16 65, i16 65, i16 34, i16 28], [5 x i16] [i16 127, i16 73, i16 73, i16 73, i16 65], [5 x i16] [i16 127, i16 9, i16 9, i16 9, i16 1], [5 x i16] [i16 62, i16 65, i16 73, i16 73, i16 122], [5 x i16] [i16 127, i16 8, i16 8, i16 8, i16 127], [5 x i16] [i16 0, i16 65, i16 127, i16 65, i16 0], [5 x i16] [i16 32, i16 64, i16 65, i16 63, i16 1], [5 x i16] [i16 127, i16 8, i16 20, i16 34, i16 65], [5 x i16] [i16 127, i16 64, i16 64, i16 64, i16 64], [5 x i16] [i16 127, i16 2, i16 12, i16 2, i16 127], [5 x i16] [i16 127, i16 4, i16 8, i16 16, i16 127], [5 x i16] [i16 62, i16 65, i16 65, i16 65, i16 62], [5 x i16] [i16 127, i16 9, i16 9, i16 9, i16 6], [5 x i16] [i16 62, i16 65, i16 81, i16 33, i16 94], [5 x i16] [i16 127, i16 9, i16 25, i16 41, i16 70], [5 x i16] [i16 70, i16 73, i16 73, i16 73, i16 49], [5 x i16] [i16 1, i16 1, i16 127, i16 1, i16 1], [5 x i16] [i16 63, i16 64, i16 64, i16 64, i16 63], [5 x i16] [i16 31, i16 32, i16 64, i16 32, i16 31], [5 x i16] [i16 63, i16 64, i16 56, i16 64, i16 63], [5 x i16] [i16 99, i16 20, i16 8, i16 20, i16 99], [5 x i16] [i16 7, i16 8, i16 112, i16 8, i16 7], [5 x i16] [i16 97, i16 81, i16 73, i16 69, i16 67], [5 x i16] [i16 0, i16 127, i16 65, i16 65, i16 0], [5 x i16] [i16 2, i16 4, i16 8, i16 16, i16 32], [5 x i16] [i16 0, i16 65, i16 65, i16 127, i16 0], [5 x i16] [i16 4, i16 2, i16 1, i16 2, i16 4], [5 x i16] [i16 64, i16 64, i16 64, i16 64, i16 64], [5 x i16] [i16 1, i16 2, i16 4, i16 0, i16 0], [5 x i16] [i16 32, i16 84, i16 84, i16 84, i16 120], [5 x i16] [i16 127, i16 72, i16 68, i16 68, i16 56], [5 x i16] [i16 56, i16 68, i16 68, i16 68, i16 32], [5 x i16] [i16 56, i16 68, i16 68, i16 72, i16 127], [5 x i16] [i16 56, i16 84, i16 84, i16 84, i16 24], [5 x i16] [i16 8, i16 126, i16 9, i16 1, i16 2], [5 x i16] [i16 6, i16 73, i16 73, i16 73, i16 63], [5 x i16] [i16 127, i16 8, i16 4, i16 4, i16 120], [5 x i16] [i16 0, i16 68, i16 125, i16 64, i16 0], [5 x i16] [i16 32, i16 64, i16 68, i16 61, i16 0], [5 x i16] [i16 127, i16 16, i16 40, i16 68, i16 0], [5 x i16] [i16 0, i16 65, i16 127, i16 64, i16 0], [5 x i16] [i16 124, i16 4, i16 24, i16 4, i16 124], [5 x i16] [i16 124, i16 8, i16 4, i16 4, i16 120], [5 x i16] [i16 56, i16 68, i16 68, i16 68, i16 56], [5 x i16] [i16 124, i16 20, i16 20, i16 20, i16 8], [5 x i16] [i16 8, i16 20, i16 20, i16 24, i16 124], [5 x i16] [i16 124, i16 8, i16 4, i16 4, i16 8], [5 x i16] [i16 72, i16 84, i16 84, i16 84, i16 32], [5 x i16] [i16 4, i16 63, i16 68, i16 64, i16 32], [5 x i16] [i16 60, i16 64, i16 64, i16 32, i16 124], [5 x i16] [i16 28, i16 32, i16 64, i16 32, i16 28], [5 x i16] [i16 60, i16 64, i16 48, i16 64, i16 60], [5 x i16] [i16 68, i16 40, i16 16, i16 40, i16 68], [5 x i16] [i16 12, i16 80, i16 80, i16 80, i16 60], [5 x i16] [i16 68, i16 100, i16 84, i16 76, i16 68], [5 x i16] [i16 0, i16 8, i16 54, i16 65, i16 0], [5 x i16] [i16 0, i16 0, i16 127, i16 0, i16 0], [5 x i16] [i16 0, i16 65, i16 54, i16 8, i16 0], [5 x i16] [i16 2, i16 1, i16 2, i16 4, i16 2], [5 x i16] [i16 8, i16 12, i16 14, i16 12, i16 8], [5 x i16] [i16 8, i16 24, i16 56, i16 24, i16 8], [5 x i16] [i16 0, i16 15, i16 9, i16 9, i16 15]], align 1
@@ -21,6 +21,7 @@ target triple = "XInC2"
 @.str = private unnamed_addr constant [38 x i16] [i16 84, i16 104, i16 101, i16 114, i16 109, i16 111, i16 99, i16 111, i16 117, i16 112, i16 108, i16 101, i16 58, i16 32, i16 69, i16 110, i16 116, i16 101, i16 114, i16 101, i16 100, i16 32, i16 70, i16 97, i16 117, i16 108, i16 116, i16 32, i16 70, i16 117, i16 110, i16 99, i16 116, i16 105, i16 111, i16 110, i16 10, i16 0], align 1
 @.str1 = private unnamed_addr constant [37 x i16] [i16 84, i16 104, i16 101, i16 114, i16 109, i16 111, i16 99, i16 111, i16 117, i16 112, i16 108, i16 101, i16 58, i16 32, i16 79, i16 112, i16 101, i16 110, i16 32, i16 67, i16 105, i16 114, i16 99, i16 117, i16 105, i16 116, i16 32, i16 100, i16 101, i16 116, i16 101, i16 99, i16 116, i16 101, i16 100, i16 10, i16 0], align 1
 @.str4 = private unnamed_addr constant [30 x i16] [i16 84, i16 104, i16 101, i16 114, i16 109, i16 111, i16 99, i16 111, i16 117, i16 112, i16 108, i16 101, i16 32, i16 69, i16 114, i16 114, i16 111, i16 114, i16 32, i16 100, i16 101, i16 116, i16 101, i16 99, i16 116, i16 101, i16 100, i16 46, i16 10, i16 0], align 1
+@.str5 = private unnamed_addr constant [3 x i16] [i16 32, i16 10, i16 0], align 1
 @current_temp = global i16 0, align 1
 @humidity = global i16 0, align 1
 @btn_press = global i16 0, align 1
@@ -30,7 +31,9 @@ target triple = "XInC2"
 @target_temp_index = global i16 0, align 1
 @progress = global i16 0, align 1
 @selected_profile = global %struct.profile zeroinitializer, align 1
-@profile_array = global [3 x [3 x i16]] [[3 x i16] [i16 75, i16 165, i16 240], [3 x i16] [i16 80, i16 165, i16 220], [3 x i16] [i16 90, i16 152, i16 240]], align 1
+@progress_scaler = global i16 141, align 1
+@temp_ptr = global %struct.profile* @selected_profile, align 1
+@profile_array = global [3 x [6 x i16]] [[6 x i16] [i16 30, i16 120, i16 210, i16 5, i16 1, i16 2], [6 x i16] [i16 90, i16 180, i16 240, i16 3, i16 0, i16 3], [6 x i16] [i16 90, i16 180, i16 232, i16 2, i16 0, i16 2]], align 1
 @thrds_vector = external global i16
 
 define void @_Z7wait_msj(i16 %ms) nounwind {
@@ -1160,19 +1163,19 @@ define i16 @_Z11pid_computeP3Pidjj(%struct.Pid* nocapture %pid, i16 %target_temp
   %2 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 4
   %3 = load i16* %2, align 1, !tbaa !2
   %4 = add nsw i16 %3, %1
-  %5 = icmp sgt i16 %4, 200
+  %5 = icmp sgt i16 %4, 210
   br i1 %5, label %6, label %7
 
 ; <label>:6                                       ; preds = %0
-  store i16 200, i16* %2, align 1, !tbaa !2
+  store i16 210, i16* %2, align 1, !tbaa !2
   br label %11
 
 ; <label>:7                                       ; preds = %0
-  %8 = icmp slt i16 %4, -200
+  %8 = icmp slt i16 %4, -210
   br i1 %8, label %9, label %10
 
 ; <label>:9                                       ; preds = %7
-  store i16 -200, i16* %2, align 1, !tbaa !2
+  store i16 -210, i16* %2, align 1, !tbaa !2
   br label %11
 
 ; <label>:10                                      ; preds = %7
@@ -1180,7 +1183,7 @@ define i16 @_Z11pid_computeP3Pidjj(%struct.Pid* nocapture %pid, i16 %target_temp
   br label %11
 
 ; <label>:11                                      ; preds = %9, %10, %6
-  %12 = phi i16 [ -200, %9 ], [ %4, %10 ], [ 200, %6 ]
+  %12 = phi i16 [ -210, %9 ], [ %4, %10 ], [ 210, %6 ]
   %13 = getelementptr inbounds %struct.Pid* %pid, i16 0, i32 3
   %14 = load i16* %13, align 1, !tbaa !2
   %15 = sub nsw i16 %1, %14
@@ -1204,10 +1207,13 @@ define i16 @_Z11pid_computeP3Pidjj(%struct.Pid* nocapture %pid, i16 %target_temp
 ; <label>:30                                      ; preds = %11
   %31 = icmp slt i16 %26, 0
   %. = select i1 %31, i16 0, i16 %26
-  ret i16 %.
+  br label %32
 
-; <label>:32                                      ; preds = %11
-  ret i16 %28
+; <label>:32                                      ; preds = %30, %11
+  %output.0 = phi i16 [ %28, %11 ], [ %., %30 ]
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoUnsignedDec", "{R1},~{R1},~{R6}"(i16 %measured_temp) nounwind, !srcloc !4
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([3 x i16]* @.str5, i16 0, i16 0)) nounwind, !srcloc !3
+  ret i16 %output.0
 }
 
 define void @_Z14heating_actionj(i16 %duration) nounwind {
@@ -1368,188 +1374,126 @@ define void @_Z15get_encoder_pos14rotary_encoder(%struct.rotary_encoder* noalias
 
 ; <label>:59                                      ; preds = %54, %57, %52
   %60 = getelementptr inbounds %struct.rotary_encoder* %agg.result, i16 0, i32 0
-  tail call void @llvm.memcpy.p0i16.p0i16.i16(i16* %60, i16* %49, i16 3, i32 1, i1 false), !tbaa.struct !4
+  tail call void @llvm.memcpy.p0i16.p0i16.i16(i16* %60, i16* %49, i16 3, i32 1, i1 false), !tbaa.struct !5
   ret void
 }
 
-define void @_Z20generate_RSS_profile7profilejjj(%struct.profile* noalias nocapture sret %agg.result, %struct.profile* nocapture byval %temp_profile, i16 %soak_time, i16 %spike_time, i16 %cooling_time) nounwind {
+define void @_Z20generate_RSS_profileP7profilejjjjjj(%struct.profile* nocapture %temp_profile, i16 %time1, i16 %time2, i16 %time3, i16 %step1, i16 %step2, i16 %step3) nounwind {
   %1 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 0
   store volatile i16 25, i16* %1, align 1, !tbaa !2
-  %2 = and i16 %soak_time, 1
-  %3 = icmp eq i16 %2, 0
-  br i1 %3, label %.preheader87, label %8
+  %2 = add i16 %step1, 25
+  %3 = lshr i16 %time1, 1
+  %4 = add i16 %3, 1
+  %5 = icmp ugt i16 %4, 1
+  br i1 %5, label %.lr.ph84, label %12
 
-.preheader87:                                     ; preds = %0
-  %4 = lshr i16 %soak_time, 1
-  %5 = add i16 %4, 1
-  %6 = icmp ugt i16 %5, 1
-  br i1 %6, label %.lr.ph92, label %.loopexit88
+.lr.ph84:                                         ; preds = %0
+  %6 = mul i16 %4, %step1
+  br label %7
 
-.lr.ph92:                                         ; preds = %.preheader87
-  %7 = shl i16 %4, 2
-  br label %20
+; <label>:7                                       ; preds = %7, %.lr.ph84
+  %i.082 = phi i16 [ 1, %.lr.ph84 ], [ %9, %7 ]
+  %target_temp.080 = phi i16 [ %2, %.lr.ph84 ], [ %10, %7 ]
+  %8 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %i.082
+  store volatile i16 %target_temp.080, i16* %8, align 1, !tbaa !2
+  %9 = add nsw i16 %i.082, 1
+  %10 = add i16 %target_temp.080, %step1
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoUnsignedDec", "{R1},~{R1},~{R6}"(i16 %10) nounwind, !srcloc !4
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([3 x i16]* @.str5, i16 0, i16 0)) nounwind, !srcloc !3
+  %exitcond91 = icmp eq i16 %9, %4
+  br i1 %exitcond91, label %._crit_edge85, label %7
 
-; <label>:8                                       ; preds = %0
-  %9 = add i16 %soak_time, 1
-  %10 = lshr i16 %9, 1
-  %11 = add i16 %10, 1
-  %12 = icmp ugt i16 %11, 1
-  br i1 %12, label %.lr.ph99, label %18
+._crit_edge85:                                    ; preds = %7
+  %11 = add i16 %6, 25
+  br label %12
 
-.lr.ph99:                                         ; preds = %8
-  %13 = shl i16 %10, 2
-  br label %14
+; <label>:12                                      ; preds = %._crit_edge85, %0
+  %cur_time_index.0.lcssa = phi i16 [ %4, %._crit_edge85 ], [ 1, %0 ]
+  %target_temp.0.lcssa = phi i16 [ %11, %._crit_edge85 ], [ %2, %0 ]
+  %13 = sub i16 %target_temp.0.lcssa, %step1
+  %14 = lshr i16 %time2, 1
+  %15 = add i16 %14, 1
+  %16 = icmp ult i16 %cur_time_index.0.lcssa, %15
+  br i1 %16, label %.lr.ph77, label %.preheader63
 
-; <label>:14                                      ; preds = %14, %.lr.ph99
-  %time_index.097 = phi i16 [ 1, %.lr.ph99 ], [ %17, %14 ]
-  %target_temp.096 = phi i16 [ 25, %.lr.ph99 ], [ %15, %14 ]
-  %15 = add i16 %target_temp.096, 4
-  %16 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index.097
-  store volatile i16 %15, i16* %16, align 1, !tbaa !2
-  %17 = add nsw i16 %time_index.097, 1
-  %exitcond108 = icmp eq i16 %17, %11
-  br i1 %exitcond108, label %._crit_edge100, label %14
+.lr.ph77:                                         ; preds = %12
+  %17 = sub i16 %15, %cur_time_index.0.lcssa
+  %18 = mul i16 %17, %step2
+  %19 = add i16 %target_temp.0.lcssa, %18
+  br label %26
 
-._crit_edge100:                                   ; preds = %14
-  %phitmp = add i16 %13, 23
-  br label %18
+..preheader63_crit_edge:                          ; preds = %26
+  %20 = sub i16 %19, %step1
+  br label %.preheader63
 
-; <label>:18                                      ; preds = %._crit_edge100, %8
-  %target_temp.0.lcssa = phi i16 [ %phitmp, %._crit_edge100 ], [ 23, %8 ]
-  %19 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %10
-  store volatile i16 %target_temp.0.lcssa, i16* %19, align 1, !tbaa !2
-  br label %.loopexit88
+.preheader63:                                     ; preds = %..preheader63_crit_edge, %12
+  %cur_time_index.1.lcssa = phi i16 [ %15, %..preheader63_crit_edge ], [ %cur_time_index.0.lcssa, %12 ]
+  %.pn.lcssa = phi i16 [ %20, %..preheader63_crit_edge ], [ %13, %12 ]
+  %21 = lshr i16 %time3, 1
+  %22 = add i16 %21, 1
+  %23 = icmp ult i16 %cur_time_index.1.lcssa, %22
+  br i1 %23, label %.lr.ph68, label %.preheader59
 
-; <label>:20                                      ; preds = %20, %.lr.ph92
-  %time_index1.091 = phi i16 [ 1, %.lr.ph92 ], [ %23, %20 ]
-  %target_temp.190 = phi i16 [ 25, %.lr.ph92 ], [ %21, %20 ]
-  %21 = add i16 %target_temp.190, 4
-  %22 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index1.091
-  store volatile i16 %21, i16* %22, align 1, !tbaa !2
-  %23 = add nsw i16 %time_index1.091, 1
-  %exitcond107 = icmp eq i16 %23, %5
-  br i1 %exitcond107, label %..loopexit88_crit_edge, label %20
+.lr.ph68:                                         ; preds = %.preheader63
+  %24 = sub i16 %22, %cur_time_index.1.lcssa
+  %25 = mul i16 %24, %step3
+  br label %32
 
-..loopexit88_crit_edge:                           ; preds = %20
-  %24 = add i16 %7, 25
-  br label %.loopexit88
+; <label>:26                                      ; preds = %26, %.lr.ph77
+  %.pn = phi i16 [ %13, %.lr.ph77 ], [ %target_temp.175, %26 ]
+  %i1.074 = phi i16 [ %cur_time_index.0.lcssa, %.lr.ph77 ], [ %28, %26 ]
+  %target_temp.175 = add i16 %.pn, %step2
+  %27 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %i1.074
+  store volatile i16 %target_temp.175, i16* %27, align 1, !tbaa !2
+  %28 = add nsw i16 %i1.074, 1
+  %exitcond89 = icmp eq i16 %28, %15
+  br i1 %exitcond89, label %..preheader63_crit_edge, label %26
 
-.loopexit88:                                      ; preds = %.preheader87, %..loopexit88_crit_edge, %18
-  %target_temp.2 = phi i16 [ %target_temp.0.lcssa, %18 ], [ %24, %..loopexit88_crit_edge ], [ 25, %.preheader87 ]
-  %cur_time_index.0 = phi i16 [ %10, %18 ], [ %4, %..loopexit88_crit_edge ], [ %4, %.preheader87 ]
-  %25 = and i16 %spike_time, 1
-  %26 = icmp eq i16 %25, 0
-  br i1 %26, label %.preheader76, label %30
+..preheader59_crit_edge:                          ; preds = %32
+  %29 = add i16 %.pn.lcssa, %25
+  br label %.preheader59
 
-.preheader76:                                     ; preds = %.loopexit88
-  %27 = lshr i16 %spike_time, 1
-  %28 = add i16 %27, 1
-  %29 = icmp ult i16 %cur_time_index.0, %28
-  br i1 %29, label %.lr.ph79, label %.loopexit
+.preheader59:                                     ; preds = %..preheader59_crit_edge, %.preheader63
+  %cur_time_index.2.lcssa = phi i16 [ %22, %..preheader59_crit_edge ], [ %cur_time_index.1.lcssa, %.preheader63 ]
+  %.pn.pn.lcssa = phi i16 [ %29, %..preheader59_crit_edge ], [ %.pn.lcssa, %.preheader63 ]
+  %30 = add i16 %21, 4
+  %31 = icmp ult i16 %cur_time_index.2.lcssa, %30
+  br i1 %31, label %.lr.ph62, label %.preheader
 
-; <label>:30                                      ; preds = %.loopexit88
-  %31 = add i16 %spike_time, -1
-  %32 = lshr i16 %31, 1
-  %33 = add i16 %32, 1
-  %34 = icmp ult i16 %cur_time_index.0, %33
-  br i1 %34, label %.lr.ph85, label %.loopexit
+; <label>:32                                      ; preds = %32, %.lr.ph68
+  %.pn.lcssa.pn = phi i16 [ %.pn.lcssa, %.lr.ph68 ], [ %target_temp.267, %32 ]
+  %i2.066 = phi i16 [ %cur_time_index.1.lcssa, %.lr.ph68 ], [ %34, %32 ]
+  %target_temp.267 = add i16 %.pn.lcssa.pn, %step3
+  %33 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %i2.066
+  store volatile i16 %target_temp.267, i16* %33, align 1, !tbaa !2
+  %34 = add nsw i16 %i2.066, 1
+  %exitcond88 = icmp eq i16 %34, %22
+  br i1 %exitcond88, label %..preheader59_crit_edge, label %32
 
-.lr.ph85:                                         ; preds = %30, %.lr.ph85
-  %time_index2.083 = phi i16 [ %36, %.lr.ph85 ], [ %cur_time_index.0, %30 ]
-  %35 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index2.083
-  store volatile i16 %target_temp.2, i16* %35, align 1, !tbaa !2
-  %36 = add nsw i16 %time_index2.083, 1
-  %exitcond106 = icmp eq i16 %36, %33
-  br i1 %exitcond106, label %.loopexit, label %.lr.ph85
+.preheader:                                       ; preds = %.lr.ph62, %.preheader59
+  %cur_time_index.3.lcssa = phi i16 [ %cur_time_index.2.lcssa, %.preheader59 ], [ %30, %.lr.ph62 ]
+  %35 = icmp slt i16 %cur_time_index.3.lcssa, 141
+  br i1 %35, label %.lr.ph, label %._crit_edge
 
-.lr.ph79:                                         ; preds = %.preheader76, %.lr.ph79
-  %time_index3.078 = phi i16 [ %38, %.lr.ph79 ], [ %cur_time_index.0, %.preheader76 ]
-  %37 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index3.078
-  store volatile i16 %target_temp.2, i16* %37, align 1, !tbaa !2
-  %38 = add nsw i16 %time_index3.078, 1
-  %exitcond105 = icmp eq i16 %38, %28
-  br i1 %exitcond105, label %.loopexit, label %.lr.ph79
-
-.loopexit:                                        ; preds = %30, %.lr.ph85, %.preheader76, %.lr.ph79
-  %cur_time_index.1 = phi i16 [ %27, %.lr.ph79 ], [ %27, %.preheader76 ], [ %32, %.lr.ph85 ], [ %32, %30 ]
-  %39 = add i16 %cur_time_index.1, 1
-  %40 = and i16 %cooling_time, 1
-  %41 = icmp eq i16 %40, 0
-  br i1 %41, label %.preheader63, label %47
-
-.preheader63:                                     ; preds = %.loopexit
-  %42 = lshr i16 %cooling_time, 1
-  %43 = add i16 %42, 1
-  %44 = icmp ult i16 %39, %43
-  br i1 %44, label %.lr.ph66, label %.preheader
-
-.lr.ph66:                                         ; preds = %.preheader63
-  %45 = shl nuw i16 %42, 1
-  %46 = shl nuw i16 %cur_time_index.1, 1
-  br label %63
-
-; <label>:47                                      ; preds = %.loopexit
-  %48 = add i16 %cooling_time, -1
-  %49 = lshr i16 %48, 1
-  %50 = add i16 %49, 1
-  %51 = icmp ult i16 %39, %50
-  br i1 %51, label %.lr.ph73, label %.preheader
-
-.lr.ph73:                                         ; preds = %47
-  %52 = shl nuw i16 %49, 1
-  %53 = shl nuw i16 %cur_time_index.1, 1
-  br label %59
-
-..preheader.loopexit_crit_edge:                   ; preds = %63
-  %54 = add i16 %target_temp.2, %45
-  %55 = sub i16 %54, %46
-  br label %.preheader
-
-..preheader.loopexit68_crit_edge:                 ; preds = %59
-  %56 = add i16 %target_temp.2, %52
-  %57 = sub i16 %56, %53
-  br label %.preheader
-
-.preheader:                                       ; preds = %47, %..preheader.loopexit68_crit_edge, %.preheader63, %..preheader.loopexit_crit_edge
-  %target_temp.6.ph = phi i16 [ %55, %..preheader.loopexit_crit_edge ], [ %target_temp.2, %.preheader63 ], [ %57, %..preheader.loopexit68_crit_edge ], [ %target_temp.2, %47 ]
-  %time_index6.0.in.ph = phi i16 [ %42, %..preheader.loopexit_crit_edge ], [ %42, %.preheader63 ], [ %49, %..preheader.loopexit68_crit_edge ], [ %49, %47 ]
-  %time_index6.060 = add i16 %time_index6.0.in.ph, 1
-  %58 = icmp slt i16 %time_index6.060, 181
-  br i1 %58, label %.lr.ph, label %._crit_edge
-
-; <label>:59                                      ; preds = %59, %.lr.ph73
-  %time_index4.071 = phi i16 [ %39, %.lr.ph73 ], [ %62, %59 ]
-  %target_temp.370 = phi i16 [ %target_temp.2, %.lr.ph73 ], [ %60, %59 ]
-  %60 = add i16 %target_temp.370, 2
-  %61 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index4.071
-  store volatile i16 %60, i16* %61, align 1, !tbaa !2
-  %62 = add nsw i16 %time_index4.071, 1
-  %exitcond104 = icmp eq i16 %62, %50
-  br i1 %exitcond104, label %..preheader.loopexit68_crit_edge, label %59
-
-; <label>:63                                      ; preds = %63, %.lr.ph66
-  %time_index5.065 = phi i16 [ %39, %.lr.ph66 ], [ %66, %63 ]
-  %target_temp.464 = phi i16 [ %target_temp.2, %.lr.ph66 ], [ %64, %63 ]
-  %64 = add i16 %target_temp.464, 2
-  %65 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index5.065
-  store volatile i16 %64, i16* %65, align 1, !tbaa !2
-  %66 = add nsw i16 %time_index5.065, 1
-  %exitcond103 = icmp eq i16 %66, %43
-  br i1 %exitcond103, label %..preheader.loopexit_crit_edge, label %63
+.lr.ph62:                                         ; preds = %.preheader59, %.lr.ph62
+  %i3.061 = phi i16 [ %37, %.lr.ph62 ], [ %cur_time_index.2.lcssa, %.preheader59 ]
+  %36 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %i3.061
+  store volatile i16 %.pn.pn.lcssa, i16* %36, align 1, !tbaa !2
+  %37 = add nsw i16 %i3.061, 1
+  %38 = icmp ult i16 %37, %30
+  br i1 %38, label %.lr.ph62, label %.preheader
 
 .lr.ph:                                           ; preds = %.preheader, %.lr.ph
-  %time_index6.062 = phi i16 [ %time_index6.0, %.lr.ph ], [ %time_index6.060, %.preheader ]
-  %target_temp.661 = phi i16 [ %67, %.lr.ph ], [ %target_temp.6.ph, %.preheader ]
-  %67 = add i16 %target_temp.661, -4
-  %68 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %time_index6.062
-  store volatile i16 %67, i16* %68, align 1, !tbaa !2
-  %time_index6.0 = add i16 %time_index6.062, 1
-  %exitcond = icmp eq i16 %time_index6.0, 181
+  %target_temp.358.in = phi i16 [ %target_temp.358, %.lr.ph ], [ %.pn.pn.lcssa, %.preheader ]
+  %i4.057 = phi i16 [ %40, %.lr.ph ], [ %cur_time_index.3.lcssa, %.preheader ]
+  %target_temp.358 = add i16 %target_temp.358.in, -5
+  %39 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 %i4.057
+  store volatile i16 %target_temp.358, i16* %39, align 1, !tbaa !2
+  %40 = add nsw i16 %i4.057, 1
+  %exitcond = icmp eq i16 %40, 141
   br i1 %exitcond, label %._crit_edge, label %.lr.ph
 
 ._crit_edge:                                      ; preds = %.lr.ph, %.preheader
-  %69 = getelementptr inbounds %struct.profile* %agg.result, i16 0, i32 0, i16 0
-  tail call void @llvm.memcpy.p0i16.p0i16.i16(i16* %69, i16* %1, i16 180, i32 1, i1 false), !tbaa.struct !5
   ret void
 }
 
@@ -1567,7 +1511,7 @@ define void @_Z21generate_test_profile7profile(%struct.profile* noalias nocaptur
 ; <label>:4                                       ; preds = %1
   %5 = getelementptr inbounds %struct.profile* %agg.result, i16 0, i32 0, i16 0
   %6 = getelementptr inbounds %struct.profile* %temp_profile, i16 0, i32 0, i16 0
-  tail call void @llvm.memcpy.p0i16.p0i16.i16(i16* %5, i16* %6, i16 180, i32 1, i1 false), !tbaa.struct !5
+  tail call void @llvm.memcpy.p0i16.p0i16.i16(i16* %5, i16* %6, i16 141, i32 1, i1 false), !tbaa.struct !6
   ret void
 }
 
@@ -1679,6 +1623,11 @@ define noalias i16* @_Z10TempThreadPv(i16* nocapture) noreturn nounwind {
   tail call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
   %3 = tail call i16 @_Z7getTempv()
   store volatile i16 %3, i16* @current_temp, align 1, !tbaa !2
+  %4 = load volatile i16* @current_temp, align 1, !tbaa !2
+  %5 = mul i16 %4, 109
+  %6 = add i16 %5, -283
+  %7 = udiv i16 %6, 100
+  store volatile i16 %7, i16* @current_temp, align 1, !tbaa !2
   tail call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
   br label %2
 }
@@ -1692,9 +1641,9 @@ define noalias i16* @_Z14RotEncodThreadPv(i16* nocapture) noreturn nounwind {
 
 ; <label>:6                                       ; preds = %1, %6
   call void @llvm.XInC2.outp(i16 8, i16 7) nounwind
-  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %4, i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 0), i16 3, i32 1, i1 false), !tbaa.struct !4
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %4, i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 0), i16 3, i32 1, i1 false), !tbaa.struct !5
   call void @_Z15get_encoder_pos14rotary_encoder(%struct.rotary_encoder* sret %2, %struct.rotary_encoder* byval %3)
-  call void @llvm.memcpy.p0i16.p0i16.i16(i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 0), i16* %5, i16 3, i32 1, i1 false), !tbaa.struct !4
+  call void @llvm.memcpy.p0i16.p0i16.i16(i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 0), i16* %5, i16 3, i32 1, i1 false), !tbaa.struct !5
   call void @llvm.XInC2.outp(i16 8, i16 6) nounwind
   call void @llvm.XInC2.outp(i16 4, i16 7) nounwind
   %7 = call i16 @llvm.XInC2.inp(i16 46) nounwind
@@ -1710,11 +1659,11 @@ define noalias i16* @_Z9PIDThreadPv(i16* nocapture) noreturn nounwind {
   %pid1 = alloca %struct.Pid, align 1
   call void @_Z20timer_initializationv()
   %2 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 0
-  store i16 120, i16* %2, align 1, !tbaa !2
+  store i16 250, i16* %2, align 1, !tbaa !2
   %3 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 1
   store i16 2, i16* %3, align 1, !tbaa !2
   %4 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 2
-  store i16 500, i16* %4, align 1, !tbaa !2
+  store i16 280, i16* %4, align 1, !tbaa !2
   %5 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 3
   store i16 0, i16* %5, align 1, !tbaa !2
   %6 = getelementptr inbounds %struct.Pid* %pid1, i16 0, i32 4
@@ -1723,14 +1672,14 @@ define noalias i16* @_Z9PIDThreadPv(i16* nocapture) noreturn nounwind {
   store i16 2000, i16* %7, align 1, !tbaa !2
   br label %8
 
-; <label>:8                                       ; preds = %1, %29
-  %output.0 = phi i16 [ 0, %1 ], [ %output.1, %29 ]
-  %time_count.0 = phi i16 [ 0, %1 ], [ %time_count.2, %29 ]
+; <label>:8                                       ; preds = %1, %30
+  %output.0 = phi i16 [ 0, %1 ], [ %output.1, %30 ]
+  %time_count.0 = phi i16 [ 0, %1 ], [ %time_count.2, %30 ]
   %9 = call i16 @llvm.XInC2.inp(i16 62) nounwind
   %10 = call i16 @llvm.XInC2.inp(i16 67) nounwind
   %11 = or i16 %10, %9
   %12 = icmp slt i16 %11, 0
-  br i1 %12, label %13, label %29
+  br i1 %12, label %13, label %30
 
 ; <label>:13                                      ; preds = %8
   call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
@@ -1743,7 +1692,7 @@ define noalias i16* @_Z9PIDThreadPv(i16* nocapture) noreturn nounwind {
   call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
   %19 = add i16 %time_count.0, 1
   %20 = icmp eq i16 %19, 2
-  br i1 %20, label %21, label %28
+  br i1 %20, label %21, label %29
 
 ; <label>:21                                      ; preds = %13
   %22 = load volatile i16* @target_temp_index, align 1, !tbaa !2
@@ -1752,18 +1701,19 @@ define noalias i16* @_Z9PIDThreadPv(i16* nocapture) noreturn nounwind {
   %24 = load volatile i16* @target_temp_index, align 1, !tbaa !2
   %25 = mul i16 %24, 100
   %26 = add i16 %25, 100
-  %27 = udiv i16 %26, 180
-  store volatile i16 %27, i16* @progress, align 1, !tbaa !2
-  br label %28
-
-; <label>:28                                      ; preds = %21, %13
-  %time_count.1 = phi i16 [ 0, %21 ], [ %19, %13 ]
-  call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
+  %27 = load volatile i16* @progress_scaler, align 1, !tbaa !2
+  %28 = udiv i16 %26, %27
+  store volatile i16 %28, i16* @progress, align 1, !tbaa !2
   br label %29
 
-; <label>:29                                      ; preds = %28, %8
-  %output.1 = phi i16 [ %18, %28 ], [ %output.0, %8 ]
-  %time_count.2 = phi i16 [ %time_count.1, %28 ], [ %time_count.0, %8 ]
+; <label>:29                                      ; preds = %21, %13
+  %time_count.1 = phi i16 [ 0, %21 ], [ %19, %13 ]
+  call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
+  br label %30
+
+; <label>:30                                      ; preds = %29, %8
+  %output.1 = phi i16 [ %18, %29 ], [ %output.0, %8 ]
+  %time_count.2 = phi i16 [ %time_count.1, %29 ], [ %time_count.0, %8 ]
   call void @_Z14heating_actionj(i16 %output.1)
   br label %8
 }
@@ -1800,196 +1750,201 @@ define noalias i16* @_Z14HumidityThreadPv(i16* nocapture) noreturn nounwind {
 }
 
 define noalias i16* @_Z15stateOLEDThreadPv(i16* nocapture) noreturn nounwind {
-  %2 = alloca %struct.profile, align 1
-  %.sroa.03 = alloca [180 x i16], align 1
-  %.sroa.0 = alloca [180 x i16], align 1
-  call void @_Z19OLED_Init_160128RGBv()
-  call void @_Z25OLED_FillScreen_160128RGBm(i32 0)
-  %.sroa.0.0.idx2 = getelementptr inbounds [180 x i16]* %.sroa.0, i16 0, i16 0
-  %tmp = getelementptr inbounds %struct.profile* %2, i16 0, i32 0, i16 0
-  %.sroa.03.0.idx = getelementptr inbounds [180 x i16]* %.sroa.03, i16 0, i16 0
+  tail call void @_Z19OLED_Init_160128RGBv()
+  tail call void @_Z25OLED_FillScreen_160128RGBm(i32 0)
   br label %.outer
 
-.outer:                                           ; preds = %33, %.split6, %._crit_edge, %.split12, %1
-  %scene.0.ph = phi i16 [ 0, %1 ], [ 0, %.split12 ], [ 4, %._crit_edge ], [ 1, %.split6 ], [ %scene.1, %33 ]
+.outer:                                           ; preds = %.loopexit, %41, %._crit_edge, %.split11, %1
+  %scene.0.ph = phi i16 [ 0, %1 ], [ 0, %.split11 ], [ 4, %._crit_edge ], [ 1, %41 ], [ %scene.1, %.loopexit ]
   switch i16 %scene.0.ph, label %infloop [
     i16 0, label %.split
-    i16 2, label %.split6
-    i16 1, label %.split9
-    i16 4, label %.split12
+    i16 2, label %.split5
+    i16 1, label %.split8
+    i16 4, label %.split11
   ]
 
 .split:                                           ; preds = %.outer
-  call void @llvm.XInC2.outp(i16 16, i16 7) nounwind
-  %3 = load volatile i16* @profile_index, align 1, !tbaa !2
-  call void @_Z17OLED_profile_pagej(i16 %3)
-  call void @llvm.XInC2.outp(i16 16, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 8, i16 7) nounwind
-  %4 = load volatile i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
-  %5 = icmp eq i16 %4, 1
-  br i1 %5, label %6, label %13
+  tail call void @llvm.XInC2.outp(i16 16, i16 7) nounwind
+  %2 = load volatile i16* @profile_index, align 1, !tbaa !2
+  tail call void @_Z17OLED_profile_pagej(i16 %2)
+  tail call void @llvm.XInC2.outp(i16 16, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 8, i16 7) nounwind
+  %3 = load volatile i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
+  %4 = icmp eq i16 %3, 1
+  br i1 %4, label %5, label %12
 
-; <label>:6                                       ; preds = %.split
-  call void @llvm.XInC2.outp(i16 16, i16 7) nounwind
-  %7 = load volatile i16* @profile_index, align 1, !tbaa !2
-  %8 = add i16 %7, 1
-  store volatile i16 %8, i16* @profile_index, align 1, !tbaa !2
-  %9 = load volatile i16* @profile_index, align 1, !tbaa !2
-  %10 = icmp ugt i16 %9, 3
-  br i1 %10, label %11, label %12
+; <label>:5                                       ; preds = %.split
+  tail call void @llvm.XInC2.outp(i16 16, i16 7) nounwind
+  %6 = load volatile i16* @profile_index, align 1, !tbaa !2
+  %7 = add i16 %6, 1
+  store volatile i16 %7, i16* @profile_index, align 1, !tbaa !2
+  %8 = load volatile i16* @profile_index, align 1, !tbaa !2
+  %9 = icmp ugt i16 %8, 3
+  br i1 %9, label %10, label %11
 
-; <label>:11                                      ; preds = %6
+; <label>:10                                      ; preds = %5
   store volatile i16 1, i16* @profile_index, align 1, !tbaa !2
-  br label %12
+  br label %11
 
-; <label>:12                                      ; preds = %11, %6
-  call void @llvm.XInC2.outp(i16 16, i16 6) nounwind
+; <label>:11                                      ; preds = %10, %5
+  tail call void @llvm.XInC2.outp(i16 16, i16 6) nounwind
   store volatile i16 0, i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
-  br label %23
-
-; <label>:13                                      ; preds = %.split
-  %14 = load volatile i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
-  %15 = icmp eq i16 %14, 2
-  br i1 %15, label %16, label %23
-
-; <label>:16                                      ; preds = %13
-  call void @llvm.XInC2.outp(i16 16, i16 7) nounwind
-  %17 = load volatile i16* @profile_index, align 1, !tbaa !2
-  %18 = add i16 %17, -1
-  store volatile i16 %18, i16* @profile_index, align 1, !tbaa !2
-  %19 = load volatile i16* @profile_index, align 1, !tbaa !2
-  %20 = icmp eq i16 %19, 0
-  br i1 %20, label %21, label %22
-
-; <label>:21                                      ; preds = %16
-  store volatile i16 3, i16* @profile_index, align 1, !tbaa !2
   br label %22
 
-; <label>:22                                      ; preds = %21, %16
-  call void @llvm.XInC2.outp(i16 16, i16 6) nounwind
+; <label>:12                                      ; preds = %.split
+  %13 = load volatile i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
+  %14 = icmp eq i16 %13, 2
+  br i1 %14, label %15, label %22
+
+; <label>:15                                      ; preds = %12
+  tail call void @llvm.XInC2.outp(i16 16, i16 7) nounwind
+  %16 = load volatile i16* @profile_index, align 1, !tbaa !2
+  %17 = add i16 %16, -1
+  store volatile i16 %17, i16* @profile_index, align 1, !tbaa !2
+  %18 = load volatile i16* @profile_index, align 1, !tbaa !2
+  %19 = icmp eq i16 %18, 0
+  br i1 %19, label %20, label %21
+
+; <label>:20                                      ; preds = %15
+  store volatile i16 3, i16* @profile_index, align 1, !tbaa !2
+  br label %21
+
+; <label>:21                                      ; preds = %20, %15
+  tail call void @llvm.XInC2.outp(i16 16, i16 6) nounwind
   store volatile i16 0, i16* getelementptr inbounds (%struct.rotary_encoder* @r_encoder, i16 0, i32 2), align 1, !tbaa !2
-  br label %23
+  br label %22
 
-; <label>:23                                      ; preds = %13, %22, %12
-  call void @llvm.XInC2.outp(i16 8, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 4, i16 7) nounwind
-  %24 = call i16 @llvm.XInC2.inp(i16 46) nounwind
-  %25 = lshr i16 %24, 2
-  %.lobit.i = and i16 %25, 1
-  %26 = xor i16 %.lobit.i, 1
-  store volatile i16 %26, i16* @btn_press, align 1, !tbaa !2
-  %27 = load volatile i16* @btn_press, align 1, !tbaa !2
-  %28 = icmp eq i16 %27, 1
-  br i1 %28, label %29, label %33
+; <label>:22                                      ; preds = %12, %21, %11
+  tail call void @llvm.XInC2.outp(i16 8, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 4, i16 7) nounwind
+  %23 = tail call i16 @llvm.XInC2.inp(i16 46) nounwind
+  %24 = lshr i16 %23, 2
+  %.lobit.i = and i16 %24, 1
+  %25 = xor i16 %.lobit.i, 1
+  store volatile i16 %25, i16* @btn_press, align 1, !tbaa !2
+  %26 = load volatile i16* @btn_press, align 1, !tbaa !2
+  %27 = icmp eq i16 %26, 1
+  br i1 %27, label %28, label %.loopexit
 
-; <label>:29                                      ; preds = %23
-  call void @_Z25OLED_FillScreen_160128RGBm(i32 0)
-  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %.sroa.0.0.idx2, i16* getelementptr inbounds (%struct.profile* @selected_profile, i16 0, i32 0, i16 0), i16 180, i32 1, i1 false)
-  call void @llvm.memcpy.p0i16.p0i16.i64(i16* %tmp, i16* %.sroa.0.0.idx2, i64 180, i32 1, i1 false)
+; <label>:28                                      ; preds = %22
+  tail call void @_Z25OLED_FillScreen_160128RGBm(i32 0)
+  %29 = load %struct.profile** @temp_ptr, align 1, !tbaa !7
+  tail call void @_Z20generate_RSS_profileP7profilejjjjjj(%struct.profile* %29, i16 30, i16 120, i16 210, i16 5, i16 1, i16 2)
   br label %30
 
-; <label>:30                                      ; preds = %30, %29
-  %i.03.i = phi i16 [ 0, %29 ], [ %32, %30 ]
-  %31 = getelementptr inbounds %struct.profile* %2, i16 0, i32 0, i16 %i.03.i
-  store volatile i16 0, i16* %31, align 1, !tbaa !2
-  %32 = add nsw i16 %i.03.i, 1
-  %exitcond.i = icmp eq i16 %32, 180
-  br i1 %exitcond.i, label %_Z21generate_test_profile7profile.exit, label %30
+; <label>:30                                      ; preds = %30, %28
+  %i.03 = phi i16 [ 0, %28 ], [ %33, %30 ]
+  %31 = getelementptr inbounds %struct.profile* @selected_profile, i16 0, i32 0, i16 %i.03
+  %32 = load volatile i16* %31, align 1, !tbaa !2
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoUnsignedDec", "{R1},~{R1},~{R6}"(i16 %32) nounwind, !srcloc !4
+  tail call void asm sideeffect "\09jsr\09r6, XPD_EchoString", "{R1},~{R1},~{R6}"(i16* getelementptr inbounds ([3 x i16]* @.str5, i16 0, i16 0)) nounwind, !srcloc !3
+  %33 = add nsw i16 %i.03, 1
+  %exitcond = icmp eq i16 %33, 141
+  br i1 %exitcond, label %.loopexit, label %30
 
-_Z21generate_test_profile7profile.exit:           ; preds = %30
-  call void @llvm.memcpy.p0i16.p0i16.i16(i16* %.sroa.03.0.idx, i16* %tmp, i16 180, i32 1, i1 false)
-  call void @llvm.memcpy.p0i16.p0i16.i16(i16* getelementptr inbounds (%struct.profile* @selected_profile, i16 0, i32 0, i16 0), i16* %.sroa.03.0.idx, i16 180, i32 1, i1 false)
-  br label %33
-
-; <label>:33                                      ; preds = %_Z21generate_test_profile7profile.exit, %23
-  %scene.1 = phi i16 [ 2, %_Z21generate_test_profile7profile.exit ], [ %scene.0.ph, %23 ]
-  call void @llvm.XInC2.outp(i16 4, i16 6) nounwind
+.loopexit:                                        ; preds = %30, %22
+  %scene.1 = phi i16 [ %scene.0.ph, %22 ], [ 2, %30 ]
+  tail call void @llvm.XInC2.outp(i16 4, i16 6) nounwind
   br label %.outer
 
-.split6:                                          ; preds = %.outer
-  call void @_Z18OLED_starting_pagev()
-  call void @_Z7wait_msj(i16 2000)
-  call void @_Z25OLED_FillScreen_160128RGBm(i32 0)
+.split5:                                          ; preds = %.outer
+  tail call void @_Z18OLED_starting_pagev()
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %34 = load i16* @thrds_vector, align 1, !tbaa !2
+  %35 = and i16 %34, -9
+  store i16 %35, i16* @thrds_vector, align 1, !tbaa !2
+  tail call void @llvm.XInC2.outp(i16 %35, i16 4) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  tail call void @_Z7wait_msj(i16 2000)
+  tail call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
+  %36 = load volatile i16* @current_temp, align 1, !tbaa !2
+  %37 = icmp ult i16 %36, 100
+  br i1 %37, label %38, label %41
+
+; <label>:38                                      ; preds = %.split5
+  %39 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
+  %40 = or i16 %39, 96
+  tail call void @llvm.XInC2.outp(i16 %40, i16 38) nounwind
+  br label %41
+
+; <label>:41                                      ; preds = %38, %.split5
+  tail call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
+  tail call void @_Z7wait_msj(i16 2000)
+  tail call void @_Z25OLED_FillScreen_160128RGBm(i32 0)
   br label %.outer
 
-.split9:                                          ; preds = %.outer
-  call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
-  call void @llvm.XInC2.outp(i16 2, i16 7) nounwind
-  call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
-  %34 = load volatile i16* @current_temp, align 1, !tbaa !2
-  %35 = load volatile i16* @humidity, align 1, !tbaa !2
-  %36 = load volatile i16* @progress, align 1, !tbaa !2
-  call void @_Z14OLED_main_pagejjj(i16 %34, i16 %35, i16 %36)
-  call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 2, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
-  %37 = load i16* @thrds_vector, align 1, !tbaa !2
-  %38 = and i16 %37, -9
-  store i16 %38, i16* @thrds_vector, align 1, !tbaa !2
-  call void @llvm.XInC2.outp(i16 %38, i16 4) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
-  %39 = load i16* @thrds_vector, align 1, !tbaa !2
-  %40 = and i16 %39, -17
-  store i16 %40, i16* @thrds_vector, align 1, !tbaa !2
-  call void @llvm.XInC2.outp(i16 %40, i16 4) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
-  %41 = load i16* @thrds_vector, align 1, !tbaa !2
-  %42 = and i16 %41, -33
-  store i16 %42, i16* @thrds_vector, align 1, !tbaa !2
-  call void @llvm.XInC2.outp(i16 %42, i16 4) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
-  %43 = load volatile i16* @progress, align 1, !tbaa !2
-  %44 = icmp ult i16 %43, 101
-  br i1 %44, label %.lr.ph, label %._crit_edge
+.split8:                                          ; preds = %.outer
+  tail call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
+  tail call void @llvm.XInC2.outp(i16 2, i16 7) nounwind
+  tail call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
+  %42 = load volatile i16* @current_temp, align 1, !tbaa !2
+  %43 = load volatile i16* @humidity, align 1, !tbaa !2
+  %44 = load volatile i16* @progress, align 1, !tbaa !2
+  tail call void @_Z14OLED_main_pagejjj(i16 %42, i16 %43, i16 %44)
+  tail call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 2, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %45 = load i16* @thrds_vector, align 1, !tbaa !2
+  %46 = and i16 %45, -17
+  store i16 %46, i16* @thrds_vector, align 1, !tbaa !2
+  tail call void @llvm.XInC2.outp(i16 %46, i16 4) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %47 = load i16* @thrds_vector, align 1, !tbaa !2
+  %48 = and i16 %47, -33
+  store i16 %48, i16* @thrds_vector, align 1, !tbaa !2
+  tail call void @llvm.XInC2.outp(i16 %48, i16 4) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  %49 = load volatile i16* @progress, align 1, !tbaa !2
+  %50 = icmp ult i16 %49, 101
+  br i1 %50, label %.lr.ph, label %._crit_edge
 
-.lr.ph:                                           ; preds = %.split9, %.lr.ph
-  call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
-  call void @llvm.XInC2.outp(i16 2, i16 7) nounwind
-  call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
-  %45 = load volatile i16* @current_temp, align 1, !tbaa !2
-  %46 = load volatile i16* @humidity, align 1, !tbaa !2
-  %47 = load volatile i16* @progress, align 1, !tbaa !2
-  call void @_Z14OLED_main_pagejjj(i16 %45, i16 %46, i16 %47)
-  call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 2, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
-  %48 = load volatile i16* @progress, align 1, !tbaa !2
-  %49 = icmp ult i16 %48, 101
-  br i1 %49, label %.lr.ph, label %._crit_edge
+.lr.ph:                                           ; preds = %.split8, %.lr.ph
+  tail call void @llvm.XInC2.outp(i16 1, i16 7) nounwind
+  tail call void @llvm.XInC2.outp(i16 2, i16 7) nounwind
+  tail call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
+  %51 = load volatile i16* @current_temp, align 1, !tbaa !2
+  %52 = load volatile i16* @humidity, align 1, !tbaa !2
+  %53 = load volatile i16* @progress, align 1, !tbaa !2
+  tail call void @_Z14OLED_main_pagejjj(i16 %51, i16 %52, i16 %53)
+  tail call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 2, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 1, i16 6) nounwind
+  %54 = load volatile i16* @progress, align 1, !tbaa !2
+  %55 = icmp ult i16 %54, 101
+  br i1 %55, label %.lr.ph, label %._crit_edge
 
-._crit_edge:                                      ; preds = %.lr.ph, %.split9
-  call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
+._crit_edge:                                      ; preds = %.lr.ph, %.split8
+  tail call void @llvm.XInC2.outp(i16 64, i16 7) nounwind
   store volatile i16 0, i16* @progress, align 1, !tbaa !2
-  call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
-  %50 = load i16* @thrds_vector, align 1, !tbaa !2
-  %51 = or i16 %50, 8
-  store i16 %51, i16* @thrds_vector, align 1, !tbaa !2
-  call void @llvm.XInC2.outp(i16 %51, i16 4) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
-  %52 = load i16* @thrds_vector, align 1, !tbaa !2
-  %53 = or i16 %52, 16
-  store i16 %53, i16* @thrds_vector, align 1, !tbaa !2
-  call void @llvm.XInC2.outp(i16 %53, i16 4) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
-  %54 = load i16* @thrds_vector, align 1, !tbaa !2
-  %55 = or i16 %54, 32
-  store i16 %55, i16* @thrds_vector, align 1, !tbaa !2
-  call void @llvm.XInC2.outp(i16 %55, i16 4) nounwind
-  call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
-  %56 = call i16 @llvm.XInC2.inp(i16 38) nounwind
-  %57 = and i16 %56, -97
-  call void @llvm.XInC2.outp(i16 %57, i16 38) nounwind
+  tail call void @llvm.XInC2.outp(i16 64, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %56 = load i16* @thrds_vector, align 1, !tbaa !2
+  %57 = or i16 %56, 8
+  store i16 %57, i16* @thrds_vector, align 1, !tbaa !2
+  tail call void @llvm.XInC2.outp(i16 %57, i16 4) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %58 = load i16* @thrds_vector, align 1, !tbaa !2
+  %59 = or i16 %58, 16
+  store i16 %59, i16* @thrds_vector, align 1, !tbaa !2
+  tail call void @llvm.XInC2.outp(i16 %59, i16 4) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 7) nounwind
+  %60 = load i16* @thrds_vector, align 1, !tbaa !2
+  %61 = or i16 %60, 32
+  store i16 %61, i16* @thrds_vector, align 1, !tbaa !2
+  tail call void @llvm.XInC2.outp(i16 %61, i16 4) nounwind
+  tail call void @llvm.XInC2.outp(i16 -32768, i16 6) nounwind
+  %62 = tail call i16 @llvm.XInC2.inp(i16 38) nounwind
+  %63 = and i16 %62, -97
+  tail call void @llvm.XInC2.outp(i16 %63, i16 38) nounwind
   br label %.outer
 
-.split12:                                         ; preds = %.outer
-  call void @_Z17OLED_end_progressv()
-  call void @_Z7wait_msj(i16 2000)
+.split11:                                         ; preds = %.outer
+  tail call void @_Z17OLED_end_progressv()
+  tail call void @_Z7wait_msj(i16 2000)
   br label %.outer
 
 infloop:                                          ; preds = %.outer, %infloop
@@ -2044,11 +1999,11 @@ declare void @llvm.XInC2.outp(i16, i16) nounwind
 
 declare i16 @llvm.XInC2.inp(i16) nounwind
 
-declare void @llvm.memcpy.p0i16.p0i16.i64(i16* nocapture, i16* nocapture, i64, i32, i1) nounwind
-
 !0 = metadata !{metadata !"omnipotent char", metadata !1}
 !1 = metadata !{metadata !"Simple C/C++ TBAA"}
 !2 = metadata !{metadata !"int", metadata !0}
-!3 = metadata !{i32 -2147383660}                  
-!4 = metadata !{i64 0, i64 1, metadata !0, i64 1, i64 1, metadata !0, i64 2, i64 1, metadata !2}
-!5 = metadata !{i64 0, i64 180, metadata !0}
+!3 = metadata !{i32 -2147382688}                  
+!4 = metadata !{i32 -2147381991}                  
+!5 = metadata !{i64 0, i64 1, metadata !0, i64 1, i64 1, metadata !0, i64 2, i64 1, metadata !2}
+!6 = metadata !{i64 0, i64 141, metadata !0}
+!7 = metadata !{metadata !"any pointer", metadata !0}

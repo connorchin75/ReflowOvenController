@@ -57,10 +57,10 @@ unsigned int pid_compute(struct Pid *pid, unsigned int target_temp, unsigned int
    //calculate the current error between the measured and target temp
    cur_error = target_temp - measured_temp;
    //add the error to the error accumulator for the integral term
-   if((pid->acc_error + cur_error) > 200){
-      pid->acc_error = 200;
-   }else if((pid->acc_error + cur_error) < -200){
-      pid->acc_error = -200;
+   if((pid->acc_error + cur_error) > 210){
+      pid->acc_error = 210;
+   }else if((pid->acc_error + cur_error) < -210){
+      pid->acc_error = -210;
    }
    else{
       pid->acc_error += cur_error;
@@ -93,8 +93,11 @@ unsigned int pid_compute(struct Pid *pid, unsigned int target_temp, unsigned int
    // xpd_puts("Derivative Output:");
    // xpd_echo_int(pid->kd * error_diff, XPD_Flag_SignedDecimal);
    // xpd_puts(" \n");
-   // xpd_puts("Total Output:");
-   // xpd_echo_int(output, XPD_Flag_SignedDecimal);
+   // xpd_puts("Current Temp:");
+   xpd_echo_int(measured_temp, XPD_Flag_UnsignedDecimal);
+   xpd_puts(" \n");
+   // xpd_puts("Target Temp:");
+   // xpd_echo_int(target_temp, XPD_Flag_UnsignedDecimal);
    // xpd_puts(" \n");
    
    return output;

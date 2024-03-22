@@ -21,10 +21,10 @@ JTI13_0:
 //	.section	.rdata,"r"
 JTI16_0:
 		BB16_4
-		BB16_18
-		BB16_17
-		BB16_22
+		BB16_24
 		BB16_21
+		BB16_28
+		BB16_27
 
 //	.section	//.data,"w"
 sxc_Ascii_1:                            // @Ascii_1
@@ -671,6 +671,11 @@ sxc_.str4:                              // @.str4
 		10                      // 0xa
 		0                       // 0x0
 
+sxc_.str5:                              // @.str5
+		32                      // 0x20
+		10                      // 0xa
+		0                       // 0x0
+
 	sxc_current_temp: @ = @ + 1 // .lcomm // @current_temp
 	sxc_humidity: @ = @ + 1 // .lcomm // @humidity
 	sxc_btn_press: @ = @ + 1 // .lcomm // @btn_press
@@ -684,7 +689,10 @@ sxc_profile_index:                      // @profile_index
 
 	sxc_target_temp_index: @ = @ + 1 // .lcomm // @target_temp_index
 	sxc_progress: @ = @ + 1 // .lcomm // @progress
-	sxc_selected_profile: @ = @ + 180 // .lcomm // @selected_profile
+	sxc_selected_profile: @ = @ + 141 // .lcomm // @selected_profile
+sxc_progress_scaler:                    // @progress_scaler
+		141                     // 0x8d
+
 
 SXCA_PARSED_CONSTRUCTOR_LIST_START:
 SXCA_PARSED_CONSTRUCTOR_LIST_END:

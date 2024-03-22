@@ -35,3 +35,4 @@ sxc_firmware_obj_to_hex(
 add_custom_target(${PROJECT_NAME}-hex-final ALL
   DEPENDS ${hex_target}
 )
+

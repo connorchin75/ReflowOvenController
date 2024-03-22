@@ -25,10 +25,11 @@ volatile unsigned int target_temp; // semaphore 5
 volatile unsigned int target_temp_index = 0; //semaphore 6;
 volatile unsigned int progress = 0; //semaphore 6 this is a scaled version of target_temp
 struct profile selected_profile;
+volatile unsigned int progress_scaler = 141;
+struct profile* temp_ptr = &selected_profile;
 
-//Setup Profile Generation (actual generation occurs when process begins)
-unsigned int profile_array[PROFILE_LIST_SIZE][3] = {{75, 165, 240},{80, 165, 220},{90, 152, 240}};
-
+//define possible temperature curve parameters
+unsigned int profile_array[PROFILE_LIST_SIZE][6] = {{30, 120, 210, 5, 1, 2}, {90, 180, 240, 3, 0, 3}, {90, 180, 232, 2, 0, 2}};
 /// Configures GPIO to be Input/Output, io cell configuration, and clock frequency
 void InitGPIO(){
    //set the system clock to 98.304 MHz 
@@ -77,6 +78,8 @@ void * TempThread(void *) {
    while (true){
       sem_lock(0);
       current_temp = getTemp();
+      //scale the temperature according to calibration equation
+      current_temp = (current_temp * 109 - 283)/100;
       sem_unlock(0);
    }
 }
@@ -112,7 +115,7 @@ void * PIDThread(void * ) {
    //initialize the PID controller
    struct Pid pid1;
    struct Pid *pid = &pid1;
-   set_pid_parameters(pid, 120, 2, 500);
+   set_pid_parameters(pid, 250, 2, 280);
    //max of proportional term should be around 120
    while (true) {
       //check to see if 1 second has elapsed to compute a PID action
@@ -132,7 +135,7 @@ void * PIDThread(void * ) {
          if(time_count == 2){
             //2 seconds has elapsed, increment the target temperature
             target_temp_index ++;
-            progress = (target_temp_index + 1)*100/180;
+            progress = (target_temp_index + 1)*100/progress_scaler;
             time_count = 0;
          }
          sem_unlock(6);
@@ -228,10 +231,17 @@ void * stateOLEDThread(void *){
                scene = STARTING_PROCESS;
                OLED_FillScreen_160128RGB(BLACK);// fill screen with black
                // generate the temperature profile depending on which profile has been selected
-               // selected_profile = generate_RSS_profile(selected_profile, profile_array[profile_index-1][0], profile_array[profile_index-1][1], profile_array[profile_index-1][2]);
-               //duplicating this line resolved screen issues
-               // selected_profile = generate_RSS_profile(selected_profile, profile_array[profile_index-1][0], profile_array[profile_index-1][1], profile_array[profile_index-1][2]);
-               selected_profile = generate_test_profile(selected_profile);
+               //generate_RSS_profile(temp_ptr, profile_array[profile_index-1][0], profile_array[profile_index-1][1], profile_array[profile_index-1][2], profile_array[profile_index-1][3], profile_array[profile_index-1][4], profile_array[profile_index-1][5]);
+               generate_RSS_profile(temp_ptr, 30, 120, 210, 5, 1, 2);
+               for (int i=0;i<141;i++){
+                  xpd_echo_int(selected_profile.temp_targets[i], XPD_Flag_UnsignedDecimal);
+                  xpd_puts(" \n");
+               }
+               // selected_profile = generate_test_profile(selected_profile);
+               //do a check to see whether the profile is shorter than 240s 
+               // if ((profile_array[profile_index-1][2]) < 240){
+               //    progress_scaler = (profile_array[profile_index-1][2])/2;
+               // }
             }
             sem_unlock(2);
             break;
@@ -240,6 +250,17 @@ void * stateOLEDThread(void *){
          case STARTING_PROCESS:
             OLED_starting_page();
             //this will be a page that will indicate that we are about to start the heating process
+            //start the temperature sensor thread
+            thread_run(3);
+            //let the temperature sensor boot up
+            wait_ms(2000);
+            sem_lock(0);
+            //verify that temperature is less than 100 before turning on the heating elements
+            if (current_temp < 100){
+               //turn on both heating elements to begin preheating.
+               gpio_write(gpio_read(GPIO_D)|(PD5|PD6), GPIO_D);
+            }
+            sem_unlock(0);
             wait_ms(2000);
             //after a short delay enter the display progress screen
             OLED_FillScreen_160128RGB(BLACK);
@@ -256,8 +277,6 @@ void * stateOLEDThread(void *){
             sem_unlock(6);
             sem_unlock(1);
             sem_unlock(0);
-            //start the temperature sensor thread
-            thread_run(3);
             //start the humidity sensor thread
             thread_run(4);
             //start the PID controller thread
@@ -282,11 +301,10 @@ void * stateOLEDThread(void *){
             thread_stop(4);
             thread_stop(5);
             //turn off the heating elements
-            gpio_write(gpio_read(GPIO_D)&~(0x20|0x40), GPIO_D);
+            gpio_write(gpio_read(GPIO_D)&~(PD5|PD6), GPIO_D);
             scene = END_PROCESS;
             break;
          
-
          case HUMIDITY_WARNING:
             break;
 
