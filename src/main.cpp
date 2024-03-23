@@ -232,11 +232,20 @@ void * stateOLEDThread(void *){
                OLED_FillScreen_160128RGB(BLACK);// fill screen with black
                // generate the temperature profile depending on which profile has been selected
                //generate_RSS_profile(temp_ptr, profile_array[profile_index-1][0], profile_array[profile_index-1][1], profile_array[profile_index-1][2], profile_array[profile_index-1][3], profile_array[profile_index-1][4], profile_array[profile_index-1][5]);
-               generate_RSS_profile(temp_ptr, 30, 120, 210, 5, 1, 2);
-               for (int i=0;i<141;i++){
-                  xpd_echo_int(selected_profile.temp_targets[i], XPD_Flag_UnsignedDecimal);
-                  xpd_puts(" \n");
-               }
+               // generate_RSS_profile(temp_ptr, 30, 120, 210, 5, 1, 2);
+               switch(profile_index){
+                  case 1:
+                     generate_RSS_profile1(temp_ptr);
+                  break;
+                  
+                  case 2:
+                     generate_RSS_profile2(temp_ptr);
+                  break;
+
+                  case 3:
+                     generate_RSS_profile3(temp_ptr);
+                  break;
+               }//end switch statement
                // selected_profile = generate_test_profile(selected_profile);
                //do a check to see whether the profile is shorter than 240s 
                // if ((profile_array[profile_index-1][2]) < 240){
