@@ -132,12 +132,14 @@ void * PIDThread(void * ) {
          //simulate the change in temperature
          pid_status = 0;
          time_count ++;
+         sem_lock(7); //progress
          if(time_count == 2){
             //2 seconds has elapsed, increment the target temperature
             target_temp_index ++;
             progress = (target_temp_index + 1)*100/progress_scaler;
             time_count = 0;
          }
+         sem_unlock(7);
          sem_unlock(6);
       }
       //implement PID action
@@ -196,6 +198,7 @@ void * stateOLEDThread(void *){
             //print the display page with given profile selection
             sem_lock(4);            
             OLED_profile_page(profile_index);
+            OLED_profile_times(profile_array[profile_index-1]);
             // OLED_profile_page(r_encoder.encoder_pos);
             sem_unlock(4);
   
@@ -262,7 +265,7 @@ void * stateOLEDThread(void *){
             //start the temperature sensor thread
             thread_run(3);
             //let the temperature sensor boot up
-            wait_ms(2000);
+            wait_ms(1000);
             sem_lock(0);
             //verify that temperature is less than 100 before turning on the heating elements
             if (current_temp < 100){
@@ -270,7 +273,7 @@ void * stateOLEDThread(void *){
                gpio_write(gpio_read(GPIO_D)|(PD5|PD6), GPIO_D);
             }
             sem_unlock(0);
-            wait_ms(2000);
+            wait_ms(1000);
             //after a short delay enter the display progress screen
             OLED_FillScreen_160128RGB(BLACK);
             scene = DISPLAY_PROGRESS;
@@ -282,7 +285,11 @@ void * stateOLEDThread(void *){
             sem_lock(0);
             sem_lock(1);
             sem_lock(6);
-            OLED_main_page(current_temp, humidity, progress);
+            // OLED_main_page(current_temp, humidity, progress);
+            sem_lock(4);
+            OLED_display_progress(profile_index);
+            sem_unlock(4);
+            
             sem_unlock(6);
             sem_unlock(1);
             sem_unlock(0);
@@ -290,37 +297,88 @@ void * stateOLEDThread(void *){
             thread_run(4);
             //start the PID controller thread
             thread_run(5);
-            while(progress < 101){
+            while((progress < 101) && (scene == DISPLAY_PROGRESS)){
                //start temperature
                //start humidity thread
                sem_lock(0);
                sem_lock(1);
                sem_lock(6);
-               OLED_main_page(current_temp, humidity, progress);
+
+               //check for button press
+               sem_lock(2);
+               if (btn_press == 1){
+                  scene = END_PROCESS;
+               }
+               sem_unlock(2);
+
+               sem_lock(7);
+               OLED_update_progress(progress);
+               sem_unlock(7);
+
+               OLED_update_temp(current_temp);
+               OLED_update_humidity(humidity);
+
+               if (humidity > 60){
+                  scene = HUMIDITY_WARNING;
+               }
+
                sem_unlock(6);
                sem_unlock(1);
                sem_unlock(0);
             }
-            sem_lock(6);
-            //reset the progress counter for the next cycle
-            progress = 0;
-            sem_unlock(6);
             //stop the temp and humidity and pid threads
             thread_stop(3);
             thread_stop(4);
             thread_stop(5);
             //turn off the heating elements
             gpio_write(gpio_read(GPIO_D)&~(PD5|PD6), GPIO_D);
+
+            sem_lock(7);
+            // if((progress > 100 ) || (scene == END_PROCESS)){ //if cycle finished, or hard reset was received,
+            //    scene = END_PROCESS;
+            //    //reset the progress counter for the next cycle
+            //    progress = 0;
+            // }
+            // if(scene != HUMIDITY_WARNING){
+            progress = 0;
             scene = END_PROCESS;
+            // }
+            //else, we will keep the progress. Humidity warning won't reset the whole cycle, it will just stop it momentarily
+            sem_unlock(7);
+
+            OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
             break;
          
          case HUMIDITY_WARNING:
+            OLED_display_warning();
+            wait_ms(100);
+            OLED_display_second_warning();
+            //check for button press
+            sem_lock(2);
+            btn_press = button_read();
+            if (btn_press == 1){
+               sem_unlock(2);
+               scene = STARTING_PROCESS;
+               wait_ms(1000); //this will help avoid detecting two btn presses
+               OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
+            }
+            sem_unlock(2);
             break;
 
          case END_PROCESS:
             OLED_end_progress();
-            wait_ms(2000);
-            scene = CHANGE_PROFILE;
+            wait_ms(100);
+            OLED_display_second_warning();
+            // check for button press
+            sem_lock(2);
+            btn_press = button_read();
+            if (btn_press == 1){
+               scene = CHANGE_PROFILE;
+               wait_ms(1000); //this will help avoid detecting two btn presses
+               OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
+            }
+            sem_unlock(2);
+            // scene = CHANGE_PROFILE;
             break;
       }
    }
