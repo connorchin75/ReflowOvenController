@@ -25,7 +25,9 @@
 /************* START *************/
 /*********************************/
 
-unsigned char Ascii_1[98][5] = {     // Refer to "Times New Roman" Font Database...
+// unsigned char arrow[2][5] = {{0x18,0x3C,0x7E,0x18,0x18},{0x18,0x18,0x7E,0x3C,0x18}};
+
+unsigned char Ascii_1[105][5] = {     // Refer to "Times New Roman" Font Database...
                         //   Basic Characters
     {0x00,0x00,0x00,0x00,0x00},     //   (  0)    - 0x0000 Empty set
     {0x00,0x00,0x4F,0x00,0x00},     //   (  1)  ! - 0x0021 Exclamation Mark
@@ -124,7 +126,15 @@ unsigned char Ascii_1[98][5] = {     // Refer to "Times New Roman" Font Database
     {0x02,0x01,0x02,0x04,0x02},     //   ( 94)  ~ - 0x007E Tilde
     {0x08,0x0C,0x0E,0x0C,0x08},     //   ( 95)  upward facing triangle/arrow
     {0x08,0x18,0x38,0x18,0x08},     //   ( 96)  downward facing triangle/arrow
-    {0x00,0x0F,0x09,0x09,0x0F}      //   ( 97)  degree symbol
+    {0x00,0x0F,0x09,0x09,0x0F},      //   ( 97)  degree symbol
+    {0x18,0x3C,0x7E,0x18,0x18},      // ( 98) left arrow
+    {0x18,0x18,0x7E,0x3C,0x18},      // (99) right arrow
+    {0x1C,0x22,0xC1,0x22,0x1C},         //(100) pal, head
+    {0x02,0x04,0xFF,0x04,0x02},         //(101) stretched pal, body
+    {0x02,0x01,0x00,0x01,0x02},         //(102) stretched pal, legs
+    {0x18,0x04,0xFF,0x04,0x18},         //(103) compact pal, body
+    {0x00,0x0F,0x00,0x0F,0x00},         //(104) compact pal, legs
+
 };
 
 /*===============================*/
@@ -187,6 +197,9 @@ int char_to_ASCII(char entry){
     }else if (entry >= '0' && entry <='9'){
         //handling numeral conversion
         ascii_index = entry - '0' + 16;
+    }else if (entry >= ':'){
+        //handling special characters
+        ascii_index = 26;
     }else if (entry >= ' ' && entry <='/'){
         //handling special characters
         ascii_index = entry - ' ';
@@ -317,12 +330,10 @@ void OLED_Text2x_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned ch
     unsigned int count;
     unsigned char mask = 0x80;
 
-    for(i=1;i<=16;i++)     // each character is 16 pixels tall
-    {
+    for(i=1;i<=16;i++){     // each character is 16 pixels tall
         OLED_SetPosition_160128RGB(x_pos,y_pos);
         OLED_WriteMemoryStart_160128RGB();
-        for (count=0;count<10;count++)    // each character is 10 pixels wide
-        {
+        for (count=0;count<10;count++){    // each character is 10 pixels wide
             if((Ascii_1[letter][(count>>1)] & mask) == mask)
                 OLED_Pixel_160128RGB(textColor);
             else
@@ -337,36 +348,8 @@ void OLED_Text2x_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned ch
    }
 }
 
-//NOT TESTED
-//Function to print out a single character of a much larger size at a position in the OLED
-void OLED_Text3x_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColor, unsigned long backgroundColor)  // function to show text (2x size)
-{
-    int i;
-    unsigned int count;
-    unsigned char mask = 0x80;
-
-    for(i=1;i<=24;i++)     // each character is 24 pixels tall
-    {
-        OLED_SetPosition_160128RGB(x_pos,y_pos);
-        OLED_WriteMemoryStart_160128RGB();
-        for (count=0;count<15;count++)    // each character is 15 pixels wide
-        {
-            if((Ascii_1[letter][(count>>1)] & mask) == mask)
-                OLED_Pixel_160128RGB(textColor);
-            else
-                OLED_Pixel_160128RGB(backgroundColor);
-        }
-        y_pos++;
-
-        if((i%3)==0)
-        {
-          mask = mask >> 1;
-        }
-   }
-}
-
 //Prints a data value to the OLED (selection == 0 for temperature. selection == 1 for humidity or progress. selection == 2 for temperature's mantissa)
-void OLED_Print_Sensor_Val(unsigned char x_pos, unsigned char y_pos, unsigned int data, unsigned int selection)
+void OLED_Print_Sensor_Val(unsigned char x_pos, unsigned char y_pos, unsigned int data, unsigned int selection,unsigned long textColor=WHITE, unsigned long backgroundColor=BLACK )
 {
     unsigned int ascii_index;
 
@@ -389,40 +372,40 @@ void OLED_Print_Sensor_Val(unsigned char x_pos, unsigned char y_pos, unsigned in
             //get ascii index for digit
             ascii_index = Num_To_ASCII(data);
             //print the digit
-            OLED_Text_160128RGB(x_pos, y_pos, ascii_index, WHITE, BLACK);
+            OLED_Text_160128RGB(x_pos, y_pos, ascii_index, textColor, backgroundColor);
             break;
         case 2:
             //determine the digit in the ten's column
             ascii_index = Num_To_ASCII((data/10)%10);
             //print the digit
-            OLED_Text_160128RGB(x_pos, y_pos, ascii_index, WHITE, BLACK);
+            OLED_Text_160128RGB(x_pos, y_pos, ascii_index, textColor, backgroundColor);
             //determine the digit in the ones's column
             ascii_index = Num_To_ASCII(data%10);
             //print the digit
-            OLED_Text_160128RGB(x_pos + 7, y_pos, ascii_index, WHITE, BLACK);
+            OLED_Text_160128RGB(x_pos + 7, y_pos, ascii_index, textColor, backgroundColor);
             break;
         case 3:
             //determine the digit in the 100's column
             ascii_index = Num_To_ASCII((data/100)%10);
             //print the digit
-            OLED_Text_160128RGB(x_pos, y_pos, ascii_index, WHITE, BLACK);
+            OLED_Text_160128RGB(x_pos, y_pos, ascii_index, textColor, backgroundColor);
             //determine the digit in the ten's column
             ascii_index = Num_To_ASCII((data/10)%10);
             //print the digit
-            OLED_Text_160128RGB(x_pos + 7, y_pos, ascii_index, WHITE, BLACK);
+            OLED_Text_160128RGB(x_pos + 7, y_pos, ascii_index, textColor, backgroundColor);
             //determine the digit in the ones's column
             ascii_index = Num_To_ASCII(data%10);
             //print the digit
-            OLED_Text_160128RGB(x_pos + 14, y_pos, ascii_index, WHITE, BLACK);
+            OLED_Text_160128RGB(x_pos + 14, y_pos, ascii_index, textColor, backgroundColor);
             break;
     }
     if(selection == 0){
         //print a decimal point for temperature
-        OLED_Text_160128RGB(x_pos + 7*digits, y_pos, 97, WHITE, BLACK); //degree symbol
-        OLED_Text_160128RGB(x_pos + 7*digits + 1, y_pos, 35, WHITE, BLACK); //Celsius
+        OLED_Text_160128RGB(x_pos + 7*digits, y_pos, 97, textColor, backgroundColor); //degree symbol
+        OLED_Text_160128RGB(x_pos + 7*digits + 7, y_pos, 35, textColor, backgroundColor); //Celsius
     }else if(selection == 1){
         //print the percent sign for humidity
-        OLED_Text_160128RGB(x_pos + 7*digits, y_pos, 5, WHITE, BLACK);
+        OLED_Text_160128RGB(x_pos + 7*digits, y_pos, 5, textColor, backgroundColor);
     }
     // else{ //(mantissa)
     //     //print the degrees celcius sign for temperature
@@ -500,83 +483,27 @@ void Draw_Bar(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColou
     }
 }
 
-//direction = 0: right
-//direction = 1: left
-//xpos and ypos give the position of the bottom left-most pixel
-void draw_arrow(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColour, unsigned long backgroundColour, unsigned int direction){
-    int i;
-    int count;
-    unsigned int height = 41;
-    unsigned int width = 32;
+// void draw_fella(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColour, unsigned long backgroundColour){
+//     int i;
+//     int count;
+//     unsigned char mask = 0x80;
 
-    unsigned char mask = 0x8000;
-
-    // unsigned int arrow[2]={
-    //     {0x000100000, 0x000180000, 0x0001C0000, 0x0001E0000, 0x0001F0000, 0x0001F8000, 
-    //     0x0001FC000, 0x0001FE000, 0x0001FF000, 0x0001FF800, 0x0001FFC00, 0x0001FFE00, 
-    //     0x0001FFF00, 0x0001FFF80, 0x0001FFFC0, 0x0001FFFE0, 0x0001FFFF0, 0x7FFFFFFF8, 
-    //     0x7FFFFFFFC, 0x7FFFFFFFE, 0x7FFFFFFFF, 0x7FFFFFFFE, 0x7FFFFFFFC, 0x7FFFFFFF8, 
-    //     0x7FFFFFFF0, 0x7FFFFFFE0, 0x0001FFFC0, 0x0001FFF80, 0x0001FFF00, 0x0001FFE00, 
-    //     0x0001FFC00, 0x0001FF800, 0x0001FF000, 0x0001FE000, 0x0001FC000, 0x0001F8000, 
-    //     0x0001F0000, 0x0001E0000, 0x0001C0000, 0x000180000, 0x000100000},
-
-    //     {0x000008000, 0x000018000, 0x000038000, 0x000078000, 0x0000F8000, 0x0001F8000, 
-    //     0x0003F8000, 0x0007F8000, 0x000FF8000, 0x001FF8000, 0x003FF8000, 0x007FF8000, 
-    //     0x00FFF8000, 0x01FFF8000, 0x03FFF8000, 0x07FFF8000, 0x0FFFFFFFE, 0x1FFFFFFFE, 
-    //     0x3FFFFFFFE, 0x7FFFFFFFE, 0xFFFFFFFFE, 0x7FFFFFFFE, 0x3FFFFFFFE, 0x1FFFFFFFE, 
-    //     0x0FFFFFFFE, 0x07FFF8000, 0x03FFF8000, 0x01FFF8000, 0x00FFF8000, 0x007FF8000, 
-    //     0x003FF8000, 0x001FF8000, 0x000FF8000, 0x0007F8000, 0x0003F8000, 0x0001F8000, 
-    //     0x0000F8000, 0x000078000, 0x000038000, 0x000018000, 0x000008000}
-    // };
-
-
-    //because the Xinc2 can only handle 16 bits, but width of arrow is 32 bits, we need to split the arrow in two, and send info to OLED in two parts
-    unsigned char first_side_arrow[2][41] = {
-        {0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 
-        0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 
-        0xFFFF, 0x7FFF, 0x3FFF, 0x1FFF, 0x0FFF, 0x07FF, 0x03FF, 0x01FF, 0x00FF, 0x007F, 
-        0x003F, 0x001F, 0x000F, 0x0007, 0x0003, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000}, //left-facing arrow
-
-        {0x0010, 0x0018, 0x001C, 0x001E, 0x001F, 0x001F, 0x001F, 0x001F, 0x001F, 0x001F, 
-        0x001F, 0x001F, 0x001F, 0x001F, 0x001F, 0x001F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 
-        0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x001F, 0x001F, 0x001F, 0x001F, 0x001F, 
-        0x001F, 0x001F, 0x001F, 0x001F, 0x001F, 0x001F, 0x001F, 0x001E, 0x001C, 0x0018, 0x0010} //right-facing arrow
-    };
-
-    unsigned char second_side_arrow[2][41] = {
-        {0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 
-        0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0xFFFE, 0xFFFE, 0xFFFE, 0xFFFE, 
-        0xFFFE, 0xFFFE, 0xFFFE, 0xFFFE, 0xFFFE, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 
-        0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000}, //left-facing arrow
-
-        {0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x8000, 0xC000, 0xE000, 0xF000, 0xF800, 
-        0xFC00, 0xFE00, 0xFF00, 0xFF80, 0xFFC0, 0xFFE0, 0xFFF0, 0xFFF8, 0xFFFC, 0xFFFE, 
-        0xFFFF, 0xFFFE, 0xFFFC, 0xFFF8, 0xFFF0, 0xFFE0, 0xFFC0, 0xFF80, 0xFF00, 0xFE00, 
-        0xFC00, 0xF800, 0xF000, 0xE000, 0xC000, 0x8000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000} //right-facing arrow
-    };
-
-
-    for(i=0; i<height; i++){ //for the height:
-        OLED_SetPosition_160128RGB(x_pos,y_pos);
-        OLED_WriteMemoryStart_160128RGB();
-        for (count=0; count < 16; count++){ // for the width:
-            if((first_side_arrow[direction][count] & mask) == mask)
-                OLED_Pixel_160128RGB(shapeColour);
-            else
-                OLED_Pixel_160128RGB(backgroundColour);
-            mask = mask >> 1; //increase the mask; this will let us look at the next bit over
-        }
-        for (count=0; count < width/2; count++){
-            if((second_side_arrow[direction][count] & mask) == mask)
-                OLED_Pixel_160128RGB(shapeColour);
-            else
-                OLED_Pixel_160128RGB(backgroundColour);
-            mask = mask >> 1; //increase the mask; this will let us look at the next bit over
-        }
-        y_pos++; //x_pos is automatically incremented
-        mask = 0x8000; //reset the mask        
-    }
-};
+    
+//     for(i=0;i<8;i++)     // each character is 8 pixels tall
+//     {
+//         OLED_SetPosition_160128RGB(x_pos,y_pos);
+//         OLED_WriteMemoryStart_160128RGB();
+//         for (count=0;count<5;count++)    // each character is 5 pixels wide
+//         {
+//             if((Ascii_1[letter][count] & mask) == mask)
+//                 OLED_Pixel_160128RGB(textColour);
+//             else
+//                 OLED_Pixel_160128RGB(backgroundColour);
+//         }
+//         y_pos++;
+//         mask = mask >> 1;
+//    }
+// }
 
 void draw_lil_guy(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColour, unsigned long backgroundColour, unsigned int position){
     // unsigned int lil_guy[2][24] = {
@@ -620,7 +547,7 @@ void draw_lil_guy(unsigned char x_pos, unsigned char y_pos, unsigned long shapeC
 
 };
 
-//size = 1x or 2x or 3x
+//size = 1x or 2x
 void OLED_write_text(int charsize, unsigned char x_pos, unsigned char y_pos, unsigned char *toWrite, int length, unsigned long textColor, unsigned long backgroundColor){
 
     unsigned int ascii_index;
@@ -628,14 +555,14 @@ void OLED_write_text(int charsize, unsigned char x_pos, unsigned char y_pos, uns
     for (int i=0; i < length; i++){
         ascii_index = char_to_ASCII(toWrite[i]); //get ascii index for character
         if(charsize == 1){
-            OLED_Text_160128RGB(x_pos + i*7, y_pos, ascii_index, WHITE, BLACK);
+            OLED_Text_160128RGB(x_pos + i*7, y_pos, ascii_index, textColor, backgroundColor);
         }else if(charsize == 2){
-            OLED_Text2x_160128RGB(x_pos + i*12, y_pos, ascii_index, WHITE, BLACK); //print the character
-        }else if(charsize == 3){
-            OLED_Text3x_160128RGB(x_pos + i*17, y_pos, ascii_index, WHITE, BLACK); //print the character
+            OLED_Text2x_160128RGB(x_pos + i*12, y_pos, ascii_index, textColor, backgroundColor); //print the character
         }
     }
 };
+
+
 
 /*===============================*/
 /*==== HIGH LEVEL FUNCTIONS =====*/
@@ -740,178 +667,147 @@ void OLED_Init_160128RGB(void)      //OLED initialization
 /*============= END =============*/
 /*===============================*/
 
-void OLED_Start_Page(void){
-    OLED_Init_160128RGB();                           // initialize display
-    OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
 
-    OLED_Text_160128RGB(20, 50, 48, WHITE, BLACK);   // P
-    OLED_Text_160128RGB(27, 50, 82, WHITE, BLACK);   // r
-    OLED_Text_160128RGB(34, 50, 79, WHITE, BLACK);   // o
-    OLED_Text_160128RGB(41, 50, 71, WHITE, BLACK);   // g
-    OLED_Text_160128RGB(48, 50, 82, WHITE, BLACK);   // r
-    OLED_Text_160128RGB(55, 50, 69, WHITE, BLACK);   // e
-    OLED_Text_160128RGB(62, 50, 83, WHITE, BLACK);   // s
-    OLED_Text_160128RGB(69, 50, 83, WHITE, BLACK);   // s
-    OLED_Text_160128RGB(76, 50, 26, WHITE, BLACK);   // :
 
-    OLED_Text_160128RGB(20, 30, 52, WHITE, BLACK);   // T
-    OLED_Text_160128RGB(27, 30, 69, WHITE, BLACK);   // e
-    OLED_Text_160128RGB(34, 30, 77, WHITE, BLACK);   // m
-    OLED_Text_160128RGB(41, 30, 80, WHITE, BLACK);   // p
-    OLED_Text_160128RGB(48, 30, 69, WHITE, BLACK);   // e
-    OLED_Text_160128RGB(55, 30, 82, WHITE, BLACK);   // r
-    OLED_Text_160128RGB(62, 30, 65, WHITE, BLACK);   // a
-    OLED_Text_160128RGB(69, 30, 84, WHITE, BLACK);   // t
-    OLED_Text_160128RGB(76, 30, 85, WHITE, BLACK);   // u
-    OLED_Text_160128RGB(83, 30, 82, WHITE, BLACK);   // r
-    OLED_Text_160128RGB(90, 30, 69, WHITE, BLACK);   // e
-    OLED_Text_160128RGB(97, 30, 26, WHITE, BLACK);   // :
+/*===============================*/
+/*========== SCREENS ===========*/
+/*============ START ============*/
+/*===============================*/
 
-    OLED_Text_160128RGB(20, 10, 40, WHITE, BLACK);   // H
-    OLED_Text_160128RGB(27, 10, 85, WHITE, BLACK);   // u
-    OLED_Text_160128RGB(34, 10, 77, WHITE, BLACK);   // m
-    OLED_Text_160128RGB(41, 10, 73, WHITE, BLACK);   // i
-    OLED_Text_160128RGB(48, 10, 68, WHITE, BLACK);   // d
-    OLED_Text_160128RGB(55, 10, 73, WHITE, BLACK);   // i
-    OLED_Text_160128RGB(62, 10, 84, WHITE, BLACK);   // t
-    OLED_Text_160128RGB(69, 10, 89, WHITE, BLACK);   // y
-    OLED_Text_160128RGB(76, 10, 26, WHITE, BLACK);   // :
-
-    Draw_Box(20, 70, BLUE, BLACK, 32, 128);
-    Draw_Bar(23, 73, BLUE, BLACK, 26, 122, 0);
-
-    OLED_Print_Sensor_Val(83, 50, 0, 1); //progress
-    OLED_Print_Sensor_Val(104, 30, 223, 0); //temp
-    OLED_Print_Sensor_Val(83, 10, 48, 1); //humidity
-    // Clear_Data_Chars(104, 30, BLACK);
-}
-
-void OLED_main_page(unsigned int temp, unsigned int hum, unsigned int prog){
-    // OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
-
-    OLED_Text_160128RGB(20, 100, 48, WHITE, BLACK);   // P
-    OLED_Text_160128RGB(27, 100, 82, WHITE, BLACK);   // r
-    OLED_Text_160128RGB(34, 100, 79, WHITE, BLACK);   // o
-    OLED_Text_160128RGB(41, 100, 70, WHITE, BLACK);   // f
-    OLED_Text_160128RGB(48, 100, 73, WHITE, BLACK);   // i
-    OLED_Text_160128RGB(55, 100, 76, WHITE, BLACK);   // l
-    OLED_Text_160128RGB(62, 100, 69, WHITE, BLACK);   // e
-    OLED_Text_160128RGB(69, 100, 26, WHITE, BLACK);   // :
-
-    Draw_Box(20, 96, BLUE, BLACK, 32, 128);
-    Draw_Bar(23, 96, BLUE, BLACK, 26, 122, prog);
-
-    OLED_Text_160128RGB(20, 46, 48, WHITE, BLACK);   // P
-    OLED_Text_160128RGB(27, 46, 82, WHITE, BLACK);   // r
-    OLED_Text_160128RGB(34, 46, 79, WHITE, BLACK);   // o
-    OLED_Text_160128RGB(41, 46, 71, WHITE, BLACK);   // g
-    OLED_Text_160128RGB(48, 46, 82, WHITE, BLACK);   // r
-    OLED_Text_160128RGB(55, 46, 69, WHITE, BLACK);   // e
-    OLED_Text_160128RGB(62, 46, 83, WHITE, BLACK);   // s
-    OLED_Text_160128RGB(69, 46, 83, WHITE, BLACK);   // s
-    OLED_Text_160128RGB(76, 46, 26, WHITE, BLACK);   // :
-
-    OLED_Text_160128RGB(20, 28, 52, WHITE, BLACK);   // T
-    OLED_Text_160128RGB(27, 28, 69, WHITE, BLACK);   // e
-    OLED_Text_160128RGB(34, 28, 77, WHITE, BLACK);   // m
-    OLED_Text_160128RGB(41, 28, 80, WHITE, BLACK);   // p
-    OLED_Text_160128RGB(48, 28, 69, WHITE, BLACK);   // e
-    OLED_Text_160128RGB(55, 28, 82, WHITE, BLACK);   // r
-    OLED_Text_160128RGB(62, 28, 65, WHITE, BLACK);   // a
-    OLED_Text_160128RGB(69, 28, 84, WHITE, BLACK);   // t
-    OLED_Text_160128RGB(76, 28, 85, WHITE, BLACK);   // u
-    OLED_Text_160128RGB(83, 28, 82, WHITE, BLACK);   // r
-    OLED_Text_160128RGB(90, 28, 69, WHITE, BLACK);   // e
-    OLED_Text_160128RGB(97, 28, 26, WHITE, BLACK);   // :
-
-    OLED_Text_160128RGB(20, 10, 40, WHITE, BLACK);   // H
-    OLED_Text_160128RGB(27, 10, 85, WHITE, BLACK);   // u
-    OLED_Text_160128RGB(34, 10, 77, WHITE, BLACK);   // m
-    OLED_Text_160128RGB(41, 10, 73, WHITE, BLACK);   // i
-    OLED_Text_160128RGB(48, 10, 68, WHITE, BLACK);   // d
-    OLED_Text_160128RGB(55, 10, 73, WHITE, BLACK);   // i
-    OLED_Text_160128RGB(62, 10, 84, WHITE, BLACK);   // t
-    OLED_Text_160128RGB(69, 10, 89, WHITE, BLACK);   // y
-    OLED_Text_160128RGB(76, 10, 26, WHITE, BLACK);   // :
-
-    OLED_Print_Sensor_Val(83, 46, prog, 1); //progress
-    OLED_Print_Sensor_Val(104, 28, temp, 0); //temp
-    OLED_Print_Sensor_Val(83, 10, hum, 1); //humidity
-}
 
 void OLED_profile_page(unsigned int selected_profile){
     //these characters are 16 pixels tall and 10 pixels wide.
     //leave 2 pixels in between each character
-    unsigned char text1[12] = {'P','r','o','f','i','l','e', ' ', 'P', 'a', 'g', 'e'};
-    unsigned char text2[9] = {'P','r','o','f','i','l','e', ' ', '#'};
+    unsigned char text[9] = {'P','r','o','f','i','l','e', ' ', '#'};
     unsigned char profile[1] = {selected_profile + 48}; // adding 48 converts a single int to char numeral
-    OLED_write_text(2, 5, 100, text1, 12, WHITE, BLACK);
-    OLED_write_text(2, 5, 50, text2, 9, WHITE, BLACK);
-    OLED_write_text(2, 120, 50, profile, 1, WHITE, BLACK);
+    OLED_write_text(2, 5, 100, text, 9, WHITE, BLACK);
+    OLED_write_text(2, 120, 100, profile, 1, WHITE, BLACK);
 
+    unsigned char text2[10] = {'s','o','a','k',' ','t','i','m','e','='};
+    OLED_write_text(1, 20, 77, text2, 10, WHITE, BLACK);
+
+    unsigned char text3[11] = {'s','p','i','k','e',' ','t','i','m','e','='};
+    OLED_write_text(1, 20, 64, text3, 11, WHITE, BLACK);
+
+    OLED_Text2x_160128RGB(15, 15, 98, WHITE, BLACK); //left-facing arrow
+    OLED_Text2x_160128RGB(133, 15, 99, WHITE, BLACK); //right-facing arrow
+    if(selected_profile%2 ==1){
+        OLED_Text_160128RGB(80, 26, 100, WHITE, BLACK); //head
+        OLED_Text_160128RGB(80, 18, 101, WHITE, BLACK); //body
+        OLED_Text_160128RGB(80, 10, 102, WHITE, BLACK); //legs
+    }
+    else{
+        OLED_Text_160128RGB(80, 26, 100, WHITE, BLACK); //head
+        OLED_Text_160128RGB(80, 18, 103, WHITE, BLACK); //body
+        OLED_Text_160128RGB(80, 10, 104, WHITE, BLACK); //legs
+    }    
 };
+
+void OLED_profile_times(unsigned int selected_profile_array[]){
+    unsigned char text4[13] = {'c','o','o','l','i','n','g',' ','t','i','m','e','='};
+    OLED_write_text(1, 20, 51, text4, 13, WHITE, BLACK);
+
+    OLED_Print_Sensor_Val(97, 77, selected_profile_array[0],3, BLUE);
+    OLED_Print_Sensor_Val(104, 64, selected_profile_array[1],3, BLUE);
+    OLED_Print_Sensor_Val(118, 51, selected_profile_array[2],3, BLUE);
+    unsigned char text[1] ={'s'};
+    OLED_write_text(1,118,77,text,1,WHITE,BLACK);
+    OLED_write_text(1,125,64,text,1,WHITE,BLACK);
+    OLED_write_text(1,139,51,text,1,WHITE,BLACK);
+}
 
 void OLED_starting_page(){
-    unsigned char text1[7] = {'W','a','i','t','i','n','g'};
-    unsigned char text2[8] = {'t','o',' ','b','e','g','i','n'};
-    OLED_write_text(2, 5, 100, text1, 7, WHITE, BLACK);
-    OLED_write_text(2, 5, 50, text2, 8, WHITE, BLACK);
+    OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
+    unsigned char text1[8] = {'S','T','A','R','T','I','N','G'};
+    unsigned char text2[8] = {'R','E','F','L','O','W','.','.'};
+    OLED_write_text(2, 5, 83, text1, 8, GREEN, BLACK);
+    OLED_write_text(2, 5, 31, text2, 8, GREEN, BLACK);
 };
 
-void OLED_display_progress(){
-    OLED_FillScreen_160128RGB(GREEN);                // fill screen with green
+void OLED_display_progress(unsigned int selected_profile){
+    OLED_Init_160128RGB();                                      // initialize display
+    OLED_FillScreen_160128RGB(BLACK);                           // fill screen with black
+
+    unsigned char arr1[9] = {'P','r','o','f','i','l','e', ':', '#'};
+    OLED_write_text(1, 5, 105, arr1, 8, WHITE, BLACK);
+
+    unsigned char profile[1] = {selected_profile + 48}; // adding 48 converts a single int to char numeral
+    OLED_write_text(1, 101, 105, profile, 1, WHITE, BLACK);
+
+    unsigned char arr_progress[9] = {'P','r','o','g','r','e','s','s', ':'};
+    OLED_write_text(1, 20, 50, arr_progress, 9, WHITE, BLACK);
+
+    unsigned char arr_temp[12] = {'T','e','m','p','e','r','a','t','u','r','e', ':'};
+    OLED_write_text(1, 20, 30, arr_temp, 12, WHITE, BLACK);
+
+    unsigned char arr_hum[9] = {'H','u','m','i','d','i','t','y',':'};
+    OLED_write_text(1, 20, 10, arr_hum, 9, WHITE, BLACK);
+
+    Draw_Box(20, 70, BLUE, BLACK, 30, 128);                     // draw box for progress bar
+    Draw_Bar(23, 73, BLUE, BLACK, 24, 122, 0);                  // draw 0% into progress bar
+    // Clear_Data_Chars(104, 30, BLACK);
 };
 
 void OLED_update_humidity(unsigned int humidity){
     unsigned char x_pos = 83;
     unsigned char y_pos = 10;
-    Clear_Data_Chars(x_pos, y_pos, BLACK); //clear previous humidity reading
-    Clear_Data_Chars(x_pos+7, y_pos, BLACK); //clear 2nd character
+    // Clear_Data_Chars(x_pos, y_pos, BLACK); //clear previous humidity reading
+    // Clear_Data_Chars(x_pos+7, y_pos, BLACK); //clear 2nd character
     OLED_Print_Sensor_Val(x_pos, y_pos, humidity, 1);
 };
 
 void OLED_update_temp(int temp){
     unsigned char x_pos = 104;
     unsigned char y_pos = 30;
-    Clear_Data_Chars(x_pos, y_pos, BLACK);
+    // Clear_Data_Chars(x_pos, y_pos, BLACK); //clear previous temp reading
+    // Clear_Data_Chars(x_pos+7, y_pos, BLACK); //clear 2nd character
     OLED_Print_Sensor_Val(x_pos, y_pos, temp, 0);
 };
 
 void OLED_update_progress(int progress){
     unsigned char x_pos = 83;
     unsigned char y_pos = 50;
-    Clear_Data_Chars(x_pos, y_pos, BLACK); //clear previous progress reading
-    Clear_Data_Chars(x_pos+7, y_pos, BLACK); //clear 2nd character
+    // Clear_Data_Chars(x_pos, y_pos, BLACK); //clear previous progress reading
+    // Clear_Data_Chars(x_pos+7, y_pos, BLACK); //clear 2nd character
     OLED_Print_Sensor_Val(x_pos, y_pos, progress, 1);
     Draw_Bar(23, 73, BLUE, BLACK, 26, 122, progress); //fill the progress bar to the correct amount
 };
 
 void OLED_end_progress(){
     unsigned char text[9] = {'C','o','m','p','l','e','t','e', '!'};
-    OLED_FillScreen_160128RGB(RED);                // fill screen with red
-    OLED_write_text(2, 5, 100, text, 9, WHITE, RED);
+    // OLED_FillScreen_160128RGB(RED);                // fill screen with red
+    OLED_write_text(2, 5, 100, text, 9, WHITE, BLACK);
+
+    unsigned char text2[14]={'O','p','e','n',' ','O','v','e','n',' ','D','o','o','r'};
+    OLED_write_text(1, 5, 75, text2, 14, WHITE, BLACK);
 };
 
-void OLED_display_warning(void){
-    OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
-
+void OLED_display_warning(){
     //WARNING
-    unsigned char arr_warning[7] = {'W','A','R','N','I','N','G'};
-    OLED_write_text(2, 5, 99, arr_warning, 7, RED, BLACK);
+    unsigned char text[7] = {'W','A','R','N','I','N','G'};
+    OLED_write_text(2, 9, 98, text, 7, RED, BLACK);
 
     //Humidity is greater
-    unsigned char arr_hum[19] = {'H','u','m','i','d','i','t','y',' ','i','s',' ','g','r','e','a','t','e','r'};
-    OLED_write_text(1, 5, 87, arr_hum, 19, WHITE, BLACK);
+    unsigned char text1[19] = {'H','u','m','i','d','i','t','y',' ','i','s',' ','g','r','e','a','t','e','r'};
+    OLED_write_text(1, 9, 83, text1, 19, WHITE, BLACK);
 
-    //than maximum.
-    unsigned char arr_max[13] ={'t','h','a','n',' ','m','a','x','i','m','u','m','.'};
-    OLED_write_text(1, 5, 77, arr_max, 13, WHITE, BLACK);
+    //than maximum
+    unsigned char text2[12] ={'t','h','a','n',' ','m','a','x','i','m','u','m'};
+    OLED_write_text(1, 9, 71, text2, 12, WHITE, BLACK);
+}
 
+void OLED_display_second_warning(){
     //Push button
-    unsigned char arr_push[11] = {'P','u','s','h',' ','b','u','t','t','o','n'};
-    OLED_write_text(1, 5, 67, arr_push, 11, WHITE, BLACK);
+    unsigned char text3[11] = {'P','u','s','h',' ','b','u','t','t','o','n'};
+    OLED_write_text(1, 9, 42, text3, 11, BLUE, BLACK);
 
     //to acknowledge
-    unsigned char arr_ack[14] = {'t','o',' ','a','c','k','n','o','w','l','e','d','g','e'};
-    OLED_write_text(1, 5, 57, arr_ack, 14, WHITE, BLACK);
+    unsigned char text4[14] = {'t','o',' ','a','c','k','n','o','w','l','e','d','g','e'};
+    OLED_write_text(1, 9, 30, text4, 14, BLUE, BLACK);
 };
+
+
+/*===============================*/
+/*========== SCREENS ===========*/
+/*============= END =============*/
+/*===============================*/
