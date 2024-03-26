@@ -94,8 +94,8 @@ unsigned int pid_compute(struct Pid *pid, unsigned int target_temp, unsigned int
    // xpd_echo_int(pid->kd * error_diff, XPD_Flag_SignedDecimal);
    // xpd_puts(" \n");
    // xpd_puts("Current Temp:");
-   xpd_echo_int(measured_temp, XPD_Flag_UnsignedDecimal);
-   xpd_puts(" \n");
+   // xpd_echo_int(measured_temp, XPD_Flag_UnsignedDecimal);
+   // xpd_puts(" \n");
    // xpd_puts("Target Temp:");
    // xpd_echo_int(target_temp, XPD_Flag_UnsignedDecimal);
    // xpd_puts(" \n");

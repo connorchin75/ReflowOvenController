@@ -21,16 +21,15 @@ unsigned int rising_edge(void){
    return tpw_start;
 }
 
-unsigned int get_humidity(unsigned int tpw_start){
+unsigned int get_humidity(unsigned int tpw_start, unsigned int humidity){
    //read the timer value
    unsigned int tpw_end = 0;
    unsigned int tpw = 0;
-   unsigned int humidity = 0;
    //read the timer to see what the current counter value is at the falling edge
    tpw_end = timer_read(TIMER_B);
    if (tpw_end > tpw_start){
       //this implies that the timer has not reset between tpw_start and tpw_end
-      tpw = tpw_end - tpw_start;
+      tpw = tpw_end - tpw_start; 
    }else{
       //this section is reached if the counter resets before tpw_end is read
       tpw = (0x00C7 - tpw_start) + tpw_end;
@@ -38,7 +37,8 @@ unsigned int get_humidity(unsigned int tpw_start){
    //calculate humidity
    //scale by 100 to avoid floating points then divide by 199 which is number of counter increments in a period
    //the rest of the formula is taken from the datasheet of the humidity sensor
-   humidity = ((100*tpw)/(199))*125/100 -6; 
+   humidity = ((100*tpw)/(199))*125/100 -6;
+   
    return humidity;
 }
 

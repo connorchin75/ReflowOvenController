@@ -23,10 +23,11 @@ struct rotary_encoder r_encoder = {0,3,0}; // semaphore 3 sets encoder position 
 volatile unsigned int profile_index = 1; //semaphore 4 
 volatile unsigned int target_temp; // semaphore 5
 volatile unsigned int target_temp_index = 0; //semaphore 6;
-volatile unsigned int progress = 0; //semaphore 6 this is a scaled version of target_temp
+volatile unsigned int progress = 0; //semaphore 7 this is a scaled version of target_temp
 struct profile selected_profile;
 volatile unsigned int progress_scaler = 141;
 struct profile* temp_ptr = &selected_profile;
+volatile unsigned int print_humidity = 0; //semaphore 8
 
 //define possible temperature curve parameters
 unsigned int profile_array[PROFILE_LIST_SIZE][6] = {{30, 120, 210, 5, 1, 2}, {90, 180, 240, 3, 0, 3}, {90, 180, 232, 2, 0, 2}};
@@ -41,7 +42,7 @@ void InitGPIO(){
 
    //configure port A
    //initialize PA0 (oled_RES_PIN), PA1 (oled_RS_PIN), PA2 (oled_CS_PIN), PA3(TESTING PIN) and PA7 (humidity_select_pin) as outputs 
-   gpio_set_config(0x8F << 8, GPIO_A); // change back to 0x87 AFTER TESTING IS COMPLETE
+   gpio_set_config(0x87 << 8, GPIO_A);
    //set required starting outputs for GPIOA pins
    //set the oled_CS_PIN high at the start (Chip select is an active low signal)
    gpio_write(gpio_read(GPIO_A)|0x04 , GPIO_A);
@@ -56,7 +57,7 @@ void InitGPIO(){
    // initialize PD5 (pid_SSR1_output), PD6 (pid_SSR2_output) to be outputs
    // note this also means all other port D pins such as PD3 will be set to inputs >> humidity sensor pin is an input 
    gpio_set_config(0x60 << 8, GPIO_D);
-   //set required starting outputs for GPIOD pins
+
 
    //configure port J
    //initialize PJ1 (thermocouple_CS_PIN) as an output
@@ -132,14 +133,19 @@ void * PIDThread(void * ) {
          //simulate the change in temperature
          pid_status = 0;
          time_count ++;
-         sem_lock(7); //progress
+         
          if(time_count == 2){
             //2 seconds has elapsed, increment the target temperature
             target_temp_index ++;
+            sem_lock(7); //progress
             progress = (target_temp_index + 1)*100/progress_scaler;
+            sem_unlock(7);
             time_count = 0;
+            sem_lock(8);
+            print_humidity = 1;
+            sem_unlock(8);
          }
-         sem_unlock(7);
+         
          sem_unlock(6);
       }
       //implement PID action
@@ -150,7 +156,6 @@ void * PIDThread(void * ) {
 void * HumidityThread(void *) {
    unsigned int prev_state = 0; // start with the previous state at 0
    unsigned int cur_state = 0;
-   unsigned int humidity = 0;
    unsigned int counter = 0;
    unsigned int tpw_start = 0;
    //start the running timer
@@ -167,7 +172,9 @@ void * HumidityThread(void *) {
       }else if(cur_state == 0 && prev_state == 1){
          //falling edge detected
          //end the timer and get the tpw value
-         humidity = get_humidity(tpw_start);
+         sem_lock(1);
+         humidity = get_humidity(tpw_start, humidity);
+         sem_unlock(1);
          //set previous state to the most recent state
          prev_state = cur_state; 
          counter++;
@@ -301,7 +308,6 @@ void * stateOLEDThread(void *){
                //start temperature
                //start humidity thread
                sem_lock(0);
-               sem_lock(1);
                sem_lock(6);
 
                //check for button press
@@ -316,14 +322,20 @@ void * stateOLEDThread(void *){
                sem_unlock(7);
 
                OLED_update_temp(current_temp);
-               OLED_update_humidity(humidity);
-
-               if (humidity > 60){
-                  scene = HUMIDITY_WARNING;
+               
+               //only update humidity every 2 seconds
+               sem_lock(8);
+               if(print_humidity == 1){
+                  sem_lock(1);
+                  OLED_update_humidity(humidity);
+                  if (humidity > 60){
+                     scene = HUMIDITY_WARNING;
+                  }
+                  sem_unlock(1);
+                  print_humidity = 0;
                }
-
+               sem_unlock(8);
                sem_unlock(6);
-               sem_unlock(1);
                sem_unlock(0);
             }
             //stop the temp and humidity and pid threads
@@ -333,18 +345,20 @@ void * stateOLEDThread(void *){
             //turn off the heating elements
             gpio_write(gpio_read(GPIO_D)&~(PD5|PD6), GPIO_D);
 
-            sem_lock(7);
+            
             // if((progress > 100 ) || (scene == END_PROCESS)){ //if cycle finished, or hard reset was received,
             //    scene = END_PROCESS;
             //    //reset the progress counter for the next cycle
             //    progress = 0;
             // }
-            // if(scene != HUMIDITY_WARNING){
-            progress = 0;
-            scene = END_PROCESS;
-            // }
+            if(scene != HUMIDITY_WARNING){
+               sem_lock(7);
+               progress = 0;
+               sem_unlock(7);
+               scene = END_PROCESS;
+            }
             //else, we will keep the progress. Humidity warning won't reset the whole cycle, it will just stop it momentarily
-            sem_unlock(7);
+            
 
             OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
             break;
