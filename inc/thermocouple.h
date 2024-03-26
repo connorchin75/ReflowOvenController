@@ -131,13 +131,13 @@ int getFault(void){
 	// D1 is Short to Gnd flag
 	// D0 is Open Circuit flag
 	if(((rawdata & 1) == 1) && ((rawdata & 3) != 3)){
-		// xpd_puts("Thermocouple: Open Circuit detected\n");
+		xpd_puts("Thermocouple: Open Circuit detected\n");
 		return 1; //open circuit
 	}else if(((rawdata & 2) == 1) || ((rawdata & 3) == 3)){
-		// xpd_puts("Thermocouple: Short to Gnd detected\n");
+		xpd_puts("Thermocouple: Short to Gnd detected\n");
 		return 2; //shorted to Gnd
 	}else if(((rawdata & 4) == 1) || ((rawdata & 3) == 3)){
-		// xpd_puts("Thermocouple: Short to Vcc detected\n");
+		xpd_puts("Thermocouple: Short to Vcc detected\n");
 		return 3; //shorted to Vcc
 	}else{
 		return 0; //Pmod working properly
@@ -153,7 +153,7 @@ int getTemp(void){
 
 	if ((rawdata & 0x0001) == 0x0001){//if the fault bit (LSB) is 1
 		//error detected
-		// xpd_puts("Thermocouple Error detected.\n");
+		xpd_puts("Thermocouple Error detected.\n");
 		getFault();
 		temperature = 0;
 	}

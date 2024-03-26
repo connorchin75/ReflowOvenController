@@ -25,7 +25,7 @@ volatile unsigned int target_temp; // semaphore 5
 volatile unsigned int target_temp_index = 0; //semaphore 6;
 volatile unsigned int progress = 0; //semaphore 7 this is a scaled version of target_temp
 struct profile selected_profile;
-volatile unsigned int progress_scaler = 141;
+volatile unsigned int progress_scaler = 121;
 struct profile* temp_ptr = &selected_profile;
 volatile unsigned int print_humidity = 0; //semaphore 8
 
@@ -107,6 +107,9 @@ void * PIDThread(void * ) {
    //initialize the PID controller
    struct Pid pid1;
    struct Pid *pid = &pid1;
+   sem_lock(6);
+   target_temp_index = 0;
+   sem_unlock(6);
    sem_lock(7); //reset the progress counter at each start of the thread
    progress = 0;
    sem_unlock(7);
@@ -241,14 +244,21 @@ void * stateOLEDThread(void *){
                switch(profile_index){
                   case 1:
                      generate_RSS_profile1(temp_ptr);
+                     progress_scaler = 111;
+                     // for (int i=0; i< 111; i++){
+                     //    xpd_echo_int(selected_profile.temp_targets[i], XPD_Flag_UnsignedDecimal);
+                     //    xpd_puts(" \n");
+                     // }
                   break;
                   
                   case 2:
                      generate_RSS_profile2(temp_ptr);
+                     progress_scaler = 126;
                   break;
 
                   case 3:
                      generate_RSS_profile3(temp_ptr);
+                     progress_scaler = 122;
                   break;
                }//end switch statement
                // selected_profile = generate_test_profile(selected_profile);
@@ -362,6 +372,12 @@ void * stateOLEDThread(void *){
             //turn off the heating elements
             gpio_write(gpio_read(GPIO_D)&~(PD5|PD6), GPIO_D);
 
+            sem_lock(6);
+            target_temp_index = 0;
+            sem_unlock(6);
+            sem_lock(7); //reset the progress counter at each start of the thread
+            progress = 0;
+            sem_unlock(7);
             scene = END_PROCESS;
             
             OLED_FillScreen_160128RGB(BLACK);                // fill screen with black

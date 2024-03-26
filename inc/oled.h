@@ -342,6 +342,29 @@ void OLED_Text2x_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned ch
    }
 }
 
+//Clears 7 characters of pixels using the default font size
+void Clear_Data_Chars(unsigned char x_pos, unsigned char y_pos, unsigned long backgroundColour){
+    //The x_pos should be 7 pixels from the last printed character to be kept
+    unsigned char y_temp;
+    unsigned int i;
+    unsigned int j;
+    unsigned int k;
+    OLED_SetPosition_160128RGB(x_pos,y_pos);
+    OLED_WriteMemoryStart_160128RGB();
+    for(i=0;i<7;i++){
+        y_temp = y_pos;
+        for(j=0;j<8;j++){ // each character is 8 pixels tall
+            OLED_SetPosition_160128RGB(x_pos,y_temp);
+            OLED_WriteMemoryStart_160128RGB();
+            for (k=0;k<5;k++){    // each character is 5 pixels wide
+                OLED_Pixel_160128RGB(backgroundColour);
+            }
+            y_temp++;
+        }
+        x_pos +=7;
+    }
+}
+
 //Prints a data value to the OLED (selection == 0 for temperature. selection == 1 for humidity or progress. selection == 2 for temperature's mantissa)
 void OLED_Print_Sensor_Val(unsigned char x_pos, unsigned char y_pos, unsigned int data, unsigned int selection,unsigned long textColor=WHITE, unsigned long backgroundColor=BLACK ){
     unsigned int ascii_index;
@@ -402,29 +425,6 @@ void OLED_Print_Sensor_Val(unsigned char x_pos, unsigned char y_pos, unsigned in
         Clear_Data_Chars(x_pos + 7*digits, y_pos, BLACK); //clear extra character to right of the percent sign (only happens if the amt of digits changed since last print)
     }
     
-}
-
-//Clears 7 characters of pixels using the default font size
-void Clear_Data_Chars(unsigned char x_pos, unsigned char y_pos, unsigned long backgroundColour){
-    //The x_pos should be 7 pixels from the last printed character to be kept
-    unsigned char y_temp;
-    unsigned int i;
-    unsigned int j;
-    unsigned int k;
-    OLED_SetPosition_160128RGB(x_pos,y_pos);
-    OLED_WriteMemoryStart_160128RGB();
-    for(i=0;i<7;i++){
-        y_temp = y_pos;
-        for(j=0;j<8;j++){ // each character is 8 pixels tall
-            OLED_SetPosition_160128RGB(x_pos,y_temp);
-            OLED_WriteMemoryStart_160128RGB();
-            for (k=0;k<5;k++){    // each character is 5 pixels wide
-                OLED_Pixel_160128RGB(backgroundColour);
-            }
-            y_temp++;
-        }
-        x_pos +=7;
-    }
 }
 
 //This function draws a hollow box outline with a width of 1 pixel

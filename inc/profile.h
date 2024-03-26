@@ -44,8 +44,8 @@ void generate_RSS_profile1(struct profile* temp_profile){
     }
     //undo the current temp by the previous step size
     target_temp = target_temp - step3;
-    // Add three more max temp readings to allow for the oven reach the peak temp
-    for (int i=cur_time_index; i<((time3/2)+4); i++){
+    // Add five more max temp readings to allow for the oven reach the peak temp
+    for (int i=cur_time_index; i<((time3/2)+6); i++){
         (*temp_profile).temp_targets[cur_time_index] = target_temp;
         cur_time_index = cur_time_index + 1;
     }
@@ -56,6 +56,10 @@ void generate_RSS_profile1(struct profile* temp_profile){
         cur_time_index = cur_time_index + 1;
         target_temp = target_temp - 5;
     }
+    // for(int i = 0; i<141; i++){
+    //     xpd_echo_int((*temp_profile).temp_targets[i], XPD_Flag_UnsignedDecimal);
+    //     xpd_puts(" \n");
+    // }
 }
 
 void generate_RSS_profile2(struct profile* temp_profile){
@@ -98,13 +102,13 @@ void generate_RSS_profile2(struct profile* temp_profile){
     }
     //undo the current temp by the previous step size
     target_temp = target_temp - step3;
-    // Add three more max temp readings to allow for the oven reach the peak temp
-    for (int i=cur_time_index; i<((time3/2)+4); i++){
+    // Add five more max temp readings to allow for the oven reach the peak temp
+    for (int i=cur_time_index; i<((time3/2)+6); i++){
         (*temp_profile).temp_targets[cur_time_index] = target_temp;
         cur_time_index = cur_time_index + 1;
     }
     target_temp = target_temp - 5;
-    //fill the remaining elements with 25 degrees celsius
+    //fill the remaining elements with a declining curve
     for (int i=cur_time_index; i<141; i++){
         (*temp_profile).temp_targets[cur_time_index] = target_temp;
         cur_time_index = cur_time_index + 1;
@@ -152,13 +156,13 @@ void generate_RSS_profile3(struct profile* temp_profile){
     }
     //undo the current temp by the previous step size
     target_temp = target_temp - step3;
-    // Add three more max temp readings to allow for the oven reach the peak temp
-    for (int i=cur_time_index; i<((time3/2)+4); i++){
+    // Add five more max temp readings to allow for the oven reach the peak temp
+    for (int i=cur_time_index; i<((time3/2)+6); i++){
         (*temp_profile).temp_targets[cur_time_index] = target_temp;
         cur_time_index = cur_time_index + 1;
     }
     target_temp = target_temp - 5;
-    //fill the remaining elements with 25 degrees celsius
+    //fill the remaining elements with a declining curve
     for (int i=cur_time_index; i<141; i++){
         (*temp_profile).temp_targets[cur_time_index] = target_temp;
         cur_time_index = cur_time_index + 1;

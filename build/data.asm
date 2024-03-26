@@ -12,19 +12,19 @@ JTI1_0:
 		BB1_11
 
 //	.section	.rdata,"r"
-JTI17_0:
-		BB17_4
-		BB17_7
-		BB17_9
-		BB17_11
+JTI19_0:
+		BB19_4
+		BB19_7
+		BB19_9
+		BB19_11
 
 //	.section	.rdata,"r"
-JTI20_0:
-		BB20_3
-		BB20_43
-		BB20_40
-		BB20_64
-		BB20_67
+JTI22_0:
+		BB22_3
+		BB22_56
+		BB22_53
+		BB22_48
+		BB22_74
 
 //	.section	//.data,"w"
 sxc_Ascii_1:                            // @Ascii_1
@@ -637,17 +637,6 @@ sxc__ZZ21OLED_display_progressjE8arr_temp: // @_ZZ21OLED_display_progressjE8arr_
 		101                     // 0x65
 		58                      // 0x3a
 
-sxc__ZZ21OLED_display_progressjE7arr_hum: // @_ZZ21OLED_display_progressjE7arr_hum
-		72                      // 0x48
-		117                     // 0x75
-		109                     // 0x6d
-		105                     // 0x69
-		100                     // 0x64
-		105                     // 0x69
-		116                     // 0x74
-		121                     // 0x79
-		58                      // 0x3a
-
 sxc__ZZ17OLED_end_progressvE4text:      // @_ZZ17OLED_end_progressvE4text
 		67                      // 0x43
 		111                     // 0x6f
@@ -719,7 +708,18 @@ sxc__ZZ20OLED_display_warningvE5text2:  // @_ZZ20OLED_display_warningvE5text2
 		117                     // 0x75
 		109                     // 0x6d
 
-sxc__ZZ27OLED_display_second_warningvE5text3: // @_ZZ27OLED_display_second_warningvE5text3
+sxc__ZZ20OLED_display_warningvE7arr_hum: // @_ZZ20OLED_display_warningvE7arr_hum
+		72                      // 0x48
+		117                     // 0x75
+		109                     // 0x6d
+		105                     // 0x69
+		100                     // 0x64
+		105                     // 0x69
+		116                     // 0x74
+		121                     // 0x79
+		58                      // 0x3a
+
+sxc__ZZ16OLED_acknowledgevE5text3:      // @_ZZ16OLED_acknowledgevE5text3
 		80                      // 0x50
 		117                     // 0x75
 		115                     // 0x73
@@ -732,7 +732,7 @@ sxc__ZZ27OLED_display_second_warningvE5text3: // @_ZZ27OLED_display_second_warni
 		111                     // 0x6f
 		110                     // 0x6e
 
-sxc__ZZ27OLED_display_second_warningvE5text4: // @_ZZ27OLED_display_second_warningvE5text4
+sxc__ZZ16OLED_acknowledgevE5text4:      // @_ZZ16OLED_acknowledgevE5text4
 		116                     // 0x74
 		111                     // 0x6f
 		32                      // 0x20
@@ -747,6 +747,82 @@ sxc__ZZ27OLED_display_second_warningvE5text4: // @_ZZ27OLED_display_second_warni
 		100                     // 0x64
 		103                     // 0x67
 		101                     // 0x65
+
+sxc_.str:                               // @.str
+		84                      // 0x54
+		104                     // 0x68
+		101                     // 0x65
+		114                     // 0x72
+		109                     // 0x6d
+		111                     // 0x6f
+		99                      // 0x63
+		111                     // 0x6f
+		117                     // 0x75
+		112                     // 0x70
+		108                     // 0x6c
+		101                     // 0x65
+		58                      // 0x3a
+		32                      // 0x20
+		79                      // 0x4f
+		112                     // 0x70
+		101                     // 0x65
+		110                     // 0x6e
+		32                      // 0x20
+		67                      // 0x43
+		105                     // 0x69
+		114                     // 0x72
+		99                      // 0x63
+		117                     // 0x75
+		105                     // 0x69
+		116                     // 0x74
+		32                      // 0x20
+		100                     // 0x64
+		101                     // 0x65
+		116                     // 0x74
+		101                     // 0x65
+		99                      // 0x63
+		116                     // 0x74
+		101                     // 0x65
+		100                     // 0x64
+		10                      // 0xa
+		0                       // 0x0
+
+sxc_.str3:                              // @.str3
+		84                      // 0x54
+		104                     // 0x68
+		101                     // 0x65
+		114                     // 0x72
+		109                     // 0x6d
+		111                     // 0x6f
+		99                      // 0x63
+		111                     // 0x6f
+		117                     // 0x75
+		112                     // 0x70
+		108                     // 0x6c
+		101                     // 0x65
+		32                      // 0x20
+		69                      // 0x45
+		114                     // 0x72
+		114                     // 0x72
+		111                     // 0x6f
+		114                     // 0x72
+		32                      // 0x20
+		100                     // 0x64
+		101                     // 0x65
+		116                     // 0x74
+		101                     // 0x65
+		99                      // 0x63
+		116                     // 0x74
+		101                     // 0x65
+		100                     // 0x64
+		46                      // 0x2e
+		10                      // 0xa
+		0                       // 0x0
+
+sxc_.str4:                              // @.str4
+		32                      // 0x20
+		10                      // 0xa
+		0                       // 0x0
 
 	sxc_current_temp: @ = @ + 1 // .lcomm // @current_temp
 	sxc_humidity: @ = @ + 1 // .lcomm // @humidity
@@ -763,7 +839,7 @@ sxc_profile_index:                      // @profile_index
 	sxc_progress: @ = @ + 1 // .lcomm // @progress
 	sxc_selected_profile: @ = @ + 141 // .lcomm // @selected_profile
 sxc_progress_scaler:                    // @progress_scaler
-		141                     // 0x8d
+		121                     // 0x79
 
 	sxc_print_humidity: @ = @ + 1 // .lcomm // @print_humidity
 sxc_profile_array:                      // @profile_array
