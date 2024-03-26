@@ -89,19 +89,10 @@ void * RotEncodThread(void *) {
    // struct rotary_encoder rot_encoder = {R_START,0x0};
    while (true){
       sem_lock(3);
-      // rot_encoder = rotary_process(rot_encoder);
-      // xpd_echo_int(rot_encoder.state, XPD_Flag_SignedDecimal);
-      // xpd_puts(" \n");
-      // xpd_echo_int(r_encoder.rot_flag, XPD_Flag_UnsignedDecimal);
-      // xpd_puts(" \n");
       r_encoder = get_encoder_pos(r_encoder);
-      // xpd_echo_int(r_encoder.rot_flag, XPD_Flag_UnsignedDecimal);
-      // xpd_puts(" \n");
       sem_unlock(3);
       sem_lock(2);
       btn_press = button_read();
-      // xpd_echo_int(btn_press, XPD_Flag_SignedDecimal);
-      // xpd_puts(" \n");
       sem_unlock(2);
    }
 }
@@ -116,6 +107,10 @@ void * PIDThread(void * ) {
    //initialize the PID controller
    struct Pid pid1;
    struct Pid *pid = &pid1;
+   sem_lock(7); //reset the progress counter at each start of the thread
+   progress = 0;
+   sem_unlock(7);
+
    set_pid_parameters(pid, 250, 2, 280);
    //max of proportional term should be around 120
    while (true) {
@@ -190,7 +185,7 @@ void * stateOLEDThread(void *){
       CHANGE_PROFILE,
       DISPLAY_PROGRESS,
       STARTING_PROCESS,
-      HUMIDITY_WARNING,
+      HUMIDITY_CHECK,
       END_PROCESS
    };
    enum scenario_enum scene = CHANGE_PROFILE;
@@ -238,7 +233,7 @@ void * stateOLEDThread(void *){
             btn_press = button_read();
             if (btn_press==1){
                //change to the next screen
-               scene = STARTING_PROCESS;
+               scene = HUMIDITY_CHECK;
                OLED_FillScreen_160128RGB(BLACK);// fill screen with black
                // generate the temperature profile depending on which profile has been selected
                //generate_RSS_profile(temp_ptr, profile_array[profile_index-1][0], profile_array[profile_index-1][1], profile_array[profile_index-1][2], profile_array[profile_index-1][3], profile_array[profile_index-1][4], profile_array[profile_index-1][5]);
@@ -264,11 +259,36 @@ void * stateOLEDThread(void *){
             }
             sem_unlock(2);
             break;
-            
+         
+         case HUMIDITY_CHECK:
+            sem_lock(1);
+            if (humidity > 60){
+               OLED_display_warning();
+               OLED_update_humidity(humidity); //display the humidity
+               sem_unlock(1);
+               wait_ms(100);
+               OLED_acknowledge();
+               //check for button press
+               sem_lock(2);
+               btn_press = button_read();
+               if (btn_press == 1){
+                  sem_unlock(2);
+                  scene = STARTING_PROCESS;
+                  wait_ms(500);
+                  OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
+               }
+               sem_unlock(2);
+            }else{
+               sem_unlock(1);
+               scene = STARTING_PROCESS;
+            }
+            break;
+
 
          case STARTING_PROCESS:
             OLED_starting_page();
             //this will be a page that will indicate that we are about to start the heating process
+
             //start the temperature sensor thread
             thread_run(3);
             //let the temperature sensor boot up
@@ -285,7 +305,7 @@ void * stateOLEDThread(void *){
             OLED_FillScreen_160128RGB(BLACK);
             scene = DISPLAY_PROGRESS;
             break;
-
+            
 
          case DISPLAY_PROGRESS:
             //lock the temp, humidity and target_temp_index when printing the screen
@@ -328,9 +348,6 @@ void * stateOLEDThread(void *){
                if(print_humidity == 1){
                   sem_lock(1);
                   OLED_update_humidity(humidity);
-                  if (humidity > 60){
-                     scene = HUMIDITY_WARNING;
-                  }
                   sem_unlock(1);
                   print_humidity = 0;
                }
@@ -345,44 +362,16 @@ void * stateOLEDThread(void *){
             //turn off the heating elements
             gpio_write(gpio_read(GPIO_D)&~(PD5|PD6), GPIO_D);
 
+            scene = END_PROCESS;
             
-            // if((progress > 100 ) || (scene == END_PROCESS)){ //if cycle finished, or hard reset was received,
-            //    scene = END_PROCESS;
-            //    //reset the progress counter for the next cycle
-            //    progress = 0;
-            // }
-            if(scene != HUMIDITY_WARNING){
-               sem_lock(7);
-               progress = 0;
-               sem_unlock(7);
-               scene = END_PROCESS;
-            }
-            //else, we will keep the progress. Humidity warning won't reset the whole cycle, it will just stop it momentarily
-            
-
             OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
             break;
-         
-         case HUMIDITY_WARNING:
-            OLED_display_warning();
-            wait_ms(100);
-            OLED_display_second_warning();
-            //check for button press
-            sem_lock(2);
-            btn_press = button_read();
-            if (btn_press == 1){
-               sem_unlock(2);
-               scene = STARTING_PROCESS;
-               wait_ms(1000); //this will help avoid detecting two btn presses
-               OLED_FillScreen_160128RGB(BLACK);                // fill screen with black
-            }
-            sem_unlock(2);
-            break;
+                
 
          case END_PROCESS:
             OLED_end_progress();
             wait_ms(100);
-            OLED_display_second_warning();
+            OLED_acknowledge();
             // check for button press
             sem_lock(2);
             btn_press = button_read();
