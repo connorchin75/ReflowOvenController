@@ -248,8 +248,7 @@ void OLED_SetColumnAddress_160128RGB(unsigned char x_start, unsigned char x_end)
 }
 
 //Function to set the starting and ending row location
-void OLED_SetRowAddress_160128RGB(unsigned char y_start, unsigned char y_end)    // set row address start + end
-{
+void OLED_SetRowAddress_160128RGB(unsigned char y_start, unsigned char y_end){    // set row address start + end
     OLED_Command_160128RGB(0x19);
     OLED_Data_160128RGB(y_start);
     OLED_Command_160128RGB(0x1A);
@@ -257,21 +256,21 @@ void OLED_SetRowAddress_160128RGB(unsigned char y_start, unsigned char y_end)   
 }
 
 //Function to begin writing to the RAM which then writes to the OLED screen
-void OLED_WriteMemoryStart_160128RGB(void)    // write to RAM command
-{
+void OLED_WriteMemoryStart_160128RGB(void){   // write to RAM command
+
     OLED_Command_160128RGB(0x22);
 }
 
 //Function to write a single pixel to the OLED
-void OLED_Pixel_160128RGB(unsigned long color)    // write one pixel of a given color
-{
+void OLED_Pixel_160128RGB(unsigned long color){    // write one pixel of a given color
+
    OLED_Data_160128RGB((color>>8));
    OLED_Data_160128RGB((color));
 }
 
 //Function to set the cursor position
-void OLED_SetPosition_160128RGB(unsigned char x_pos, unsigned char y_pos)    // set x,y address
-{
+void OLED_SetPosition_160128RGB(unsigned char x_pos, unsigned char y_pos){    // set x,y address
+
     OLED_Command_160128RGB(0x20);
     OLED_Data_160128RGB(x_pos);
     OLED_Command_160128RGB(0x21);
@@ -279,15 +278,14 @@ void OLED_SetPosition_160128RGB(unsigned char x_pos, unsigned char y_pos)    // 
 }
 
 //Function to fill the screen with a given colour
-void OLED_FillScreen_160128RGB(unsigned long colour)    // fill screen with a given color
-{
-   unsigned int i;
-   OLED_SetPosition_160128RGB(0,0);
-   OLED_WriteMemoryStart_160128RGB();
-   for(i=0;i<20480;i++)
-   {
-      OLED_Pixel_160128RGB(colour);
-   }
+void OLED_FillScreen_160128RGB(unsigned long colour){    // fill screen with a given color
+
+    unsigned int i;
+    OLED_SetPosition_160128RGB(0,0);
+    OLED_WriteMemoryStart_160128RGB();
+    for(i=0;i<20480;i++){
+        OLED_Pixel_160128RGB(colour);
+    }
 }
 
 /*===============================*/
@@ -301,18 +299,16 @@ void OLED_FillScreen_160128RGB(unsigned long colour)    // fill screen with a gi
 /*********************************/
 
 //Function to print out a single character to a given position
-void OLED_Text_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColour, unsigned long backgroundColour)  // function to show text
-{
+void OLED_Text_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColour, unsigned long backgroundColour){  // function to show text
     int i;
     int count;
     unsigned char mask = 0x80;
     
-    for(i=0;i<8;i++)     // each character is 8 pixels tall
-    {
+    for(i=0;i<8;i++){     // each character is 8 pixels tall
+    
         OLED_SetPosition_160128RGB(x_pos,y_pos);
         OLED_WriteMemoryStart_160128RGB();
-        for (count=0;count<5;count++)    // each character is 5 pixels wide
-        {
+        for (count=0;count<5;count++){    // each character is 5 pixels wide
             if((Ascii_1[letter][count] & mask) == mask)
                 OLED_Pixel_160128RGB(textColour);
             else
@@ -324,8 +320,7 @@ void OLED_Text_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char
 }
 
 //Function to print out a single character of a larger size at a position in the OLED
-void OLED_Text2x_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColor, unsigned long backgroundColor)  // function to show text (2x size)
-{
+void OLED_Text2x_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColor, unsigned long backgroundColor){  // function to show text (2x size){
     int i;
     unsigned int count;
     unsigned char mask = 0x80;
@@ -341,33 +336,28 @@ void OLED_Text2x_160128RGB(unsigned char x_pos, unsigned char y_pos, unsigned ch
         }
         y_pos++;
 
-        if((i%2)==0)
-        {
+        if((i%2)==0){
           mask = mask >> 1;
         }
    }
 }
 
 //Prints a data value to the OLED (selection == 0 for temperature. selection == 1 for humidity or progress. selection == 2 for temperature's mantissa)
-void OLED_Print_Sensor_Val(unsigned char x_pos, unsigned char y_pos, unsigned int data, unsigned int selection,unsigned long textColor=WHITE, unsigned long backgroundColor=BLACK )
-{
+void OLED_Print_Sensor_Val(unsigned char x_pos, unsigned char y_pos, unsigned int data, unsigned int selection,unsigned long textColor=WHITE, unsigned long backgroundColor=BLACK ){
     unsigned int ascii_index;
 
     //first determine the number of digits required for the temperature
     //all temperatures will be assumed to be greater than 0 degrees and less than 1000 degrees
     unsigned int digits = 0;
-    if(data<9)
-    {
+    if(data <= 9){
         digits = 1;
-    }else if(data<100)
-    {
+    }else if(data<100){
         digits = 2;
-    }else
-    {
+    }else{
         digits = 3;
     }
-    switch (digits)
-    {
+
+    switch (digits){
         case 1:
             //get ascii index for digit
             ascii_index = Num_To_ASCII(data);
@@ -403,22 +393,19 @@ void OLED_Print_Sensor_Val(unsigned char x_pos, unsigned char y_pos, unsigned in
         //print a decimal point for temperature
         OLED_Text_160128RGB(x_pos + 7*digits, y_pos, 97, textColor, backgroundColor); //degree symbol
         OLED_Text_160128RGB(x_pos + 7*digits + 7, y_pos, 35, textColor, backgroundColor); //Celsius
+        digits = digits + 2;
+        Clear_Data_Chars(x_pos + 7*digits, y_pos, BLACK); //clear extra character to right of the degC (only happens if the amt of digits changed since last print)
     }else if(selection == 1){
         //print the percent sign for humidity
         OLED_Text_160128RGB(x_pos + 7*digits, y_pos, 5, textColor, backgroundColor);
+        digits = digits + 1;
+        Clear_Data_Chars(x_pos + 7*digits, y_pos, BLACK); //clear extra character to right of the percent sign (only happens if the amt of digits changed since last print)
     }
-    // else{ //(mantissa)
-    //     //print the degrees celcius sign for temperature
-    //     // int offset = 49; //7*(3+1+3);
-    //     OLED_Text_160128RGB(x_pos, y_pos, 97, WHITE, BLACK); //degree symbol. assumed 3 digits pre-mantissa, 1 for decimal point, and 2 for digits mantissa
-    //     // offset = offset +1;
-    //     OLED_Text_160128RGB(x_pos, y_pos, 35, WHITE, BLACK); //Celsius
-    // }
+    
 }
 
 //Clears 7 characters of pixels using the default font size
-void Clear_Data_Chars(unsigned char x_pos, unsigned char y_pos, unsigned long backgroundColour)
-{
+void Clear_Data_Chars(unsigned char x_pos, unsigned char y_pos, unsigned long backgroundColour){
     //The x_pos should be 7 pixels from the last printed character to be kept
     unsigned char y_temp;
     unsigned int i;
@@ -426,39 +413,31 @@ void Clear_Data_Chars(unsigned char x_pos, unsigned char y_pos, unsigned long ba
     unsigned int k;
     OLED_SetPosition_160128RGB(x_pos,y_pos);
     OLED_WriteMemoryStart_160128RGB();
-    for(i=0;i<7;i++)     
-    {   
+    for(i=0;i<7;i++){
         y_temp = y_pos;
-        for(j=0;j<8;j++) // each character is 8 pixels tall
-        {
+        for(j=0;j<8;j++){ // each character is 8 pixels tall
             OLED_SetPosition_160128RGB(x_pos,y_temp);
             OLED_WriteMemoryStart_160128RGB();
-            for (k=0;k<5;k++)    // each character is 5 pixels wide
-            {
-                    OLED_Pixel_160128RGB(backgroundColour);
+            for (k=0;k<5;k++){    // each character is 5 pixels wide
+                OLED_Pixel_160128RGB(backgroundColour);
             }
             y_temp++;
         }
         x_pos +=7;
-   }
+    }
 }
 
 //This function draws a hollow box outline with a width of 1 pixel
-void Draw_Box(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColour, unsigned long backgroundColour, unsigned int height, unsigned int width)
-{
+void Draw_Box(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColour, unsigned long backgroundColour, unsigned int height, unsigned int width){
     unsigned int i;
     unsigned int j;
-    for(i=0;i<height;i++) //iterating over the height of the box
-    {
+    for(i=0;i<height;i++){ //iterating over the height of the box
         OLED_SetPosition_160128RGB(x_pos,y_pos);
         OLED_WriteMemoryStart_160128RGB();
-        for(j=0;j<width;j++) //iterating over the width of the box
-        {
-            if((j==0)||(j==(width-1))||(i==0)||(i==(height-1)))
-            {
+        for(j=0;j<width;j++){ //iterating over the width of the box
+            if((j==0)||(j==(width-1))||(i==0)||(i==(height-1))){
                 OLED_Pixel_160128RGB(shapeColour);
-            }else
-            {
+            }else{
                 OLED_Pixel_160128RGB(backgroundColour);
             }
         }
@@ -466,13 +445,11 @@ void Draw_Box(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColou
     }
 }
 
-void Draw_Bar(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColour, unsigned long backgroundColour, unsigned int height, unsigned int maxWidth, unsigned int percent)
-{
+void Draw_Bar(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColour, unsigned long backgroundColour, unsigned int height, unsigned int maxWidth, unsigned int percent){
     unsigned int i;
     unsigned int j;
     unsigned int fillWidth = (maxWidth * percent)/100;
-    for(i=0;i<height;i++) //iterating over the height of the box
-    {
+    for(i=0;i<height;i++){ //iterating over the height of the box
         OLED_SetPosition_160128RGB(x_pos,y_pos);
         OLED_WriteMemoryStart_160128RGB();
         for(j=0;j<fillWidth;j++) //iterating over the width of the box
@@ -483,35 +460,7 @@ void Draw_Bar(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColou
     }
 }
 
-// void draw_fella(unsigned char x_pos, unsigned char y_pos, unsigned char letter, unsigned long textColour, unsigned long backgroundColour){
-//     int i;
-//     int count;
-//     unsigned char mask = 0x80;
-
-    
-//     for(i=0;i<8;i++)     // each character is 8 pixels tall
-//     {
-//         OLED_SetPosition_160128RGB(x_pos,y_pos);
-//         OLED_WriteMemoryStart_160128RGB();
-//         for (count=0;count<5;count++)    // each character is 5 pixels wide
-//         {
-//             if((Ascii_1[letter][count] & mask) == mask)
-//                 OLED_Pixel_160128RGB(textColour);
-//             else
-//                 OLED_Pixel_160128RGB(backgroundColour);
-//         }
-//         y_pos++;
-//         mask = mask >> 1;
-//    }
-// }
-
 void draw_lil_guy(unsigned char x_pos, unsigned char y_pos, unsigned long shapeColour, unsigned long backgroundColour, unsigned int position){
-    // unsigned int lil_guy[2][24] = {
-    //     {0x0000, 0x00E0, 0x0110, 0x0208, 0x0404, 0x0404, 0x0208, 0x00E0, 0x0444, 0x0248, 0x0248, 0x0250, 
-    //     0x00E0, 0x0040, 0x0040, 0x0040, 0x0040, 0x0040, 0x00A0, 0x0110, 0x0208, 0x0404, 0x0802, 0x0000},
-    //     {0x0000, 0x00E0, 0x0110, 0x0208, 0x0404, 0x0404, 0x0208, 0x00E0, 0x0444, 0x0040, 0x0040, 0x0040, 
-    //     0x00E0, 0x0250, 0x0250, 0x0250, 0x0250, 0x0040, 0x00A0, 0x00A0, 0x00A0, 0x00A0, 0x00A0, 0x0000}
-    // };
 
     unsigned int lil_guy[2][24] = {
         {0x0000, 0x0802, 0x0404, 0x0208, 0x0110, 0x00A0, 0x0040, 0x0040, 0x0040, 0x0040, 0x0040, 0x00E0, 
@@ -524,7 +473,6 @@ void draw_lil_guy(unsigned char x_pos, unsigned char y_pos, unsigned long shapeC
     int count;
     unsigned int height = 24;
     unsigned int width = 13;
-
     unsigned int mask = 0x1000;
 
     for(i=0; i<height; i++){
@@ -549,9 +497,7 @@ void draw_lil_guy(unsigned char x_pos, unsigned char y_pos, unsigned long shapeC
 
 //size = 1x or 2x
 void OLED_write_text(int charsize, unsigned char x_pos, unsigned char y_pos, unsigned char *toWrite, int length, unsigned long textColor, unsigned long backgroundColor){
-
     unsigned int ascii_index;
-
     for (int i=0; i < length; i++){
         ascii_index = char_to_ASCII(toWrite[i]); //get ascii index for character
         if(charsize == 1){
@@ -745,37 +691,29 @@ void OLED_display_progress(unsigned int selected_profile){
 
     Draw_Box(20, 70, BLUE, BLACK, 30, 128);                     // draw box for progress bar
     Draw_Bar(23, 73, BLUE, BLACK, 24, 122, 0);                  // draw 0% into progress bar
-    // Clear_Data_Chars(104, 30, BLACK);
 };
 
 void OLED_update_humidity(unsigned int humidity){
     unsigned char x_pos = 83;
     unsigned char y_pos = 10;
-    // Clear_Data_Chars(x_pos, y_pos, BLACK); //clear previous humidity reading
-    // Clear_Data_Chars(x_pos+7, y_pos, BLACK); //clear 2nd character
-    OLED_Print_Sensor_Val(x_pos, y_pos, humidity, 1);
+    OLED_Print_Sensor_Val(x_pos, y_pos, humidity, 1); // selection = 1 : %
 };
 
 void OLED_update_temp(int temp){
     unsigned char x_pos = 104;
     unsigned char y_pos = 30;
-    // Clear_Data_Chars(x_pos, y_pos, BLACK); //clear previous temp reading
-    // Clear_Data_Chars(x_pos+7, y_pos, BLACK); //clear 2nd character
     OLED_Print_Sensor_Val(x_pos, y_pos, temp, 0);
 };
 
 void OLED_update_progress(int progress){
     unsigned char x_pos = 83;
     unsigned char y_pos = 50;
-    // Clear_Data_Chars(x_pos, y_pos, BLACK); //clear previous progress reading
-    // Clear_Data_Chars(x_pos+7, y_pos, BLACK); //clear 2nd character
-    OLED_Print_Sensor_Val(x_pos, y_pos, progress, 1);
+    OLED_Print_Sensor_Val(x_pos, y_pos, progress, 1);  // selection = 1 : %
     Draw_Bar(23, 73, BLUE, BLACK, 26, 122, progress); //fill the progress bar to the correct amount
 };
 
 void OLED_end_progress(){
     unsigned char text[9] = {'C','o','m','p','l','e','t','e', '!'};
-    // OLED_FillScreen_160128RGB(RED);                // fill screen with red
     OLED_write_text(2, 5, 100, text, 9, WHITE, BLACK);
 
     unsigned char text2[14]={'O','p','e','n',' ','O','v','e','n',' ','D','o','o','r'};
@@ -794,9 +732,14 @@ void OLED_display_warning(){
     //than maximum
     unsigned char text2[12] ={'t','h','a','n',' ','m','a','x','i','m','u','m'};
     OLED_write_text(1, 9, 71, text2, 12, WHITE, BLACK);
+
+    unsigned char arr_hum[9] = {'H','u','m','i','d','i','t','y',':'};
+    OLED_write_text(1, 20, 10, arr_hum, 9, WHITE, BLACK);
+
+    // OLED_Print_Sensor_Val(83, 10, humidity, 1); //happens in main function
 }
 
-void OLED_display_second_warning(){
+void OLED_acknowledge(){
     //Push button
     unsigned char text3[11] = {'P','u','s','h',' ','b','u','t','t','o','n'};
     OLED_write_text(1, 9, 42, text3, 11, BLUE, BLACK);
